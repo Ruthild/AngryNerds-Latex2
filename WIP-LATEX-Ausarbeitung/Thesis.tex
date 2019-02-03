@@ -3,13 +3,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Parameter - Hier auf die eigene Arbeit anpassen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Hier euren eigenen Namen eingeben
+\newcommand{\dokumentenautor}{Ruthild Gilles}
+\newcommand{\abgabedatum}{07.02.2019} 
+
 
 \newcommand{\dokumententyp}{Schriftliche Ausarbeitung}
-\newcommand{\abgabedatum}{07.02.2019} 
 \newcommand{\ort}{Bergisch Gladbach} 
 \newcommand{\koorperationsunternehmen}{}
 \newcommand{\dokumententitel}{Erstellung einer Applikation zur Verwaltung von Todos, Events und Notizen}
-\newcommand{\dokumentenautor}{Angry Nerds}
 \newcommand{\dokumentenautoradress}{}
 \newcommand{\dokumentenpruefer}{Prof. Dr. Seifert\\}
 
@@ -30,8 +32,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Titelseite
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapter/Titelseite}
+%Hier die entsprechende Titelseite einkommentieren und die andere auskommentieren
+%\input{chapter/Titelseite}
+\input{chapter/Titelseite_Gruppenversion}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Verzeichnisse
@@ -45,16 +48,16 @@
 %\setcounter{table}{0} % printglossary erzeugt eine Tabelle, die die Nummerierung der "echten" Tabellen durcheinander bringt. 
 
 % Abbildungsverzeichnis
-%\fancyhead[R]{\listfigurename}
-%\listoffigures\newpage
+\fancyhead[R]{\listfigurename}
+\listoffigures\newpage
 
 % Tabellenverzeichnis
 %\fancyhead[R]{\listtablename}
 %\listoftables\newpage
 
 % Quelltextverzeichnis
-%\fancyhead[R]{\lstlistlistingname}
-%\lstlistoflistings\newpage
+\fancyhead[R]{\lstlistlistingname}
+\lstlistoflistings\newpage
 
 % Kapitelüberschriften für den Arbeitstext
 \fancyhead[R]{\leftmark}

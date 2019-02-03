@@ -7,9 +7,7 @@
 %%%%%%%%%%%
 %Sertan
 %%%%%%%%%%%
-
-Hier den Text einfach hin kopieren.
-
+ 
 \subsection{Dokumentation der Activities}
 %%%%%%%%%%%
 %Alle
@@ -31,12 +29,15 @@ Hier den Text einfach hin kopieren.
 
 Hier den Text einfach hin kopieren.
 
+\newpage
 \subsection{Dokumentation der Activity-übergreifenden Klassen (Ruthild Gilles)}
 %%%%%%%%%%%
 %Ruthild
 %%%%%%%%%%%
 
-Damit die Activities die Daten der TEN-Objekte auf der dokumentenbasierten Datenbank speichern können, wurden Service Klassen implementiert.
+Zu den Activity-übergreifenden Klassen gehören abgesehen von den Query-Klassen für die persistente Datenhaltung auch die Service-Klassen und die Models-Klassen. Die Models-Klassen enthalten die TEN-Klasse und die einzelnen Todo-, Event- und Note-Klassen. Hier sind auch weitere Util-Klassen untergeordnet.
+
+Damit die Activities die Daten der TEN-Objekte auf der dokumentenbasierten Datenbank speichern können, wurden Service Klassen implementiert. Hierzu gehörten hauptsächlich Klassen zum Erzeugen neuer TEN-Objekte (Create), zum Erhalten bereits gespeicherter TEN-Objekte von der Datenbank (Read), zum Speichern veränderter TEN-Objekte (Update) und zum Löschen von TEN-Objekten von der Datenbank (Delete). Diese sogennante CRUD-Operationen wurden in den entsprechenden Klassen teilweise für alle drei verschiedenen Objekttypen einzeln eingefügt, teilweise aber auch für TEN-Objekte im Allgemeinen. Dank Polymorphie können die jeweils einzelnen Objekttypen ebenfalls an die entsprechenden Methoden übergeben werden.
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Als Beispiel
@@ -51,7 +52,7 @@ So kann man Abbildungen einfügen:
 \begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
 \caption{Abbildungsbeschriftung} % Überschrift
 \includegraphics[width=1\textwidth]{img/fhdw}\\ % Pfad
-\source{\url{http://dominique-fleury.com/?p=302}} % Quelle
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
 \end{minipage}
 \end{figure}
 
