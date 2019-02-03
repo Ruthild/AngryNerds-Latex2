@@ -1,0 +1,94 @@
+\input{config/Config}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Parameter - Hier auf die eigene Arbeit anpassen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\dokumententyp}{Schriftliche Ausarbeitung}
+\newcommand{\abgabedatum}{07.02.2019} 
+\newcommand{\ort}{Bergisch Gladbach} 
+\newcommand{\koorperationsunternehmen}{}
+\newcommand{\dokumententitel}{Erstellung einer Applikation zur Verwaltung von Todos, Events und Notizen}
+\newcommand{\dokumentenautor}{Angry Nerds}
+\newcommand{\dokumentenautoradress}{}
+\newcommand{\dokumentenpruefer}{Prof. Dr. Seifert\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  pdftitle=\dokumententitel,
+  pdfauthor=\dokumentenautor
+} 
+
+\begin{document}
+
+% Römische Seitennummerierung
+\pagenumbering{Roman}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titelseite
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapter/Titelseite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Verzeichnisse
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Inhaltsverzeichnis
+\tableofcontents\newpage
+
+% Abkürzungsverzeichnis
+%\printglossary[type=\acronymtype, style=mylist, title=Abkürzungsverzeichnis, toctitle=Abkürzungsverzeichnis]\newpage
+%\setcounter{table}{0} % printglossary erzeugt eine Tabelle, die die Nummerierung der "echten" Tabellen durcheinander bringt. 
+
+% Abbildungsverzeichnis
+%\fancyhead[R]{\listfigurename}
+%\listoffigures\newpage
+
+% Tabellenverzeichnis
+%\fancyhead[R]{\listtablename}
+%\listoftables\newpage
+
+% Quelltextverzeichnis
+%\fancyhead[R]{\lstlistlistingname}
+%\lstlistoflistings\newpage
+
+% Kapitelüberschriften für den Arbeitstext
+\fancyhead[R]{\leftmark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Inhalt: Aufgeteilt in Kapitel
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Arabische Seitennummerierung
+\pagenumbering{arabic} 
+
+\include{chapter/1Das_Team}
+\include{chapter/2Ziele_des_Projektes}
+\include{chapter/3Projektplanung}
+\include{chapter/4Beschreibung_des_Projektverlaufs}
+\include{chapter/5Dokumentation_der_Software}
+\include{chapter/6Fazit_Teammitglieder}
+\include{chapter/7Quellenverzeichnis}
+\include{chapter/8Anhang_mit_allen_Quelltexten}
+\include{chapter/9Anhang_Tools_und_Hilfsmittel}
+
+
+%%%%%%%muss noch auskommentiert werden:
+
+\include{chapter/Einleitung}
+
+\include{chapter/Grundlagen}
+
+\include{chapter/Anhang}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Keine Seitennummerierung
+\pagenumbering{gobble}
+
+\include{chapter/Ehrenwoertliche_Erklaerung}
+ 
+\end{document}
