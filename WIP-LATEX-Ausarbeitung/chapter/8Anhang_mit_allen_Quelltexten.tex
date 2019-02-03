@@ -31,3 +31,28 @@ So kann man Abbildungen einfügen:
 \texttt{einzelnd}\\
 \texttt{so in diese Zeilen}\\
 \texttt{eintragen!}\\
+
+\begin{figure}[H]
+\begin{quote}
+\begin{texttt}
+Ganz viel Quellcode:
+public class Delete {
+    /* Ruthild Gilles (30.11.2018)
+     Class Delete contains methods to delete the given TEN object.
+    */
+
+    public static void deleteTEN(String tenID) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        databaseRepository.deleteTEN(tenID);
+    }
+
+    public static void deleteMultipleTENs(ArrayList<String> tenIDs) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        for (String tenID : tenIDs) {
+            databaseRepository.deleteTEN(tenID);
+        }
+    }
+}
+\end{texttt}
+\end{quote}
+\end{figure}
