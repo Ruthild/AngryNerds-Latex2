@@ -3,31 +3,124 @@
 \fancyhead[R]{Anhang - Quelltexte}
 \label{instal}
 
-\subsection{Unterkapitelüberschrift}
+\subsection{CRUD-Klassen (Ruthild Gilles)}
+\begin{figure}[H]
+\begin{lstlisting}[caption=Create Klasse (Ruthild Gilles)]
 
-Unterkapitel
+public class Create {
+    /* Ruthild Gilles
+     Class Create contains methods to create new empty TEN objects.
+     This class only exists to give a consistent form to the CRUD methods.
+    */
 
-\subsubsection{Unterunterkapitelüberschrift}
+    public static Todo newTodo() {
+        return new Todo();
+    }
 
-Unterunterkapitel
+    public static Event newEvent() {
+        return new Event();
+    }
 
-\subsection{Kapitel mit Abbildung}
-
-So kann man Abbildungen einfügen:
-
-\begin{figure}[hbt]
-\centering
-\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
-\caption{Abbildungsbeschriftung} % Überschrift
-\includegraphics[width=1\textwidth]{img/fhdw}\\ % Pfad
-\source{\url{http://dominique-fleury.com/?p=302}} % Quelle
-\end{minipage}
+    public static Note newNote() {
+        return new Note();
+    }
+}
+\end{lstlisting}
 \end{figure}
 
-\subsection{Quellcode}
+\begin{figure}[H]
+\begin{lstlisting}[caption=Read Klasse (Ruthild Gilles)]
 
-\texttt{Als ob wir}\\
-\texttt{den Quellcode}\\
-\texttt{einzelnd}\\
-\texttt{so in diese Zeilen}\\
-\texttt{eintragen!}\\
+public class Read {
+     /* Ruthild Gilles
+     Class Read contains methods to get all or one specific TEN object.
+    */
+
+    /*--------------------------------------------------
+        Method to get all TEN objects in an arraylist
+     --------------------------------------------------*/
+    public static ArrayList<TEN> getAllTENs() {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        ArrayList<TEN> allTEN;
+        allTEN = databaseRepository.getAllTENs();
+        Log.i("Mainfix", "Number Of TENs: " + allTEN.size());
+        for (TEN ten : allTEN) {
+            Log.i("Mainfix", "ID: " + ten.getID() + ", Titel: " + ten.getTitle());
+        }
+        return allTEN;
+    }
+
+    /*--------------------------------------------------
+        Methods to get one TEN object by ID
+     --------------------------------------------------*/
+    public static Todo getTodoByID(String id) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        Todo todo = databaseRepository.getTodoByID(id);
+        return todo;
+    }
+
+    public static Event getEventByID(String id) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        Event event = databaseRepository.getEventByID(id);
+        return event;
+    }
+
+    public static Note getNoteByID(String id) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        Note note = databaseRepository.getNoteByID(id);
+        return note;
+    }
+
+    public static int[] getColors(String tenID) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        int[] colors = databaseRepository.getTENColors(tenID);
+        return colors;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Update Klasse (Ruthild Gilles)]
+
+public class Update {
+    /* Ruthild Gilles
+     Class Update contains methods to save information on a changed or newly created TEN.
+    */
+
+    /*--------------------------------------------------
+        Methods for saving a TEN object
+     --------------------------------------------------*/
+
+    public static void saveTEN(TEN newTen) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        if (newTen.getID() == null) {
+            databaseRepository.insertTEN(newTen);
+        } else databaseRepository.updateTEN(newTen);
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Delete Klasse (Ruthild Gilles)]
+
+public class Delete {
+    /* Ruthild Gilles
+     Class Delete contains methods to delete the given TEN object.
+    */
+
+    public static void deleteTEN(String tenID) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        databaseRepository.deleteTEN(tenID);
+    }
+
+    public static void deleteMultipleTENs(ArrayList<String> tenIDs) {
+        DatabaseRepository databaseRepository = new DatabaseRepository();
+        for (String tenID : tenIDs) {
+            databaseRepository.deleteTEN(tenID);
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
