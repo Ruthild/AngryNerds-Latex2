@@ -7,7 +7,20 @@
 %%%%%%%%%%%
 %Sertan
 %%%%%%%%%%%
- 
+Die entwickelte App ist innerhalb des Paketes com.example.robin.angrynerds-wip in mehrere Klassen unterteilt. Zu jeder Activity gehören mehrere Klassen. Um die Übersichtlichkeit zu steigern, wurden die Klassen und Activities in Ordnern untergebracht. Die gesamte Ordnerstruktur sieht wie folgt aus:
+
+Das Paket beinhaltet insgesamt fünf Activities mit jeweils einer ApplicationLogic, Gui und Data.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Paketstruktur} % Überschrift
+\includegraphics[width=1\textwidth]{img/Paketstruktur}\\ % Pfad
+\source{Erstellt von Sertan Cetin} % Quelle
+\end{minipage}
+\end{figure}
+
+
 \subsection{Dokumentation der Activities}
 %%%%%%%%%%%
 %Alle
@@ -351,6 +364,162 @@ Diese Klasse stellt die Logik des Image-Fragments dar. Hier werden den Feldern d
 -public void applyData()
 Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
 
+\subsubsection{Todo Activity}
+%Florian
+\textbf{Aufgabe und Funktionen (Florian Rath)}\\
+Die Activity Todo dient dem Nutzer dazu, seine Aufgaben zu organisieren. Wenn er eine neue Todo erstellt hat, hat er die Möglichkeit einen Titel und eine Beschreibung einzugeben. Diese Eingabemöglichkeiten sind jedoch optional und hindern den Nutzer nicht daran, die Todo wieder zu verlassen und somit abzuspeichern. Der Titel für eine Todo könnte beispielsweise „Einkaufsliste“ lauten, während die Beschreibung nähere Informationen wie zum Beispiel „Für die Geburtstagsparty von meiner Tochter“ beinhalten kann. So hat der Benutzer die Möglichkeit mehrere Einkaufslisten anzulegen und sie mit einer Beschreibung voneinander differenzieren.
+
+Neben dem Titel und der Beschreibung können auch ein Start- und Enddatum festgelegt werden. Dies ist hilfreich, wenn für eine Todo bestimmte Fristen vorhanden sind. Geht es in der Todo z.B. um eine Prüfungsvorbereitung, kann der Benutzer auswählen, wann er spätestens mit dem Lernen anfangen muss und bis wann er spätestens mit dem Lernen Zeit hat. Diese Funktionalität ist ebenfalls optional. Man kann also auch Todos verwenden, ohne ein bestimmtes Start- und Enddatum anzugeben. Die App zeigt dann immer jeweils das aktuelle Datum in den Eingabefeldern an.
+
+Die Hauptfunktionalität der Todo-Activity ist das Anlegen von sogenannten Tasks.- Eine Task besteht im Prinzip aus einem Text, wie z.B. „Luftballons“, und einem Status (boolean-Wert). Der Status gibt an, ob ein Task erledigt ist oder nicht. Dies geschieht über eine Checkbox, die neben jedem Task vorhanden ist.
+
+Unterstrichen wird die Gesamtfunktionalität mit einer Fortschrittsanzeige. Ein prozentualer Wert gibt dabei an, wie viele Tasks als erledigt markiert sind. Wurden z.B. 5 von 10 Tasks als erledigt markiert, steht in der App 50 Prozent. Sind es hingegen 1 von 10 markierte, dann nur noch 10 Prozent. Diese Funktionalität dient dazu, dem Benutzer einen Fortschritt über seine Todo zu geben. Anhand des Fortschritts kann er sich nämlich organisieren, ob er in den genannten Fristen liegt. Liegt man kurz wenige Tage vor einer Prüfung gerade bei 10 Prozent, so könnte es langsam brenzlig für den Benutzer werden. Auch in einer sehr langen Liste von Tasks könnte dieser Wert nützlich sein. Da die Todo-Activity darauf ausgelegt ist, theoretisch endlos viele Tasks speichern zu können (so viele, wie ein ArrayList speichern kann), können sehr lange Listen entstehen. Unter hunderten von Tasks könnte es schnell passieren, eine unerledigte Aufgabe zu übersehen und die Todo verfrüht abzuschließen. Die App macht keine Obergrenze für Tasks, um dem User keine Arbeits- bzw. Organisationsweise vorzuschreiben.
+
+Der User hat auch die Möglichkeit eine Todo zu löschen.
+
+%Sertan
+\textbf{Layout, Screenshots (Sertan Cetin)}\\
+Um eine maximale Bedienbarkeit zu gewährleisten, verfügt diese Activity insgesamt genau über zwei Layouts. Während das eine Layout die Benutzersteuerelement im Porträtmodus darstellt, dient das andere Layout dazu, die Elemente im Landscape-Modus darzustellen. Der Unterschied zwischen den beiden Layouts liegt in der Anordnung der Elemente. Im Porträtmodus belegt jedes Element eine Zeile auf dem Bildschirm. Sie sind also untereinander angeordnet. Im Landscape-Modus ist die Ansicht in zwei Spalten geteilt. In der linken Spalte sind der Titel, Beschreibung, Start- und Enddatum untereinander angeordnet. In der rechten Spalte befinden sich die einzelnen Aufgaben. Die Breite der linken Spalte hat einen festen Wert, nämlich 640px. Die Prozentanzeige befindet sich unabhängig von den beiden Spalten immer mittig am unteren Bildschirmrand.
+
+Oben ist eine Toolbar vorhanden, mit einem Zurück-Button, um zur Hauptübersicht zu gelangen, und einem Menü, in welchem die Todo gelöscht werden kann.
+
+Nachfolgender Screenshot zeigt den zuvor beschriebenen Landscape-Modus der Todo-Activity: 
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Todo Activity im Landscape-Modus} % Überschrift
+\includegraphics[width=1\textwidth]{img/Todo_landscape}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+Beim Wechsel der beiden Ansicht-Modi werden die Daten jeweils in das andere Layout übernommen.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Todo Activity im Portrait-Modus} % Überschrift
+\includegraphics[width=1\textwidth]{img/Todo_portrait}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+Nachdem auf eines der Eingabefelder für Daten getippt wurde, initialisiert die Activity einen Datepicker und zeigt dem Benutzer ein gewohntes Auswahlmenü für ein gewünschtes Datum an. Dies hat den Vorteil, dass der Benutzer durch Erfahrungen in anderen Apps schnell und einfach mit der Datumeingabe zurechtfindet. Wie im Screenshot zu sehen ist, kann der Benutzer mit „Abbrechen“ die Datumsauswahl abbrechen, sodass das Eingabefenster geschlossen wird. Mit dem „Ok“-Button hat der Benutzer alternativ die Möglichkeit, seine Eingabe zu übernehmen. Hierbei liest die Activity das eingegeben Datum aus und stellt es formatiert dar. Es wird außerdem indem Todo-Objekt zwischengespeichert.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Datumeingabe} % Überschrift
+\includegraphics[width=1\textwidth]{img/Todo_Datepicker}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+%Florian
+\textbf{Use Case (Florian Rath)}\\
+Die Todo-Activity kann man über zwei Wege erreichen. Beide Wege erfolgen aus der Übersichts-Activity.
+
+Der User kann entweder eine neue Todo erstellen, sodass in der Todo-Activity eine nicht vorhandene Todo-ID übergeben wird, oder er kann auf eine bereits vorhandene Todo tippen. Die ID dieser Todo wird dann aus der Datenbank geladen und in der Activity dargestellt. Die Todo-Activity deckt die Funktionalitäten des Todo-TEN‘s ab.
+
+%Sertan
+\textbf{Datenstrukturen und -typen (Sertan Cetin)}\\
+Um die gewünschten Anforderungen zu erfüllen und dabei sowohl eine hohe Wartbarkeit als auch Modularität zu gewährleisten, wurden innerhalb der Todo-Activity mehrere Klassen implementiert. Nachfolgend werden diese Klassen vorgestellt.
+
+Wenn die Todo-Activity aus der Overview-Activity gestartet wird, wird eine Instanz der Klasse Init, die die Schnittstelle AppCompatActivity implementiert, erstellt. In dieser Klasse werden weitere Klassen, die im Rahmen des Projektes angelegt wurden, erstellt. Bei diesen Klassen handelt es sich um Gui, TodoApplicationLogic und Data. Auf diese wird im Nachfolgenden näher eingegangen.
+
+Die Gui-Klasse ist die Schnittstelle zum Layout. Hier werden alle Layout-Elemente in Variablen bzw. typgleichen Objekten gespeichert. So wird z.B. das Eingabefeld für den Titel in einer Variablen vom Datentyp EditText gespeichert. Indem jedes Element aus dem Layout in einer Variablen hinterlegt wird, erhält man die Möglichkeit diese vom Java-Code aus auszulesen bzw. zu manipulieren. Diese Klasse besitzt einen Konstruktor, in welchem die eigentliche Erstellung der genannten Objekte geschieht. Über Getter- und Setter-Methoden stellt die Gui-Klasse den anderen Klassen die Schnittstelle zum Layout zur Verfügung.
+
+Die Data-Klasse speichert das Todo und stellt die Schnittstelle zwischen der Datenbank und der Applikationslogik dar. Sie ist somit für das Speichern, Löschen und Ändern verantwortlich. Im Konstruktor dieser Klasse wird außerdem das Todo-Objekt initialisiert. Beim Initialisierungsvorgang der Data-Klasse wird eine ID übergeben. Ist diese ID nicht vorhanden, wird legt sie ein neues Todo in der Datenbank an. Andernfalls wird das Todo geladen.
+
+In der TodoApplicationLogic-Klasse findet die gesamte Geschäftslogik statt. Sie verbindet im Wesentlich die Data mit der Gui. Sie ist unteranderem für die Interaktion zuständig.
+
+\textbf{Dokumentation des Quelltextes der Activity}\\
+In diesem Kapitel wird der Quelltext der Todo-Activity vorgestellt und erläutert. Dabei wird Klasse für Klasse, Methode für Methode vorgegangen. 
+Methoden der Init-Klasse (Sertan Soner Cetin)
+Die Init Klasse verfügt insgesamt über 10 Methoden. Da die Klasse die Schnittstelle AppCompatActivity implementiert, sind die Methoden onCreate, onCreateOptionsMenu, onSaveInstanceState, onActivityResult, onBackPress und onConfigurationChanged vorhanden. Daneben sind noch Methoden wie initData, initGUI und initApplicationLogic vorhanden.
+Private void initApplication() 
+Diese Methode initialisiert das Objekt des Typs TodoApplicationLogic. Diese ApplicationLogic erhält die GUI- und Data-Objekte
+Private void initData(String todoId)
+Diese Methode initialisiert das Data-Objekt des Datentyps Data. Das Objekt erhält eine Instanz zur Activity und eine Todo-ID vom Typ String, welche dieser Methode ebenfalls übergeben wird.
+Private void initGui()
+Diese Methode initialisiert das Gui-Objekt. Dieses Objekt erhält eine Instanz zu der Activity.
+Public void onCreate(Bundle savedInstanceState)
+Diese Methode wird beim Erstellvorgang der Init-Klasse aufgerufen. Sie ruft die zuvor beschriebenen Methoden auf. Der Parameter savedInstanceState wird der Oberklasse übergeben.
+Methoden der Gui-Klasse (Sertan Soner Cetin)
+Die Gui-Klasse verfügt über einen Konstruktor, der im vorangegangenen Kapitel beschrieben wurde. Außerdem verfügt sie über diverse Getter- und Setter-Methoden. Es werden einige exemplarisch dargestellt.
+Public void setFocusableInTouchmode(boolean value)
+Diese Methode stellt den TouchModus des Layouts aus. Über den Parameter value kann angegeben werden, ob sich die Tastatur beim Start des Layouts aufklappen soll oder nicht. (true für nicht ausklappen, false für ausklappen)
+Public EditText getmTitle()
+	Diese Getter-Methode liefert das Objekt mTitle des Datentyps EditText zurück.
+Public void setmTitle(string pTitle)
+Diese Setter-Methode schreibt in das Textfeld des Todo-Layouts den übergebenen Parameter mit dem Namen pTitle des Datentyps String.
+Public EditText getmText()
+Diese Getter-Methode liefert das Objekt mText des Datentyps EditText zurück. Das Objekt entspricht dem Layout-Element für die Beschreibung des Todos.
+Public void setColor(int color, int darkColor)
+An diese Methode werden zwei Farbwerte als Integer übergeben. Der erste Farbwert entspricht einem helleren Farbton, z.B. Hellblau. Der zweite wäre ein dunklerer Blauton, z.B. Dunkelblau. Das Layout bekommt die helle Farbe als Hintergrundfarbe, während die Toolbar oder Trennlinien zwischen den einzelnen Elementen die dunklere Farbe erhalten.
+Methoden der Data-Klasse (Sertan Soner Cetin)
+Diese Klasse verfügt über einen Konstruktor und über Getter- und Setter-Methoden. Durch die Schnittstelle zur Datenbank sind noch Methoden für das Löschen und Ändern der Todo in der Datenbank vorhanden.
+Public void deleteTodo()
+	Löscht die Todo aus der Datenbank anhand seiner ID.
+Public void updateTodo()
+	Ändert die Todo in der Datenbank und aktualisiert somit alle Eigenschaften.
+Public void setTitle(string title)
+Ändert den Titel der Todo. Der Parameter title des Datentyps String ist der neue Titel.
+Public boolean getmIsNew()
+Gibt an, ob die Todo neuerstellt wurde oder beim Start der Activity bereits vorhanden war. Dieser Wert wird außerhalb benötigt, um festzulegen, ob sich die Tastatur beim Activity-Start aufklappen soll oder nicht.
+Methoden der TodoApplicationLogic (Florian Rath)
+Die TodoApplicationLogic stellt die größte Klasse innerhalb der Todo-Activity dar. Dies liegt unter anderem daran, dass die meisten Verantwortlichkeiten hier liegen. Sie ist Dreh und Angelpunkt der gesamten Infrastruktur, da sie die Data bzw. Datenbank mit der Gui bzw. dem Layout verbindet und alles steuert.
+Private void initGui()
+Diese Methode stellt die Gui ein und ruft eine andere Methode namens dataToGui auf.
+Private void dataToGui()
+Diese Methode schreibt die Todo-Eigenschaften auf die einzelnen Layout-Elemente. So wird z.B. der Todo-Titel in das Eingabefeld für den Titel geschrieben oder die Farbe des Todos als Hintergrundfarbe festgelegt.
+Private void initListener()
+Da innerhalb der Applikationslogik die Listener für die einzelnen Events z.B. ClickEvent oder TouchEvent verwaltet werden, wurde diese Methode angelegt, um alle Listener an einer zentralen Stelle zu initialisieren. Hier werden der ClickListener, TouchListener und CheckedChangeListener initialisiert und bei den einzelnen Layout-Elementen registriert.
+Public void receiveDate(Date date)
+Diese Methode wurde für den Datepicker benötigt. Sie empfängt quasi das Datum aus dem Eingabefeld. Der Parameter date wird dann an das Eingabefeld übergeben.
+Public String formatDate(Date date)
+Diese Methode liefert einen String zurück. Der Parameter date wird in eine leserliche Formatierung gebracht. Die Formatierung des Datums ist z.B. „Dienstag, 13. Januar 2019“.
+Public void showDatePickerDialog(View v)
+Diese Methode initialisiert das DatePickerFragment. Dazu wird der Parameter v benötigt, um die beiden Start- und Enddatum-Felder unterscheiden zu können, da beide denselben DatePicker verwenden.
+Public void returnToOverview()
+Diese Methode leitet den Benutzer wieder zur Overview-Activity zurück. Bei diesem Vorgang wird außerdem die UpdateTodo-Methode aufgerufen, die weiter unten beschrieben ist.
+Public void onMenuItemClick(MenuItem item)
+Bei dieser Methode handelt es sich um einen Event-Handler. Diese wird ausgeführt, wenn ein Menü-Item angeklickt wird. Da nur ein Menüpunkt vorhanden ist, ist es eindeutig. An dieser Stelle wird die externe Methode des Data-Objekts deleteTodo aufgerufen. Außerdem wird die zuvor beschriebene returnToOverview-Methode aufgerufen.
+Public void createList()
+Diese Methode erzeugt eine Liste bzw. initialisiert den TaskAdapter. Der TaskAdapter wird benötigt, um aus einer Liste von Tasks in eine ListView-Elementliste zu verwandeln. Dieser Adapter wird dem GUI-Element ListView zugewiesen.
+Private void addTask()
+Diese Methode fügt Tasks-Liste, welche in der GUI angezeigt wird, ein Element hinzu.
+Public void updateProgress()
+Die updateProgress-Methode holt sich aus dem Todo-Objekt den Anteil der erledigten Aufgaben. Dieser Wert wird in eine Prozentzahl umgewandelt. Der Prozentwert wird dem entsprechenden Layout-Element zugewiesen.
+Private void onEditTextClicked()
+Bei dieser Methode handelt es sich um einen Event-Handler. Dieser wird ausgeführt, wenn auf ein EditText-Feld getippt wurde. Dabei wird ein neues EditText-Feld erzeugt, um eine weitere Aufgabe eingeben zu können.
+Public void onActivityReturned(int requestCode, int resultCode, Intent data)
+	Diese Methode deckt den Fall ab, falls in die Activity zurückgekehrt wird.
+Private void onDelteButtonClicked(int id)
+Es wird dieser Methode eine ID übergeben. Diese ID entspricht der Aufgabe, bei der der Lösch-Button geklickt wurde. Anhand dieser ID wird der Task aus der Liste entfernt.
+Private void onTextChanged(String s, View mView)
+Bei dieser Methode handelt es sich um einen Text-Changed Event-Handler. Der Parameter s steht für den Text und mView für das Element. Handelt es sich um den Titel, wird die setTitle-Methode des Data-Objekts aufgerufen. Handelt es sich um die Beschreibung, wird die setText-Methode desselbigen Objekts aufgerufen.
+Public void onOkButtonClicked()
+Wenn der OK-Buttons des Datumeingabefelds geklickt wird, wird die Methode UpdateTodo aufgerufen.
+Public void onBackPressed()
+Wird der Zurück-Button aus der Toolbar gedrückt, wird die UpdateTodo-Methode aufgerufen. So wird beim Verlassen der Activity die Todo in der Datenbank gespeichert.
+Private void addInputTaskField()
+Fügt der Task-Liste ein weiteres Element hinzu. Außerdem wird der TaskAdapter benachrichtigt, um die GUI zu aktualisieren. Hierdurch wird auch der prozentuale Anteil der erledigten Aufgaben beeinflusst, weshalb die Methode updateProgress aufgerufen wird.
+Public ArrayList<Task> getmTasks()
+Liefert die ArrayList mit Task-Objekten zurück.
+Private int getTasksItemCount()
+Liefert eine Zahl zurück, die angibt, wie viele Elemente in der Task-Liste gespeichert sind.
+Public ClickListener getClickListener()
+Gibt das ClickListener-Objekt zurück.
+Public TouchListener getTouchListener()
+	Gibt das TouchListener-Objekt zurück.
+Public CheckedChangeListener getmCheckedChangeListener()
+	Gibt das CheckedChangeListener-Objekt zurück.
+Public void UpdateTodo()
+Diese Methode speichert zuerst das Todo-Objekt aus der Data-Klasse in einer lokalen Todo-Methodenvariable. Von diesem werden der Titel und Beschreibung gesetzt. Das Start- und Enddatum werden ebenfalls aktualisiert. Am Ende der Methode wird das Todo in der Datenbank gespeichert bzw. aktualisiert.
+Public void onConfigurationChanged(Gui pGui)
+Bei dieser Methode handelt es sich um einen Event-Handler. Diese initialisiert die Gui und Listener erneut. Dazu werden die beschriebenen Methoden initGui und initListener aufgerufen.
 
 \subsection{Dokumentation der Navigation zwischen Activities (Yannick Rüttgers)}
 %%%%%%%%%%%
