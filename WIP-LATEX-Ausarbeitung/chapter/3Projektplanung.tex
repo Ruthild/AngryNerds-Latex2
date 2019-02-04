@@ -76,38 +76,38 @@ Dies liegt vor allem daran, das in diesen Applikationen das Material Design sehr
 
 In Adobe Xd lassen sich nicht nur die Oberflächen Designen, sondern auch die User Experience abbilden. So lassen sich Flächen mit einander Verbinden, die nun durch einen Klick geöffnet werden können. Auf diese Art und Weise war es uns möglich Personen aus unserem Umkreis unsere App testen zu lassen. Das Feedback war ausschließlich Positiv. Da wir Elemente aus oft genutzten Apps übernommen haben, stellte die Bedienung unserer App für alle Tester kein Problem dar. Außerdem kam das Feedback, das unsere Oberfläche zur ersten Nutzung einlädt und nicht durch Überladung von Informationen abschreckt.
 \begin{figure}[H]
-	\subsection*{Übersicht}
-	\centering
-	\includegraphics[width=8cm]{img/OverviewActivity.pdf}
-	\caption{Mockups - Übersicht über alle TENs}
+\caption{Übersicht}
+\centering
+\includegraphics[width=8cm]{img/OverviewActivity.pdf}
+\source{Mockups - Übersicht über alle TENs} % Quelle
 	\label{img:OverviewActivity}
 \end{figure}
 
 \begin{figure}[H]
-	\subsection*{Event Activity - Unsere Events}
-	\centering
+\caption{Event Activity - Unsere Events}
+\centering
 	\includegraphics[width=7.25cm]{img/EventActivity.pdf}
 	\includegraphics[width=7.25cm]{img/EventActivityNew.pdf}
-	\caption{Mockups - Übersicht über ein vorhandenes und ein neues Event}
+\source{Mockups - Übersicht über ein vorhandenes und ein neues Event}
 	\label{img:EventActivity}
 \end{figure}
 
 \begin{figure}[H]
-	\subsection*{Note Activity - Unsere Notizen}
+	\caption{Note Activity - Unsere Notizen}
 	\centering
 	\includegraphics[width=7.25cm]{img/NoteActivity.pdf}
 	\includegraphics[width=7.25cm]{img/NoteActivityNew.pdf}
 	\includegraphics[width=7.25cm]{img/NoteActivityImage.pdf}
-	\caption{Mockups - Übersicht über ein vorhandene, eine leere und eine Bild-Notiz}
+	\source{Mockups - Übersicht über ein vorhandene, eine leere und eine Bild-Notiz}
 	\label{img:NoteActivity}
 \end{figure}
 
 \begin{figure}[H]
-	\subsection*{Todo Activity - Unsere ToDos}
+	\caption{Todo Activity - Unsere ToDos}
 	\centering
 	\includegraphics[width=7.25cm]{img/ToDoActivity.pdf}
 	\includegraphics[width=7.25cm]{img/ToDoActivityNew.pdf}
-	\caption{Mockups - Übersicht über vorhandene und neue Todos}
+	\source{Mockups - Übersicht über vorhandene und neue Todos}
 	\label{img:ToDoActivity}
 \end{figure}
 
@@ -168,7 +168,15 @@ Hier den Text einfach hin kopieren.
 %Yannick
 %%%%%%%%%
 
-Hier den Text einfach hin kopieren.
+Als Einstiegspunkt für den Nutzer soll eine Übersichtsactivity dienen. Von dieser aus sollen alle weiteren Activities aufgerufen werden können.
+
+Die einzelnen Activities sollen auf zwei Arten aufgerufen werden können. Entweder soll ein neues TEN erstellt werden, oder ein bereits vorhandenes angezeigt werden.
+
+Wenn ein neues TEN erstellt werden soll, soll die zugehörige Activity ohne weitere Parameter aufgerufen werden. Dadurch soll in dieser dann ein leeres TEN erstellt werden, welches dann bearbeitet werden kann.
+
+Soll stattdessen ein bereits bestehendes TEN angezeigt werden, wird der Activity die ID des jeweiligen TEN übergeben, welches dann im weiteren Verlauf von der Activity geladen und angezeigt wird.
+
+Wird aus den jeweiligen TEN-Activities zurücknavigiert, soll wieder die Übersichtsactivity angezeigt werden, in der die getätigten Änderungen angezeigt werden sollten.
 
 \subsection{Geplante Aufgabenverteilung im Team (Fabia Schmid)}
 %%%%%%%%%

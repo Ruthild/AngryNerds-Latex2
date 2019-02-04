@@ -14,6 +14,24 @@
 %%%%%%%%%%%
 
 \subsubsection{Main Activity}
+%Yannick
+\textbf{Aufgabe und Funktionen (Yannick Rüttgers)}\\
+Die in diesem Kapitel erläuterte Activity Overview dient dem Nutzer als Einstiegspunkt in die Applikation. Von hier aus werden alle weiteren Activities aufgerufen.
+
+Wenn der Nutzer die Applikation startet, sieht er als erstes diese Activity. Diese enthält alle bereits erstellten TENs in Kachelform mit einigen Infos. Die Kacheln sind in einer oder mehreren Spalten, je nach Größe des Displays angeordnet. Diese Kacheln sind scrollbar.
+
+Am unteren Bildschirmrand hat der Nutzer die Möglichkeit, sich nur die Kacheln, die zu einer der verschiedenen TEN-Arten gehören, anzeigen zu lassen. Dazu gibt es vier Buttons, die die jeweiligen TEN-Arten und eine generelle Übersicht über alle TENs darstellen.
+
+Am oberen Bildschirmrand kann der Nutzer die einzelnen TEN-Arten neu erstellen, oder eine Suche öffnen. Auch hier sind wieder Buttons zu finden.
+
+Der Nutzer hat die Möglichkeit, über ein langes gedrückt halten einer Kachel, in den Löschmodus zu gelangen. Hier können dann multiple Kacheln markiert werden und über ein neues Menü am oberen Bildschirmrand gelöscht werden.
+
+Weitere Infos und Screenshots zum Layout der Applikation sind im nachfolgenden Kapitel zu finden.
+
+Da die Activity als Einstiegspunkt in die Applikation genutzt wird, müssen von hier aus alle weiteren Activities zu erreichen sein. Die weiteren Activities umfassen die Anzeige und Neuerstellung von TENs. Die Erreichung dieser geschieht über die vorhin genannten Buttons und über die Kacheln.
+
+Die Activity selbst besteht aus einer Oberfläche mit den genannten Buttons. Die einzelnen TENs werden mithilfe von Fragments eingefügt. Für jede TEN-Art gibt es ein eigenes Fragment. Diese Fragments bestehen aus mehreren Klassen. Der genaue Aufbau dieser wird später erläutert. Um mit den Fragments arbeiten zu können, verfügt die Activity über verschiedene Helferklassen, um diesen Prozess zu strukturieren.
+
 
 %Fabia
 \textbf{Layouts (Fabia Schmid)}\\
@@ -96,12 +114,258 @@ Auch bei der Suchfunktion wird die obere Leiste angepasst. Dabei kann nun ein be
 \end{minipage}
 \end{figure}
 
+%Yannick
+\textbf{Use Case (Yannick Rüttgers)}\\
+Wie bereits geschrieben, dient diese Activity dem Nutzer als Einstiegspunkt in die Applikation. Hier kann er einige Aktionen durchführen.
+ 
+Zum einen kann er die Oberfläche der Übersicht selbst beeinflussen. Hierzu gibt es am unteren Bildschirmrand einige Buttons, mit denen er nach den verschiedene TEN-Arten filtern kann. Zusätzlich kann er über eine Suchfunktion alle TENs durchsuchen.
+
+Aus dieser Activity heraus können vom User auch neue TENs erstellt werden. Hierzu wird er allerdings an weitere Activities weitergeleitet.
+
+Zuletzt ist es dem Nutzer auch möglich, mehrere TENs auf einmal zu löschen. Dies geschieht, wie bereits gesagt, über ein markieren einzelner Kacheln.
+
+Im Folgenden ist das Usecase-Diagramm für die Übersicht zu sehen.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Usecase Diagramm der Overview} % Überschrift
+\includegraphics[width=1\textwidth]{img/Usecase_Overview}\\ % Pfad
+\source{Erstellt von Yannick Rüttgers} % Quelle
+\end{minipage}
+\end{figure}
+
+%Yannick
+\textbf{Datenstruktur und Typen (Yannick Rüttgers)}\\
+Die Daten für diese Activity werden hauptsächlich über die Klasse OverviewData verwaltet.
+
+Wenn die Activity initiiert wird, werden zuerst alle nötigen Instanzen erstellt. Hierzu gehört unter anderen eine Instanz der Klasse OverviewData. Diese Klasse ruft in ihrem Konstruktor mithilfe einer statischen Servicemethode alle TENs als Objekte ab. Diese Objekte werden in einer ArrayList gespeichert. Bei Bedarf werden diese Daten neu geladen.
+
+Um beim Suchen oder Filtern nicht alle Daten neu laden zu müssen, gibt es eine weitere ArrayList, die immer den gefilterten Datenstand enthält. Aus diesen Daten werden die Fragments generiert.
+
+Um die Filterung von Fragments beim Wechsel der Orientierung der Applikation beibehalten zu können, wird dies ebenfalls im Dataobjekt hinterlegt.
+
+Wenn Fragments generiert werden, bekommen diese die Daten des zugehörigen TEN-Objekts als Bundle mitgegeben. Während der Initialisierung jedes Fragments, werden die Daten im jeweiligen Data Objekt abgelegt. Die Parameter dieser Dataobjekte bilden zum größten Teil die der TEN-Objekte ab. Im Konstruktor der Dataklasse werden den einzelnen Parametern dann die Werte aus dem Bundle zugewiesen. Da in der Activity die TENs nicht bearbeitet werden können, gibt es im Nachhinein keine Möglichkeit den Fragments neue Daten zuzuweisen.
+
+Zusätzlich hält jedes Fragment zwei Informationen über sich. Dies ist zum einen der Löschzustand, über den das Fragment steuern kann, ob es zum Löschen markiert werden kann oder nicht. Zum anderen hält das Fragment die Information, ob es markiert ist, um dies im Falle einer Löschung angeben zu können. Diese beiden Informationen können aus dem Fragment abgerufen werden.
+
+%Yannick
+\textbf{Dokumentation des Quelltextes der Activity (Yannick Rüttgers)}\\
+Allgemein
+Die OverviewActivity besteht aus 35 verschiedenen Klassen. Diese Klassen sind in verschiedene Pakete unterteilt.
+Zum einen gibt es die Klassen, die unmittelbar zur OverviewActivity an sich gehören. Zu diesen zugehörig sind die Klassen, die für den Header der Activity genutzt werden.
+Alle weiteren Klassen werden für die Fragments, die die TENs darstellen, genutzt. Hierzu gibt es vier Superklassen und zwei Listener, die in allen Fragments genutzt werden. Jedes der vier verschiedenen Fragments hat nochmal vier weitere Klassen, die von den Superklassen erben.
+In Folgender Grafik soll dies verdeutlicht werden.
+ 
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Klassendiagramm} % Überschrift
+\includegraphics[width=1\textwidth]{img/Klassendiagramm_lite}\\ % Pfad
+\source{Erstellt von Yannick Rüttgers} % Quelle
+\end{minipage}
+\end{figure}
+
+Die Funktion der Klassen und wichtige Methoden werden im Folgenden erläutert.
+Activityklassen
+Zu den Klassen, die unmittelbar zur Activity gehören, zählen neun verschiedene Klassen.
+Klasse: class OverviewInit extends AppCompatActivity
+Diese Klasse ist für die Initialisierung der verschiedenen Komponenten der Activity zuständig. Da sie von der Superklasse AppCompatActivity erbt, implementiert sie zusätzlich die Methoden des Activitylifecycles.
+Wichtige Methoden:
+-protected void OnCreate(Bundle savedInstanceState)
+Diese Methode ist eine der Lifecyclemethoden von Activities, sie wird beim entstehen der Activity aufgerufen. Hier werden die verschiedenen Komponenten der Activity mit den zugehörigen Methoden initiiert.
+-public void onConfigurationChanged(Configuration newConfig)
+Diese Methode wird aufgerufen, wenn sich etwas an der Konfiguration der Applikation ändert, wie in diesem Fall die Ausrichtung des Gerätes. Hier werden der Controller und die Gui neu initiiert. Dazu werden die Methoden initGui() und initController() aufgerufen.
+Klasse: class OverviewData
+Diese Klasse ist für die Datenhaltung innerhalb der Activity verantwortlich. Hier befinden sich auch die zum Sortieren und zum Suchen verwendeten Methoden. Initial werden die Daten einmal geladen, bei Bedarf werden diese über eine Methode neugeladen. Die Daten werden dabei zweimal gehalten: Eine Liste enthält alle TENs, die andere Liste enthält die TENs, die angezeigt werden sollen.
+Wichtige Methoden:
+-public void refresh()
+Läd die Daten neu.
+-public ArrayList<TEN> filterData()
+Filtert die Daten nach dem aktuell ausgewählten TEN-Typen.
+-public void search(String pSearchString)
+Fügt nur die Suchergebnisse in die Liste der TENs ein, die angezeigt werden sollen.
+Klasse: class OverviewGui
+Diese Klasse verwaltet die Benutzeroberfläche der Activity.
+Wichtige Methoden:
+-public void markButton(Class pClass)
+Markiert einen der Buttons am unteren Bildschirmrand, je nachdem welcher TEN-Typ ausgewählt ist.
+-public void showFooter() / hideFooter()
+Zeigt oder versteckt die Buttons am unteren Bildschirmrand.
+Klasse: class OverviewController
+Diese Klasse verwaltet die einzelnen Helferklassen und stellt die Logik der Activity da. 
+Wichtige Methoden:
+In der Klasse wird die Suche aktiviert, sowie das Löschen von TENs verwaltet. Hierzu werden die Helferklassen OverviewDeleteHandler, OverviewNewClickHandler, OverviewFragmentFactory und OverviewFragmentInserter genutzt. 
+Klasse: class OverviewFragmentFactory
+Diese Klasse erstellt verschiedene Arten von Fragments, die dann später genutzt werden können.
+Wichtiger Methoden:
+-public Fragment createHeader(Create/Delete/Search)Fragment()
+Diese Methode liefert das gewählte Headerfragment zurück.
+-public ArrayList<Fragment> createTENFragments(ArrayList<TEN> pTENs)
+Erstellt eine Liste von Fragments, die aus den TENs erstellt werden. Je nach Art des TENs wird ein unterschiedliches Fragment erstellt.
+Klasse: class OverviewFragmentInserter
+Diese Klasse fügt Fragments in die Benutzeroberfläche ein. Hierzu wird der FragmentManager der Activity genutzt.
+Wichtige Methoden:
+-public void insertFragment(int pContainerID, Fragment pFragment, String pTag)
+Fügt ein Fragment in einen gewählten Container ein. Dem Fragment wird ein Tag zugewiesen.
+-public void replaceFragment(int pContainerID, Fragment pFragment, String pTag)
+Ersetzt ein Fragment in einem gewählten Container durch ein anderes. Dem Fragment wird ein Tag zugewiesen.
+-public void insertFragments(int[] pContainerIDs, ArrayList<Fragment pFragments)
+Fügt eine beliebige Anzahl Fragments in eine beliebige Anzahl Container an. Dabei werden die Container zyklisch durchlaufen.
+Klasse: class OverviewClickListener
+Diese Klasse verwaltet die Klickevents der OverviewActivity. Je nach geklicktem Button wird eine andere Methode des Controllers aufgerufen.
+Wichtige Methoden:
+-public void onClick(View view)
+Ruft je nach angeklickter View die show()-Methode des Controllers mit einem bestimmten Parameter auf.
+Klasse: class OverviewDeleteHandler
+Diese Klasse verwaltet die Methoden, die zum Löschen beziehungsweise nicht Löschen von TENs nötig sind.
+Wichtige Methoden:
+-public void longClick()
+Aktiviert den Löschvorgang für alle Fragments.
+-public void back()
+Deaktiviert den Löschvorgang für alle Fragments.
+-public void delete()
+Sammelt alle markierten Fragments und löscht die dazugehörigen TENs. Deaktiviert den Löschvorgang für alle anderen Fragments.
+Klasse: class OverviewNewClickHandler
+Verwaltet das Erstellen von neuen TENs.
+Wichtige Methoden:
+-public void newTEN(Class pClass)
+Startet eine neue Activity, je nachdem welche TEN-Art angegeben wurde.
+Header
+Die Header der Activity sind wechselnde Fragments, die verschiedene Aufgaben haben. Sie werden am oberen Bildschirmrand ausgetauscht. Ein Fragment dient dem Neuerstellen von TENs, eines das Löschen und eines das Suchen.
+Die Fragments teilen sich einen ClickListener.
+Klasse: class OverviewHeaderCreateFragment
+Dieses Fragment dient dazu, das Erstellen von neuen TENs anzustoßen. Hierzu enthält es drei Buttons. Zusätzlich gibt es einen Button zum Starten der Suche.
+Klasse: class OverviewHeaderDeleteFragment
+Dieses Fragment dient dem Löschvorgang. Es gibt einen Button zum Abbrechen des Prozesses und einen Button, um die Löschung durchzuführen.
+Klasse: class OverviewHeaderSearchFragment
+Dieses Fragment dient dem Suchvorgang. Es gibt ein Textfeld, in das ein Suchbegriff eingegeben werden kann. Außerdem gibt es einen Button zum Abbrechen des Prozesses und einen, um die Suche durchzuführen.
+Klasse: class OverviewHeaderClickListener
+Diese Klasse behandelt die Clickevents der Headerfragments. Je nachdem, welcher Button in einem der Fragments geklickt wurde, wird eine andere Methode im Controller aufgerufen.
+Wichtige Methoden:
+-public void onClick(View view)
+Diese Methode wird ausgeführt, sobald einer der Buttons eines Headers geklickt wird. Je nachdem, welcher Button dies war, wird eine Methode im Controller aufgerufen.
+Superklassen
+Die folgenden Klassen dienen als Superklassen für die Fragments. Dies wurde so entwickelt, da alle vier Fragments sich ähnliche Funktionen teilen. Große Teile der Implementierung nutzen außerdem die Polymorphie.
+Klasse: class OverviewFragmentInit
+Diese Klasse dient als Superklasse für die Initialklassen der einzelnen Fragments. Hier werden die anderen drei Komponenten der Fragments initialisiert. Ausserdem werden zum Start des Fragments mehrere andere Methoden aufgerufen.
+Wichtige Methoden:
+-public void onCreateView(Bundle pArguments, View pView)
+Diese Methode startet, wenn das Fragment erstellt wird, verschiedene Methoden des Controllers.
+Klasse: class OverviewFragmentData
+Diese Klasse dient als Superklasse für die Dataklassen der einzelnen Fragments. Sie bildet die Klasse TEN nach.
+Wichtige Methoden:
+-public void addData(Bundle pData)
+Diese Methode pflegt die Daten aus einem Bundle in das Objekt ein.
+Klasse: class OverviewFragmentGui
+Diese Klasse dient als Superklasse für die Guiklassen der einzelnen Fragments. Sie kümmert sich um den Markierungsprozess der Fragments für den Löschvorgang.
+Wichtige Methoden:
+-public void applyMarked(boolean pMarked)
+Diese Methode setzt den Zustand des Checkboxicons auf den des übergebenen Zustandes.
+Klasse: class OverviewFragmentController
+Diese Klasse dient als Superklasse für die Controllerklassen der einzelnen Fragments. Hauptsächlich wird sich auch hier um den Löschprozess gekümmert, da dieser für alle Fragments gleich ist.
+Wichtige Methoden:
+-public void longClicked()
+Diese Methode startet den Löschprozess. Dazu wird der Controller der Activity, die das Fragment verwaltet aufgerufen, und ihm mitgeteilt, dass der Löschprozess gestartet werden soll.
+Listener
+Klasse: class OverviewFragmentClickListener
+Diese Klasse ist dafür zuständig, dass, wenn ein Fragment angeklickt wird, im Controller dieses Fragments eine Methode ausgeführt wird. So wird eines der Fragments geöffnet.
+Klasse: class OverviewFragmentLongclickListenerFragment
+Diese Klasse ist dafür zuständig, dass, wenn ein Fragment lange angeklickt wird, die entsprechende Methode im Controller des Fragments aufgerufen wird. So gelangt der Nutzer in den Löschvorgang.
+Fragments
+Die folgenden Kapitel behandeln die vier genutzten Fragments. Alle Fragments erben von den vier zuvor genannten Superklassen, und teilen sich so eine Struktur. Zudem wird, um den Quellcode übersichtlich zu halten, viel Wert auf die Nutzung von Polymorphie gelegt.
+TodoFragment
+Die folgenden Klassen implementieren das Fragment, welches die Todos abbildet.
+Klasse: class OverviewTodoInit
+Diese Klasse initiiert alle nötigen Komponenten für das Todo-Fragment.
+Klasse: class OverviewTodoData
+Diese Klasse stellt die Datenhaltung für das Todo-Fragment dar. Sie bildet die Klasse Todo nach.
+Wichtige Methoden:
+-public void addData(Bundle pData)
+Diese Methode pflegt die Daten aus einem Bundle in das Objekt ein.
+Klasse: class OverviewTodoGui
+Diese Klasse verwaltet die GUI für das Todo-Fragment. Hier geschieht auch die Generierung der Checkboxen aus den Todo-Tasks.
+Wichtige Methoden:
+-public void addView(View pView)
+Diese Methode fügt die View des Fragments dem Objekt hinzu. Außerdem werden den Attributen Views zugewiesen.
+-public void addCheckbox(boolean pStatus, String pDescription)
+Fügt dem Fragment eine Checkbox hinzu, die aus einem Kästchen und einer Beschreibung besteht.
+Klasse: class OverviewTodoController
+Diese Klasse stellt die Logik des Todofragments dar. Hier werden den Feldern der Benutzeroberfläche Werte zugewiesen. Zusätzlich werden aus den Tasks des Todos Checkboxen generiert.
+-public void applyData()
+Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
+-public void generateCheckboxes()
+Diese Methode generiert aus der Taskliste des Todos mithilfe der addCheckbox-Methode des Guiobjekts Checkboxen.
+EventFragment
+Die folgenden Klassen implementieren das Fragment, welches die Events abbildet.
+Klasse: class OverviewEventInit
+Diese Klasse initiiert alle nötigen Komponenten für das Event-Fragment.
+Klasse: class OverviewEventData
+Diese Klasse stellt die Datenhaltung für das Event-Fragment dar. Sie bildet die Klasse Event nach. Hier wird das Kalenderobjekt in seine Einzelteile zerlegt.
+Wichtige Methoden:
+-public void addData(Bundle pData)
+Diese Methode pflegt die Daten aus einem Bundle in das Objekt ein.
+Klasse: class OverviewEventGui
+Diese Klasse verwaltet die GUI für das Event-Fragment.
+Wichtige Methoden:
+-public void addView(View pView)
+Diese Methode fügt die View des Fragments dem Objekt hinzu. Außerdem werden den Attributen Views zugewiesen.
+Klasse: class OverviewEventController
+Diese Klasse stellt die Logik des Eventfragments dar. Hier werden den Feldern der Benutzeroberfläche Werte zugewiesen.
+-public void applyData()
+Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
+NoteFragment
+Die folgenden Klassen implementieren das Fragment, welches die Notes abbildet, die keine Bilder haben.
+Klasse: class OverviewNoteInit
+Diese Klasse initiiert alle nötigen Komponenten für das Note-Fragment.
+Klasse: class OverviewNoteData
+Diese Klasse stellt die Datenhaltung für das Note-Fragment dar. Sie bildet die Klasse Note nach.
+Wichtige Methoden:
+-public void addData(Bundle pData)
+Diese Methode pflegt die Daten aus einem Bundle in das Objekt ein.
+Klasse: class OverviewNoteGui
+Diese Klasse verwaltet die GUI für das Note-Fragment.
+Wichtige Methoden:
+-public void addView(View pView)
+Diese Methode fügt die View des Fragments dem Objekt hinzu. Außerdem werden den Attributen Views zugewiesen.
+Klasse: class OverviewNoteController
+Diese Klasse stellt die Logik des Note-Fragments dar. Hier werden den Feldern der Benutzeroberfläche Werte zugewiesen.
+-public void applyData()
+Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
+ImageFragment
+Die folgenden Klassen implementieren das Fragment, welches die Notes abbildet, in denen Bilder gespeichert wurden.
+Klasse: class OverviewImageInit
+Diese Klasse initiiert alle nötigen Komponenten für das Image-Fragment.
+Klasse: class OverviewImageData
+Diese Klasse stellt die Datenhaltung für das Image-Fragment dar. Hier wird das Previewimage für die Notiz geladen.
+Wichtige Methoden:
+-public void addData(Bundle pData)
+Diese Methode pflegt die Daten aus einem Bundle in das Objekt ein und läd das Previewimage.
+Klasse: class OverviewImageGui
+Diese Klasse verwaltet die GUI für das Image-Fragment.
+Wichtige Methoden:
+-public void addView(View pView)
+Diese Methode fügt die View des Fragments dem Objekt hinzu. Außerdem werden den Attributen Views zugewiesen.
+Klasse: class OverviewImageController
+Diese Klasse stellt die Logik des Image-Fragments dar. Hier werden den Feldern der Benutzeroberfläche Werte zugewiesen.
+-public void applyData()
+Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
+
+
 \subsection{Dokumentation der Navigation zwischen Activities (Yannick Rüttgers)}
 %%%%%%%%%%%
 %Yannick
 %%%%%%%%%%%
 
-Hier den Text einfach hin kopieren.
+Der Einstiegspunkt für den Nutzer ist die OverviewActivity. Von dieser aus können alle weiteren Activities aufgerufen werden, wie in der Planungsphase geplant.
+
+Die Activities werden auf zwei Arten aufgerufen. Entweder geschieht dies, um ein neues TEN zu erstellen, oder um ein bereits vorhandenes aufzurufen.
+
+Soll ein neues TEN erstellt werden, geschieht dies über einen der drei Buttons am oberen Bildschirmrand. Je nachdem welche TEN-Art angeklickt wurde, wird eine dazugehörige Activity erstellt und ohne Mitgabe weiterer Parameter aufgerufen.
+
+Wenn hingegen ein bereits bestehendes TEN angezeigt werden soll, wird wieder die dazugehörige Activity erstellt. Diesmal wird der Activity allerdings als Parameter die ID des TENs weitergeben. Das Laden dessen übernimmt dann die jeweilige Activity.
+
+Wenn aus den einzelnen TEN-Activities zurücknavigiert wird, gelangt der Nutzer zurück in die Übersichtsactivity. Die TENs innerhalb dieser werden neu geladen, um eventuelle Veränderungen anzeigen zu können.
 
 \subsection{Dokumentation der Activity-übergreifenden, persistenten Datenhaltung (Jan Beilfuß)}
 %%%%%%%%%%%
