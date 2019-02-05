@@ -240,16 +240,30 @@ Erstellung des Projekttagebuch mit Latex & 40 min & 30.10.2018 \\ \hline
 Zusammentragung der momentanen Projektstände und Abschätzung, ob die Meilensteine erreicht werden können & 30 min & 17.11.2018 \\ \hline
 Neuplanung eines Meilensteins und Abstimmung mit dem Team & 20 min & 26.11.2018 \\ \hline
 Teammeeting & 50 min & 04.12.2018 \\ \hline
-Koordination der anzufertigen Diagramme und Entwicklungsstand überprüfen& 10 min & 04.12.2018 \\ \hline
+Koordination der anzufertigen Diagramme und Entwicklungsstand überprüfen & 10 min & 04.12.2018 \\ \hline
 Entwicklung des Layouts für das „Image“ & 20 min & 12.12.2018 \\ \hline
-Entwicklung des Layouts für die Overview &  60 min & 02.01.2019 \\ \hline
-Aufteilung der Ausarbeitung & 20 min & 02.01.2019 \\ \hline
-Entwicklung des Layouts für das Bedienleisten-Fragment & 20 min & 04.01.2019 \\ \hline
-Meilenstein Umplanung & 10 min & 15.01.2019 \\ \hline
+Projekttagebuch in Latex führen & 30 min & 19.12.2018 \\ \hline
+Entwicklung der Layouts für die Overview & 130 min & 02.01.2019 \\ \hline
+Aufteilung der Ausarbeitung & 30 min & 02.01.2019 \\ \hline
+Anpassung der OverviewActivity-Layouts & 70 min & 03.01.2019 \\ \hline
+Implementierung der Funktion OverviewClickListener & 80 min & 03.01.2019 \\ \hline
+Implementierung der Funktion OverviewHeaderClickListener & 60 min & 03.01.2019 \\ \hline
+Entwicklung des Layouts für das Bedienleisten-Fragment & 70 min & 04.01.2019 \\ \hline
+Implementierung der Funktion OverviewFragmentClickListener & 100 min & 12.01.2019 \\ \hline
+Implementierung der Funktion OverviewFragmentLongClickListener & 70 min & 12.01.2019 \\ \hline
+Meilenstein Umplanung & 20 min & 15.01.2019 \\ \hline
+Layoutanpassung Note Image & 70 min & 18.01.2019 \\ \hline
 Erinnerung an die Erstellung der Kapitel der Ausarbeitung & 10 min & 23.01.2019 \\ \hline
-Dokumentation & 240 min & 03.02.2019 \\ \hline
+Layoutanpassungen OverviewActivity & 80 min & 26.01.2019 \\ \hline
+Erstellunng des GANTT-Diagramms & 60 min & 01.02.2019 \\ \hline
+Erstellung der Aufgaben-Tabellen in Latex & 50 min & 02.02.2019\\ \hline
+Anpassung des Event-Layouts & 60 min & 02.02.2019 \\ \hline
+Anpassung des ToDo-Layouts & 80 min & 02.02.2019 \\ \hline
+Anpassung der Buttons zum Filtern & 30 min & 03.02.2019 \\ \hline
+Dokumentation & 420 min & 03.02.2019 \\ \hline
+Projekttagebuch in Latex führen & 30 min & 03.02.2019 \\ \hline
 \end{longtable}
-Summe in Minuten: 1270
+Summe in Minuten: 2460
 
 \newpage
 \subsubsection{Projekttagebuch Florian Rath}
@@ -495,7 +509,14 @@ Weitere Probleme oder Verzögerungen traten nicht auf und das Projekt konnte erf
 \subsubsection{Probleme von Florian Rath}
 Im Zuge der Entwicklung tauchten einige Probleme auf, die unterschiedlichen Ursprüngen entstammten. Zum einen fiel auf, dass die Aufteilung der Entwicklung nach den Activities viel Kommunikation benötigte und einige Klassen redundant erstellt wurden. Die Aufteilung nach Elementen hätte hier sicherlich mehr Sinn gemacht. Dann wären zum Beispiel alle GUI-Klassen von einer Person entwickelt worden. Ein zusätzlicher Faktor für Problem war die Zeit, da die Entwicklung immer mal wieder unterbrochen wurde, kann man als Entwickler öfter aus dem Tritt.
 
-Die Entwicklung mit Android Studio war in manchen Phasen ebenfalls problembehaftet. Der Emulator ließ sich aus unergründlichen Ursachen nicht starten und musste neuinstalliert werden. Nach manchen Abgleichen mit GitHub wies der Code Fehler auf und konnte nicht mehr kompiliert werden, das Problem ließ sich nur mit einem kompletten Download des Projektes bewerkstelligen. 
+Die Entwicklung mit Android Studio war in manchen Phasen ebenfalls problembehaftet. Der Emulator ließ sich aus unergründlichen Ursachen nicht starten und musste neuinstalliert werden. Nach manchen Abgleichen mit GitHub wies der Code Fehler auf und konnte nicht mehr kompiliert werden, das Problem ließ sich nur mit einem kompletten Download des Projektes bewerkstelligen.
+
+\subsubsection{Probleme von Joscha Nassenstein}
+Zu Beginn der Entwicklung benötigte es sehr viel Zeit, durch das implementieren verschiedener Möglichkeiten, beispielsweise für die Stichwortliste, die beste Lösung zu finden. Da ich stets mein eigenes Android-Smartphone, welches zurzeit auf API 29 läuft, für das Testen verwendete, implementierte ich teilweise Lösungen, welche so auf dem Tablet der Hochschule (API 19) nicht in dem Maße funktionierten, wie es auf meinem Gerät der Fall war.
+
+Vor allem im Umgang mit Textfeldern und beim Überschreiben einiger onTouch-Funktionen kam es dabei zu anderen Ergebnissen, als dies vorher der Fall war. Da in dem AndroidStudio-Projekt API-Level 19 bereits voreingestellt war, wurde direkt ein Hinweis angezeigt, falls man eine Funktion nutzen wollte, welche auf dem Level nicht unterstützt wird. Ein weiteres Beispiel ist die Android-eigene Kamerafunktion, welche vor der Android Version Marshmallow (API 23), in welcher spezielle Laufzeit-Berechtigungen eingeführt wurden, eine Berechtigung zum Schreiben und Lesen der Datei mitgegeben werden muss. Auch dies fiel erst auf, als die App auf dem Tablet getestet wurde. Insgesamt mussten nach den Tests einige kleinere Anpassungen vorgenommen werden.
+
+Eine weitere Herausforderung war die Abstimmung der Programmierungsaufgaben, da diese Activity unter zwei Programmierern aufgeteilt wurde. Dies erforderte, falls in der Zwischenzeit Änderungen dazugekommen waren, ein bisschen Einarbeitungszeit, bevor man weiterprogrammieren konnte. Insgesamt ist das Ergebnis und die Performance jedoch sehr zufriedenstellend und durch die Aufteilung konnten sehr viele Aspekte der Activity optimiert werden. Durch Benennungskonventionen und eine neue Paketstruktur sowie die intensive Abstim-mung konnte hier ein gutes Ergebnis entstehen.
 
 \subsubsection{Probleme von Sertan Cetin}
 Während der Entwicklung sind bei mir diverse Probleme aufgetreten. Ich habe in meinem privaten Rechner einen AMD Ryzen Prozessor, genauso wie in meinem Laptop. Leider war die Konfiguration mit dem Android-Emulator etwas komplizierter, da Ryzen die Hardwarebeschleunigung von Intel nicht unterstützt. Ich musste lange Recherchearbeit durchführen, bis ich einen Emulator zum laufen bekam. Allerdings stürzte dieser während der Entwicklung aus dem Nichts ab, sodass er bis heute immer noch nicht funktioniert. Ich hatte das Projekt von meinem lokalen Rechner komplett gelöscht und neu heruntergeladen. Nichts brachte die Lösung.
