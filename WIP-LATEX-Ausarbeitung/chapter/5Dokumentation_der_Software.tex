@@ -58,8 +58,10 @@ Die Activity selbst besteht aus einer Oberfläche mit den genannten Buttons. Die
 
 
 %Fabia
-\paragraph{Layouts (Fabia Schmid)}
-Das Layout der Overview Activity orientiert sich an dem vorher erstellten Mockup und besteht aus drei Grundkomponenten. Es gibt am oberen Bildschirmrand eine Leiste zum Erstellen von Notes, Events und ToDos, sowie ein Button zum Suchen. Unter dieser leiste befindet sich ein Container, welcher die verschiedenen Fragments der vorhandenen Notes, Events und ToDos beinhaltet. Am unteren Bildschirmrand befindet sich noch eine Leiste mit vier Buttons zum Filtern der  Fragments.
+\paragraph{Layouts, Screenshots (Fabia Schmid)}
+Das Layout der Overview Activity orientiert sich an dem vorher erstellten Mockup und besteht aus drei Grundkomponenten. Es gibt am oberen Bildschirmrand eine Leiste zum Erstellen von Notes, Events und ToDos, sowie ein Button zum Suchen. Unter dieser leiste befindet sich ein Container, welcher die verschiedenen Fragments der vorhandenen Notes, Events und ToDos beinhaltet. Am unteren Bildschirmrand befindet sich noch eine Leiste mit vier Buttons zum Filtern der  Fragments (vgl. Abbildung Overview Activity).
+
+Die obere Leiste ist ein RelativeLayout, welches eine TextView und drei Button beinhaltet. Diese ist ein gesondertes Fragment, damit der Wechsel zu einer anderen Leiste, z.B. bei dem Löschvorgang, vereinfacht wird. Darunter ist eine ScrollView, die es ermöglicht, dass durch die Fragments gescrollt werden kann. In der ScrollView befinden sich LinearLayouts, die mit den Fragments befüllt werden können. Die untere Leiste besteht abschließend aus einem LinearLayout, welches horizontal ausgerichtet ist und vier Buttons beinhaltet, mit denen gefiltert werden kann.
 
 \begin{figure}[H]
 \centering
@@ -70,7 +72,7 @@ Das Layout der Overview Activity orientiert sich an dem vorher erstellten Mockup
 \end{minipage}
 \end{figure}
 
-Die Activity Overview zeigt normal 2 Spalten mit Fragments, wenn jedoch das Tablet gedreht wird zeigt die Landscape-Ansicht drei Spalten mit Fragments, um den Bildschirm optimal zu nutzen.
+Die Activity Overview zeigt normal 2 Spalten mit Fragments, wenn jedoch das Tablet gedreht wird zeigt die Landscape-Ansicht drei Spalten mit Fragments, um den Bildschirm optimal zu nutzen (vgl. Abbildung Landscape-Ansicht Overview Activity).
 
 \begin{figure}[H]
 \centering
@@ -83,7 +85,7 @@ Die Activity Overview zeigt normal 2 Spalten mit Fragments, wenn jedoch das Tabl
 
 Die drei verschiedenen Arten von Fragments sind Notes, ToDo und Event.
 
-Bei einer Note wird die Überschrift und ein Textauszug angezeigt. Wenn jedoch ein Bild in der Notiz vorhanden ist wird dieses mit der Überschrift in der Overview Activity angezeigt.
+Bei einer Note wird die Überschrift und ein Textauszug angezeigt. Wenn jedoch ein Bild in der Notiz vorhanden ist wird dieses mit der Überschrift in der Overview Activity angezeigt (vgl. Abbildung Note Fragments).
 
 \begin{figure}[H]
 \centering
@@ -94,7 +96,7 @@ Bei einer Note wird die Überschrift und ein Textauszug angezeigt. Wenn jedoch e
 \end{minipage}
 \end{figure}
 
-Die Fragments für die ToDos, zeugen auch den Titel an und die einzelnen Aufgaben mit Kästchen, die mit einem Hacken gefüllt sind, wenn sie erledigt sind. Zusätzlich wird Angezeigt, wie viele Aufgaben schon erfüllt wurden.
+Die Fragments für die ToDos, zeigen auch den Titel an und die einzelnen Aufgaben mit Kästchen, die mit einem Hacken gefüllt sind, wenn sie erledigt sind. Zusätzlich wird Angezeigt, wie viele Aufgaben schon erfüllt wurden (vgl. Abbildung ToDo Fragments).
 
 \begin{figure}[H]
 \centering
@@ -105,7 +107,7 @@ Die Fragments für die ToDos, zeugen auch den Titel an und die einzelnen Aufgabe
 \end{minipage}
 \end{figure}
 
-Die Event Fragmentes bestehen aus der Überschrift, dem Datum und der Uhrzeit, sowie aus einem Ort, der angegeben werden kann.
+Die Event Fragmentes bestehen aus der Überschrift, dem Datum und der Uhrzeit, sowie aus einem Ort, der angegeben werden kann (vgl. Abbildung Event Fragments).
 
 \begin{figure}[H]
 \centering
@@ -116,7 +118,7 @@ Die Event Fragmentes bestehen aus der Überschrift, dem Datum und der Uhrzeit, s
 \end{minipage}
 \end{figure}
 
-In der Overview Activity kann zusätzlich gesucht und gelöscht werden. Wenn man einen langen Click auf ein Fragment macht, wird die obere Leiste verändert und man bekommt einen Button zum Löschen. Zusätzlich kann in dieser Ansicht nun auf die verschiedenen Fragments geklickt werden, um diese zu markieren und mehrere gleichzeitig zu löschen. Diese Ansicht kann durch den Zurück-Pfeil verlassen werden.
+In der Overview Activity kann zusätzlich gesucht und gelöscht werden. Wenn man einen langen Click auf ein Fragment macht, wird die obere Leiste verändert und man bekommt einen Button zum Löschen. Dies ist dadurch möglich, dass die obere Leiste ein Fragment ist. Zusätzlich kann in dieser Ansicht nun auf die verschiedenen Fragments geklickt werden, um diese zu markieren und mehrere gleichzeitig zu löschen. Markierungen werden mittels einem Hacken gekennzeichnet. Diese Ansicht kann durch den Zurück-Pfeil verlassen werden (vgl. Abbildung Overview Activity Löschen).
 
 \begin{figure}[H]
 \centering
@@ -127,7 +129,7 @@ In der Overview Activity kann zusätzlich gesucht und gelöscht werden. Wenn man
 \end{minipage}
 \end{figure}
 
-Auch bei der Suchfunktion wird die obere Leiste angepasst. Dabei kann nun ein beliebiges Wort eingegeben werden, welches dann in den verschiedenen Einträgen gesucht wird. Die gefundenen Einträge werden daraufhin angezeigt. Um die Suche zu beenden kann der Zurück-Pfeil verwendet werden.
+Auch bei der Suchfunktion wird die obere Leiste angepasst. Auch hier möglich ducrh das Fragment. Dabei kann nun ein beliebiges Wort eingegeben werden, welches in den verschiedenen Einträgen gesucht wird. Die gefundenen Einträge werden daraufhin angezeigt. Um die Suche zu beenden kann der Zurück-Pfeil verwendet werden (vgl. Abbildung Overview Activity Suchen).
 
 \begin{figure}[H]
 \centering
@@ -949,7 +951,19 @@ Wenn aus den einzelnen TEN-Activities zurücknavigiert wird, gelangt der Nutzer 
 %Jan
 %%%%%%%%%%%
 
-Hier den Text einfach hin kopieren.
+\subsubsection{Objekte}
+Im Bereich der persistenten Datenspeicherung gab es die Herausforderung, dass es eine brei-te Auswahl an Speichermöglichkeiten gibt. Es musste zu Beginn evaluiert werden, welche Technologie für das Projekt am geeignetsten war. Zur Auswahl standen Bundles und Daten-banken, welche sich weiter in SQL-Datenbanken und NoSQL-Datenbanken unterteilen las-sen. Darüber hinaus war zu Projektbeginn nicht bekannt, welche Datenbankimplementierun-gen für den Einsatz auf mobilen Geräten geeignet sind. Nach einiger Recherche wurde die Implementierung im Bundle als zu aufwendig und nicht flexibel genug erachtet. In der Folge wurde sich für den Einsatz einer Datenbank entschieden.
+
+Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanken bekannt. Diese unterscheiden sich von NoSQL-Datenbanken, indem man eine klare Daten-struktur, in der Regel in Tabellenform vorgibt. NoSQL-Datenbanken sind beispielsweise do-kumenten- oder graphenbasiert. Dokumente sind flexibel und diesen können einfache Felder in Form von Key-Value-Paaren hinzugefügt werden. Im mobilen Umfeld hat man häufig Än-derungen am Datenmodell, sodass einem in diesem Bereich eine NoSQL-Datenbank entge-gen kommt. Weiterhin hat man bei SQL-Datenbanken einen Aufwand zur Erzeugung und Definition von Tabellen sowie bei deren Änderung. Und da man aus den Anforderungen an die App ableiten konnte, dass keine komplexen Tabellenrechnungen gefordert waren, wurde sich für eine dokumentenbasierte NoSQL-Datenbank entschieden. 
+
+Bei der Wahl der spezifischen Datenbanktechnologie entschied man sich am Ende für Couchbase Lite, da diese gut dokumentiert ist, einem eine lokale Datenbank und Tools wie ein Gateway zur Hand gibt, wenn man es langfristig in Erwägung zieht Todos, Events und Notizen über einen Server zu synchronisieren.
+
+Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfachen, wurde das Serialisierungs- und Deserialisierungsframework Jackson verwendet. Dieses wan-delt Java Objekte in JSON-Strings um, welche in jeweils einem Dokument abgelegt wurden. Weiterhin bietet es eine Funktionalität, diese wieder zurückzuwandeln. Einige Attribute, darun-ter die ID des TEN-Objektes, die Hauptfarbe, die Kontrastfarbe und das Erzeugungsdatum wurden hiervon ausgenommen. Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möch-te.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Ob-jekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
+
+\subsubsection{Bilder}
+Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendiger erwie-sen, da diese mehr Speicherplatz und Rechenleistung benötigen.
+
+Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzule-gen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in hoher Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und ge-ringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
 
 \newpage
 \subsection{Dokumentation der Activity-übergreifenden Klassen (Ruthild Gilles)}
