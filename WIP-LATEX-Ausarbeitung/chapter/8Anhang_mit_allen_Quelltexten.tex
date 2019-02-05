@@ -20,34 +20,433 @@
 \subsection{Data}
 	\subsubsection{Models}
 		\paragraph{TENs}
+\begin{figure}[H]
+\begin{lstlisting}[caption=Event (Joscha Nassenstein)]
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Event extends TEN {
+    private Date time;
+    private ArrayList<Date> reminder;
+    private String address;
+    private RecurringType recurringType;
+
+    //Constructor
+
+    //empty default
+    public Event() {
+        super();
+        this.time = new Date();
+        this.reminder = new ArrayList<>();
+        this.address = "";
+        this.recurringType = RecurringType.NONE;
+    }
+
+    //simple for usage
+    public Event(String title, Date time, ArrayList<Date> reminder, String address) {
+        super(title);
+        this.time = time;
+        this.reminder = reminder;
+        this.address = address;
+        this.recurringType = RecurringType.NONE;
+    }
+
+    //all Attributes for reconstruction of complete Object
+    public Event(String title, String ID, int color, int accentColor, Date dateOfCreation, Date time, ArrayList<Date> reminder, String address, RecurringType recurringType) {
+        super(title, ID, color, accentColor, dateOfCreation);
+        this.time = time;
+        this.reminder = reminder;
+        this.address = address;
+        this.recurringType = recurringType;
+    }
+
+    //Getter and Setter
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public ArrayList<Date> getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(ArrayList<Date> reminder) {
+        this.reminder = reminder;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public RecurringType getRecurringType() {
+        return recurringType;
+    }
+
+    public void setRecurringType(RecurringType recurringType) {
+        this.recurringType = recurringType;
+    }
+
+    public Bundle getBundle() {
+        Bundle bundle = super.getBundle();
+        bundle.putLong(BundleKeys.KEY_EVENT_TIME, time.getTime());
+        bundle.putString(BundleKeys.KEY_EVENT_ADDRESS, address);
+        return bundle;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Note (Joscha Nassenstein)]
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Note extends TEN {
+
+    private String description;
+    private ArrayList<String> tags;
+    private ArrayList<Image> pictures;
+    public int imageIDCounter;
+
+    //Constructors
+    public Note() {
+        super();
+        this.description = "";
+        this.tags = new ArrayList<>();
+        this.pictures = new ArrayList<>();
+        this.imageIDCounter = 0;
+    }
+
+    public Note(String title, String description) {
+        super(title);
+        this.description = description;
+        this.tags = new ArrayList<String>();
+        this.pictures = new ArrayList<Image>();
+    }
+
+    //all Attributes for complete Reconstruction
+    public Note(String title, String ID, int color, int accentColor, Date dateOfCreation, String description, ArrayList<String> tags, ArrayList<Image> pictures, int imageIDCounter) {
+        super(title, ID, color, accentColor, dateOfCreation);
+        this.description = description;
+        this.tags = tags;
+        this.pictures = pictures;
+        this.imageIDCounter = imageIDCounter;
+    }
+
+    //Getter and Setter
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
+
+    public Image addImage(Bitmap bitmap) {
+        this.imageIDCounter++;
+        String imageID = this.getID() + FileSystemConstants.IMAGE_CORE_ID + this.imageIDCounter;
+        Image image = new Image(imageID, bitmap);
+        Log.i("cool", image.getId());
+        this.pictures.add(image);
+        return image;
+    }
+
+    public void addImage(Image pImage) {
+        Log.i("NoteRemake", "Pictures Size: " + pictures.size());
+        for (int i = 0; i < pictures.size(); i++) {
+            if (pImage.getId().equals(pictures.get(i).getId())) {
+                pictures.set(i, pImage);
+            }
+        }
+    }
+
+    public ArrayList<Image> getPictures() {
+        return pictures;
+    }
+
+    public Bundle getBundle() {
+        Bundle bundle = super.getBundle();
+        bundle.putString(BundleKeys.KEY_NOTE_DESCRIPTION, description);
+        bundle.putStringArrayList(BundleKeys.KEY_NOTE_TAGS, tags);
+        if (!pictures.isEmpty())
+            bundle.putString(BundleKeys.KEY_NOTE_PICTURES, pictures.get(0).getId());
+        return bundle;
+    }
+
+    public void imageNotFound(Image image) {
+        for (int i = 0; i < this.getPictures().size(); i++) {
+            if (image.getId().equals(this.getPictures().get(i).getId())) {
+                this.getPictures().remove(i);
+            }
+        }
+    }
+
+    @Override
+    public boolean isFound(String pSearchString){
+        if(super.isFound(pSearchString))
+            return true;
+
+        for(String tag : tags) {
+            if (tag.toLowerCase().contains(pSearchString.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=TEN (Joscha Nassenstein)]
+public class TEN {
+    private String title;
+    @JsonIgnore
+    private String ID;
+    @ColorInt
+    @JsonIgnore
+    private int color;
+    @ColorInt
+    @JsonIgnore
+    private int accentColor;
+    @JsonIgnore
+    private Date dateOfCreation;
+
+    //Constructor
+
+    //empty default
+    public TEN() {
+        this.ID = null;
+        this.title = "";
+        int colorIndex = Colors.getRandomColorIndex();
+        this.color = Colors.COLORS[colorIndex];
+        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
+        this.dateOfCreation = new Date();
+    }
+
+    //simple for usage
+    public TEN(String title) {
+        this.ID = null;
+        this.title = title;
+        int colorIndex = Colors.getRandomColorIndex();
+        this.color = Colors.COLORS[colorIndex];
+        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
+        this.dateOfCreation = new Date();
+    }
+
+    //complete Object must be reconstructed
+    public TEN(String title, String ID, int color, int accentColor, Date dateOfCreation) {
+        this.ID = ID;
+        this.title = title;
+        this.color = color;
+        this.accentColor = accentColor;
+        this.dateOfCreation = dateOfCreation;
+    }
+
+    public boolean isFound(String pSearchString){
+        return title!=null?title.toLowerCase().contains(pSearchString.toLowerCase()):false;
+    }
+
+    public Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString(BundleKeys.KEY_TEN_ID, ID);
+        bundle.putString(BundleKeys.KEY_TEN_TITLE, title);
+        bundle.putInt(BundleKeys.KEY_TEN_COLOR, color);
+        bundle.putInt(BundleKeys.KEY_TEN_ACCENT_COLOR, accentColor);
+        bundle.putLong(BundleKeys.KEY_TEN_DATE_OF_CREATION, this.dateOfCreation.getTime());
+        return bundle;
+    }
+
+    //Getter and Setter
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public int getAccentColor() {
+        return accentColor;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setAccentColor(int accentColor) {
+        this.accentColor = accentColor;
+    }
+
+    public void setDateOfCreation(Date dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
+
+    public Date getDateOfCreation() {
+        return dateOfCreation;
+    }
+
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Todo (Joscha Nassenstein)]
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Todo extends TEN {
+
+    private double progress;
+    private String note;
+    private Date startDate;
+    private Date endDate;
+    private ArrayList<Task> tasks;
+
+    //Constructors
+    public Todo(){
+        super();
+        this.note = "";
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.tasks = new ArrayList<>();
+        tasks.add(new Task());
+    }
+
+    public Todo(String title){
+        super(title);
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.tasks = new ArrayList<>();
+        tasks.add(new Task());
+    }
+
+    public Todo(String title, String note){
+        super(title);
+        this.note = note;
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.tasks = new ArrayList<>();
+        tasks.add(new Task());
+    }
+
+    public Todo(String title, String note, ArrayList<Task> tasks){
+        super(title);
+        this.note = note;
+        this.tasks = tasks;
+        this.progress = calculateProgress();
+        this.startDate = new Date();
+        this.endDate = new Date();
+    }
+
+    public Todo(String title, String note, ArrayList<Task> tasks, Date endDate){
+        super(title);
+        this.note = note;
+        this.tasks = tasks;
+        this.progress = calculateProgress();
+        this.startDate = new Date();
+        this.endDate = endDate;
+    }
+
+    public Todo(String title, String note, ArrayList<Task> tasks, Date startDate, Date endDate){
+        super(title);
+        this.note = note;
+        this.tasks = tasks;
+        this.progress = calculateProgress();
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    //all Attributes for complete reconstruction
+    public Todo(String title, String ID, int color, int accentColor, Date dateOfCreation, String note, ArrayList<Task> tasks, Date startDate, Date endDate){
+        super(title, ID, color, accentColor, dateOfCreation);
+        this.note = note;
+        this.tasks = tasks;
+        this.progress = calculateProgress();
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    /*@Override
+    public boolean isFound(String pSearchString) {
+        return super.isFound(pSearchString)?super.isFound(pSearchString):note.contains(pSearchString);
+    }*/
+
+    public Bundle getBundle(){
+        Bundle bundle = super.getBundle();
+        bundle.putString(BundleKeys.KEY_TODO_NOTE, note);
+        boolean[] status = new boolean[tasks.size()];
+        String[] description = new String[tasks.size()];
+        int index = 0;
+        for(Task task : tasks){
+            description[index] = task.getDescription();
+            status[index] = task.getStatus();
+            index++;
+        }
+        bundle.putBooleanArray(BundleKeys.KEY_TODO_STATUS, status);
+        bundle.putStringArray(BundleKeys.KEY_TODO_DESCRIPTION, description);
+        return bundle;
+    }
+
+    //Getters and Setters
+    public double getProgress(){return progress;}
+    public String getNote(){return note;}
+    public void setNote(String note){this.note = note;}
+    public Date getStartDate(){return startDate;}
+    public void setStartDate(Date startDate){this.startDate = startDate;}
+    public Date getEndDate(){return endDate;}
+    public void setEndDate(Date endDate){this.endDate = endDate;}
+    public ArrayList<Task> getTasks() {return tasks;}
+
+    public void setTasks(ArrayList<Task> tasks) {
+        this.tasks = tasks;
+        progress = calculateProgress();
+    }
+
+    public double calculateProgress(){
+        int completed = 0;
+        if(tasks == null)
+            return 0;
+
+        for(Task task:tasks){
+            if(task.getStatus())
+                completed++;
+        }
+        return (double)completed/tasks.size();
+    }
+}
+\end{lstlisting}
+\end{figure}
+
 		\paragraph{Utils}
 	\subsubsection{Repository}
 		\paragraph{Converter}
 		\paragraph{Filesystem}
 		\paragraph{Sub-Repositories}
-	\subsection{Services}
-	\subsubsection{Tasks}
-\subsection{Modules}
-	\subsubsection{Image Compression}
-	\subsubsection{Share}
-\subsection{Overview}
-	\subsubsection{Event Fragment}
-	\subsubsection{Header}
-		\paragraph{Create Fragment}
-		\paragraph{Delete Fragment}
-		\paragraph{Search Fragment}
-	\subsubsection{Image Fragment}
-	\subsubsection{Note Fragment}
-	\subsubsection{Overview Activity}
-		\paragraph{Fragment Manager}
-	\subsubsection{Super Classes}
-	\subsubsection{Todo Fragments}
-
-%%%%%%%%%%%%%%%%%
-%Beispiel
-%%%%%%%%%%%%%%%%%
+	\subsubsection{Services}
 \begin{figure}[H]
-\begin{lstlisting}[caption=Create Klasse (Ruthild Gilles)]
+\begin{lstlisting}[caption=Create (Ruthild Gilles)]
 
 public class Create {
     /* Ruthild Gilles
@@ -71,7 +470,7 @@ public class Create {
 \end{figure}
 
 \begin{figure}[H]
-\begin{lstlisting}[caption=Read Klasse (Ruthild Gilles)]
+\begin{lstlisting}[caption=Read (Ruthild Gilles)]
 
 public class Read {
      /* Ruthild Gilles
@@ -123,7 +522,7 @@ public class Read {
 \end{figure}
 
 \begin{figure}[H]
-\begin{lstlisting}[caption=Update Klasse (Ruthild Gilles)]
+\begin{lstlisting}[caption=Update (Ruthild Gilles)]
 
 public class Update {
     /* Ruthild Gilles
@@ -145,7 +544,7 @@ public class Update {
 \end{figure}
 
 \begin{figure}[H]
-\begin{lstlisting}[caption=Delete Klasse (Ruthild Gilles)]
+\begin{lstlisting}[caption=Delete (Ruthild Gilles)]
 
 public class Delete {
     /* Ruthild Gilles
@@ -167,3 +566,65 @@ public class Delete {
 \end{lstlisting}
 \end{figure}
 
+\begin{figure}[H]
+\begin{lstlisting}[caption=ImageService (Ruthild Gilles)]
+
+public class ImageService {
+
+    public static void saveImage(Image image) {
+        try {
+            FileRepository fileRepository = new FileRepository();
+            fileRepository.saveImagePersistent(image);
+        } catch (IOException e) {
+            Log.e("ImageService", e.getMessage());
+        }
+    }
+
+    public static Image getImage(Image image) {
+        FileRepository fileRepository = new FileRepository();
+        Image result = fileRepository.readImageFromDirectory(image, FileSystemConstants.IMAGE_ORIGINAL_FOLDER);
+        return result;
+    }
+
+    public static Image getPreviewImage(Image image) {
+        FileRepository fileRepository = new FileRepository();
+        Image result = fileRepository.readImageFromDirectory(image, FileSystemConstants.IMAGE_PREVIEW_FOLDER);
+        return result;
+    }
+
+    public static void deleteImage(Image image) {
+        FileRepository fileRepository = new FileRepository();
+        fileRepository.deleteImageFromDirectories(image);
+    }
+
+    public static void deleteImage(String path) {
+        FileRepository fileRepository = new FileRepository();
+        fileRepository.deleteImageFromDirectories(path);
+    }
+
+    public static File createImageFile(Activity pActivity) throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.GERMANY).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = pActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+	\subsubsection{Tasks}
+\subsection{Modules}
+	\subsubsection{Image Compression}
+	\subsubsection{Share}
+\subsection{Overview}
+	\subsubsection{Event Fragment}
+	\subsubsection{Header}
+		\paragraph{Create Fragment}
+		\paragraph{Delete Fragment}
+		\paragraph{Search Fragment}
+	\subsubsection{Image Fragment}
+	\subsubsection{Note Fragment}
+	\subsubsection{Overview Activity}
+		\paragraph{Fragment Manager}
+	\subsubsection{Super Classes}
+	\subsubsection{Todo Fragments}
