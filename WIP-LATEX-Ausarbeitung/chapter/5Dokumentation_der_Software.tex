@@ -1351,6 +1351,115 @@ Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendi
 
 Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzule-gen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in hoher Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und ge-ringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
 
+\subsubsection{Repository}
+\paragraph{Klassenstruktur}
+\subparagraph{Klasse: DatabaseRepository (Jan Beilfuß)}
+Diese Klasse wird aus der Service-Schicht angesprochen. Sie bündelt Methoden, um Daten aus der Datenbank zu lesen oder zu schreiben. Alle Methoden rufen Methoden in den Klassen WriteRepository oder ReadRepository auf.
+getTodoByID
+Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Todoobjekt zurück. 
+getEventByID
+Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Eventob-jekt zurück. 
+getNoteByID
+Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Noteobjekt zurück. 
+insertTEN
+Diese Methode speichert ein neues TEN-Objekt in die Datenbank.
+updateTEN
+Diese Methode aktualisiert ein bereits bestehendes TEN-Objekt.
+getAllTENs
+Diese Methode gibt eine Liste aller in der Datenbank liegenden TEN-Objekte zurück.
+deleteTEN
+Diese Methode löscht das in der Datenbank liegende Objekt zu der übergebenen ID.
+getTENColors
+Diese Methode gibt die Haupt- und die Akzentfarbe eines TEN-Objektes zurück.
+Klasse: DataContextManager (Jan Beilfuß)
+initDatabase
+Diese Methode prüft, ob die Datenbank mit dem übergebenen Datenbanknamen auf dem Gerät liegt. Falls dies der Fall ist wird diese als Datenbankobjekt in die Applikation geladen. Andernfalls wird eine neue erzeugt.
+compactDatabase
+Diese Methode räumt die Datenbank auf. Da gelöschte Dokumente nur mit einem Flag ver-sehen, aber nicht entgültig gelöscht werden, verbrauchen diese weiterhin Speicherplatz.
+getNumberOfDocuments
+Diese Methode gibt die Anzahl der Datensätze zurück. Sie findet bei der Arbeit mit Mockda-ten ihre Anwendung. Dadurch wird verhindert, dass diese mehrfach in die Datenbank ge-schrieben werden.
+getDatabase
+Diese Methode gibt das Datenbankobjekt zurück.
+Klasse: RepositoryConstants (Jan Beilfuß)
+Diese Klasse enthält alle Konstanten, die bei der Arbeit mit der Datenbank benötigt werden. Dazu zählen die in den Dokumenten eingesetzten Schlüssel, aber beispielsweise auch der Name der Datenbank.
+
+Klasse: WriteRepository (Jan Beilfuß)
+Diese Klasse beinhaltet alle Funktionen, die einen schreibenden Zugriff auf die Datenbank haben. 
+insertTEN
+Diese Methode erzeugt eine neues veränderbares Dokument und setzt in dem übergebenen TEN-Objekt die ID des Dokumentes. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSaver übergeben.
+updateTEN
+Diese Methode lädt das Dokument aus der Datenbank und entfernt den Schreibschutz von diesem. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSa-ver übergeben.
+deleteTEN
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank. Weiterhin wird deleteNoteImages aufgerufen. Wenn ein Dokument zu der übergebenen ID existiert, wird dieses gelöscht.
+deleteNoteImages
+Diese Methode entfernt alle mit dem zu löschenden Objekt assoziierten Bilder aus dem per-sistenten Speicher, sofern das zu löschende Objekt ein Note-Objekt ist.
+
+Klasse: DocumentSaver (Jan Beilfuß)
+Diese Klasse enthält alle Methoden, welche benötigt werden, die Attribute eines TEN-Objektes zu übertragen und dieses in der Datenbank zu speichern.
+updateCompleteDocument
+Diese Methode wird aus dem WriteRepository aufgerufen und bildet den ganzen Prozess von der Dokumentenvorbereitung über das Hinzufügen der einzelnen Key-Value-Paare bis hin zum finalen speichern des Dokumentes ab.
+saveSeparateAttributes
+Diese Methode legt alle Attribute, welche in der Deserialisierung durch Jackson nicht beachtet warden, als Key-Value-Paare im Dokument ab. Dazu zählt das Erzeugungsdatum des TEN-Objektes, die Farbe und die Akzentfarbe.
+preparePersistentSaving
+Diese Methode bestimmt abhängig von der Klasse des übergebenen TEN-Objektes, welcher Typ in dem Dokument gespeichert werden muss. Dies ist notwendig, da bei der Deserialisie-rung des Json-Strings, die Zielklasse angegeben werden muss.
+Klasse: ReadRepository (Jan Beilfuß)
+Diese Klasse beinhaltet alle Funktionen, die einen lesenden Zugriff auf die Datenbank haben.
+getTodoByID
+Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Todo-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+getEventByID
+Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Event-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+getNoteByID
+Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Notiz-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+getAllTENs
+Diese Methode ruft die Query getAllTENs auf und gibt dann das Ergebnis dieser, eine Liste aller in der Datenbank gespeicherten TEN-Objekte, zurück.
+getTENColors
+Diese Methode lädt das Dokument zu der übergebenen ID aus der Datenbank und gibt die Haupt- und die Akzentfarbe des erzeugten TEN-Objektes zurück.
+Klasse: GetAllTensQuery (Jan Beilfuß)
+Diese Klasse enhält die Datenbankabfragen, um alle TEN-Objekte aus der Datenbank zu laden.
+getAllTENs
+Diese Methode baut eine Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden. Das Einträge des ResultSets werden dem entsprechenden Converter übergeben, dort umgewandelt und dann einer Liste an TEN-Objekten hinzugefügt, welche am Ende zurück-gegeben wird.
+Klasse: QueriedTENConverter (Jan Beilfuß)
+Diese Klasse enthält eine Methode, welche genutzt wird, um die Ergebnisse einer Datenban-kabfrage in TEN-Objekte umzuwandeln.
+createTENFromResult
+Diese Methode wandelt ein Result, eine CouchbaseLite-Klasse, in ein TEN-Objekt um. Dem Result wird ein Dictionary entnommen und aus diesem der Json-String, aus welchem im An-schluss das TEN-Objekt erzeugt wird. Wenn dies erfolgreich ist, werden dem TEN-Objekt noch die separat abgelegten Attribute hinzugefügt.
+Klasse: SeparateAttributesConverter (Jan Beilfuß)
+Diese Klasse ist dafür verantwortlich, dass in einem übergebenen TEN-Objekt die nicht im JSON-String enthaltenen Attribute gesetzt werden. Dazu zählt die ID, welche die ID des Do-kuments selber ist. Darüber hinaus die Farbe, die Akzentfarbe und das Erzeugungsdatum des TEN-Objektes.
+addTENPropertiesFromDocument
+Diese Methode entnimmt die aufgeführten Attribute einem Document, Objekt aus dem Couchbase Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt.
+addTENPropertiesFromResult
+Diese Methode entnimmt die aufgeführten Attribute einem Result, Objekt aus dem Couch-base Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt..
+
+Klasse: TenJsonParser (Jan Beilfuß)
+Diese Klasse enthält Methoden, die aus einem JSON-String die TEN-Objekte erzeugen. Da-für wird das Framework Jackson eingesetzt.
+stringToTodo
+Diese Methode erzeugt aus dem übergebenen JSON-String ein Todo-Objekt und gibt dieses zurück.
+stringToEvent
+Diese Methode erzeugt aus dem übergebenen JSON-String ein Event-Objekt und gibt dieses zurück.
+stringToNote
+Diese Methode erzeugt aus dem übergebenen JSON-String ein Note-Objekt und gibt dieses zurück.
+
+Klasse: FileRepository (Jan Beilfuß)
+Diese Klasse enthält alle Zugriffe auf das Dateisystem. Sie findet Einsatz in der Verwaltung der Bilder, da diese im Dateisystem abgelegt werden.
+saveImagePersistent
+Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber das Bild im Datei System.
+readImageFromDirectory
+Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus eine Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
+deleteImageFromDirectory
+Die Methode deleteImageFromDirectory überladen. Diese nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässig-baren Bereichs auf die Performance auswirkt.
+deleteImageFromDirectory
+Die Methode deleteImageFromDirectory überladen. Diese nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, das es vorkommen kann, dass diese Methode beim schließen der Note-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
+Klasse: FileSystemConstants (Jan Beilfuß)
+Diese Klasse enthält alle Konstanten, welche im Umgang mit dem Filesystem benötigt wer-den. Dazu zählen Ordernamen, Dateiendungen, aber auch der Kompressionsfaktor für Bilder.
+Klasse: ImageDeleter (Jan Beilfuß)
+Diese Klasse erzeugt einen asynchronen Task, der die Bilder aus dem Dateisystem löscht. Diese Klasse enthält als innere Klasse, die Klasse DeleteImageTask, welche von AsyncTask erbt.
+Execute
+Es wird ein asynchroner Task der Klasse DeleteImageTask erzeugt und ausgeführt. Dieser löscht die Bilder zu der im ImageObjekt übergebenen ID. Die dort definierte Methode doIn-Background baut die Dateipfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen, überprüft, ob die Datei existiert und löscht diese, falls sie existiert.
+Klasse: ImageSaver (Jan Beilfuß)
+Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speichert. Diese Klasse enthält als innere Klasse, die Klasse SaveImageTask, welche von AsyncTask erbt.
+Execute
+Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode doInBackground baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
+
+
 \newpage
 \subsection{Dokumentation der Activity-übergreifenden Klassen (Ruthild Gilles)}
 %%%%%%%%%%%
@@ -1360,6 +1469,8 @@ Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenba
 Zu den Activity-übergreifenden Klassen gehören abgesehen von den Query-Klassen für die persistente Datenhaltung auch die Service-Klassen und die Models-Klassen. Die Models-Klassen enthalten die TEN-Klasse und die einzelnen Todo-, Event- und Note-Klassen. Hier sind auch weitere Util-Klassen untergeordnet. In den Service-Klassen sind Methoden enthalten, die die Schnittstelle zwischen Datenbank und Activities darstellen. Im Folgendem wird genauer auf die einzelnen Klassen eingegangen.
 
 \subsubsection{Models-Klassen}
+
+
 
 \subsubsection{Service-Klassen}
 
@@ -1377,5 +1488,5 @@ In den Service Klassen bestehen zusätzlich zwei Klassen für die Verarbeitung v
 
 Die Klasse ImageService stellt dabei Funktionen für die Schnittstelle zur Datenbank zur Verfügung, beispielsweise zum Laden oder Löschen eines Bildes. Zusätzlich kann eine temporäre Bilddatei zur Übergabe an den Kamera-Intent erstellt werden, in welcher bei der Aufnahme die Bilddatei gespeichert wird. Die Klasse ImageCorrectionService stellt Funktionen zur Korrektur der Ausrichtung eines Bildes anhand der mitgelieferten Exif-Daten bereit, da auf einigen Geräten die Bilder sonst nicht korrekt dargestellt wurden. Diese Klassen werden zurzeit lediglich von der Note-Activity genutzt.
 
-
+\subsubsection{Mockdaten}
 
