@@ -530,6 +530,208 @@ Diese Methode speichert zuerst das Todo-Objekt aus der Data-Klasse in einer loka
 Public void onConfigurationChanged(Gui pGui)
 Bei dieser Methode handelt es sich um einen Event-Handler. Diese initialisiert die Gui und Listener erneut. Dazu werden die beschriebenen Methoden initGui und initListener aufgerufen.
 
+\subsubsection{Event Activity (Robin Menzel)}
+%Robin
+Dieses Kappitel beschreibt die Funktionsweise der Event-Ansicht innerhalb des TEN-Managers. Diese wird aufgerufen, wenn ein Event aus der Übersichtsseite angeklickt wird oder ein neues Event erstellt wird.
+
+\paragraph{Aufgaben und Funktionen}
+
+Die \textit{Event Activity} hat die Funktion eine Übersicht über ein Event zu geben, Bearbeitungen zu dem Event zu verarbeiten, oder ein neues Event zu erstellen und speichern. Möchte ein User eine neues Event erstellen, ist die Event-Activity bis auf das aktuelle Datum leer. In den Textfeldern stehen halbtransparente Hinweise, wie "Titel eingeben", die dem User Hinweise über den Inhalt geben. Wenn die Activity ein bereits vorhandenes Event anzeigt, kann durch ein Klick auf die jeweilige Konfiguration, eine Änderung durchgeführt werden.
+
+Ganz oben ist eine Toolbar zu finden, welche zum einen eine Navigation zurück zur Übersichtsseite bietet und zum anderen ein Options/Drei-Punkt Menü beinhaltet. Durch einen Klick auf das 3-Punkt Menu der \textit{Event Activity}  kann das Event in Form von Text per E-Mail oder Chat-Applikation geteilt werden. Auch ein Export in eine andere Kalender-Applikation wird hier unterstützt. Die letzte Option bietet das Löschen des Events an.
+
+Da ein Event immer ein Datum und eine Zeit hat, kann auch dieses in der Activity ausgewählt werden. Über einen Klick auf das Datum oder die Uhrzeit, öffnet sich ein Dialog Picker, über den sich die Uhrzeit oder das Datum auswählen lässt.
+
+Bestimmte Events wie Geburtstage wiederholen sich in bestimmten Intervallen. Auch diese Events lassen sich in der Activity abbilden, in dem unter der Zeit auf (initialer Wert) Einmalig geklickt wird. Hier steht dem User die Option Einmalig, Täglich, Wöchentlich und Jährlich zur Verfügung. Angezeigt wird immer der Termin, der am nächsten liegt.
+
+Sobald ein User mehr als einen Buchstaben in die Adresszeile des Events eingibt, leuchtet das Navigationsicon auf. Ein klick auf dieses öffnet sich Google Maps und versucht den eingegeben Ort zu finden.
+
+Als letzte Option lassen sich Erinnerungen zu diesem Event einstellen. Dazu hat der User eine Wahl zwischen 1 Stunde vorher, 6 Stunden vorher, 1 Tag vorher und 1 Woche vorher. Es lassen sich kein, ein, mehrere, oder alle Erinnerungen auswählen. Liegt der Zeitpunkt der Erinnerung in der Zukunft, so wird zu diesem Zeitpunkt eine Push-Benachrichtigung auf dem Gerät erscheinen, welche den Titel und die Uhrzeit des Events enthält.
+
+\paragraph{Layout}
+
+Das Layout der Activity setzt sich aus verschieden Komponenten zusammen:
+\begin{itemize}
+\item \textit{activity\_event.xml}
+\item \textit{toolbar\_ten.xml}a
+\end{itemize}
+Bei \textit{activity\_event.xml} handelt es sich um ein Drawer Layout. Es beinhaltet die Toolbar \textit{toolbar\_ten.xml}. Die Inhalte sind in einem Scroll View zusammengefasst.
+
+Die Toolbar \textit{toolbar\_ten.xml} ist für alle TENs identisch und beinhaltet ein Drei-Punkt-Menu mit den Menüpunkten aus \textit{event\_menu.xml}
+\begin{itemize}
+\item Event teilen
+\item Event in den Kalender
+\item Event löschen
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Screenshot - Event Activity} % Überschrift
+\includegraphics[width=13 cm]{img/Screenshot_EventActivity.jpg}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Screenshot - Event Activity Erinnerung} % Überschrift
+\includegraphics[width=13 cm]{img/Screenshot_EventActivityReminder.jpg}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Screenshot - Event Activity Wiederholung} % Überschrift
+\includegraphics[width=13 cm]{img/Screenshot_EventActivityRecurringType.jpg}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Screenshot - Event Activity Toolbar} % Überschrift
+\includegraphics[width=13 cm]{img/Screenshot_EventActivityToolbar.jpg}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+\paragraph{Use-Case}
+Diese Activity dient dem User hauptsächlich zum Anlegen, Bearbeiten, Ansehen und Löschen von einem Event. Außerdem ist die Activity verantwortlich für alle Reminder, die als Push-Benachrichtigung erscheinen und an das jeweilige Event erinnern. In der Activity ist es des Weiteren möglich, über einen Button Google Maps inklusive der Adresse des Events zu öffnen und so zu dem Event zu Navigieren. Außerdem ist es möglich das Event in Form von Text zu teilen (z.B. per E-Mail oder Textnachricht) oder in eine Kalender Applikation zu übertragen.
+
+\begin{figure}[H]
+	\centering
+	\caption{Use-Case - Event Activity}
+	\includegraphics[width=12cm]{img/EventActivityUseCase.pdf}
+	\label{img:EventActivityUseCase}
+\end{figure}
+
+\paragraph{Datenstruktur und -typen}
+Die \textit{Event Activity} wird aus der \textit{MainActivity} mittels eines Intents gestartet, welcher falls das Event bereits besteht und kein neues Event angelegt werden soll, die jeweilige ID des Events übergibt, um darüber auf die Datenbank zuzugreifen. Die Klasse EventActivit ist aus der Klasse AppCompatActivity abgeleitet und überschreibt die für die Funktionen relevanten Methoden diese Klasse und initialisiert die im Nachfolgenden angesprochenen Verwaltungsklassen EventData, EventGui und EventApplicationLogic.
+
+Die Event-Activity selbst ist in mehrere Pakete aufgeteilt um innerhalb der insgesamt 14 Klassen für eine übersichtliche Struktur zu sorgen und die einzelnen Klassen ihren übergeordneten Funktionen zuzuordnen. Die Funktionen der einzelnen Klassen und die Klasseninteraktion sind in der Dokumentation des Quelltextes am Ende dieses Kapitels dargestellt.
+
+\subparagraph{Logic Paket}
+Das Paket welches die Logik der \textit{Event Activity} beinhaltet, beinhalten alle Listener und Watcher Klassen und die \textit{EventApplicationLogic}. Damit ist sie die zentrale Logik-Klasse der Activity. Von hier aus werden die andren Klassen, welche spezifische Aufgaben übernehmen, initialisiert und angesprochen. Zu den anderen Klassen gehören die Klassen zur Erneuerung der GUI, des automatischen Speichern von Änderungen und den Klassen zur Verwaltung von Erinnerungen.
+
+\subparagraph{Data-Paket}
+Das Data-Paket beinhaltet alle Klassen welche für die Datenhaltung zuständig sind. Zentrale Klasse ist hier die \textit{EventData-Klasse} welche für das Laden, aber auch das Speichern von Änderungen bzw. neuen Events zuständig ist. Zudem beinhaltet das Data-Paket eine Reminder Klassse, welche dafür sorgt, dass Reminder zum einen als Zeitpunkt der Erinnerung, aber auch in Text-Form (``1 Stunde vorher'') genutzt werden kann. \\
+Die \textit{Event Activity} interagiert neben der \textit{Overview Activity} auch mit anderen Apps. Entweder durch die ShareAction oder durch die Google Maps Intents.
+
+\subparagraph{Gui-Paket}
+Innerhalb des Gui-Paketes subd alle Klassen einsortiert, welche die für die Darstellung der GUI verantwortlich sind. Die EventGui Klasse repräsentiert die Struktur des Layouts und damit alle einzelnen Komponenten, um diese korrekt zu initialisieren und auf einzelne Views zugreifen zu können. Außerdem enthält das Paket die Dialog Picker TimePicker und DatePicker, die für die Auswahl eines Datums bzw. einer Uhrzeit zuständig sind. Zu guter letzt hilft die RecurringTypeHelper dabei die Wiederholungen als Zahlen, aber auch in Textform (``Einmalig'') abbilden zu können.
+
+\paragraph{Dokumentation des Queltextes der Activity}
+Im Nachfolgenden sind die einzelnen Klassen der \textit{Event Activity} mit den jeweiligen wichtigsten Funktionen kurz beschrieben.
+\subparagraph{EventActivity}
+Diese Klasse ist der zentrale Einstiegspunkt der Note-Activity und ist aus der AppCompatActivity-Klasse abgeleitet. Hier werden eineige Methoden dieser Klasse überschrieben und an die neuen Anforderungen angepasst.
+
+\textit{onCreate}:\\
+Die Activity wird durch einen Intent von der \textit{Overview Activity} gestartet, welchem die ID für ein Event mitgegeben wurde. Diese ID wird ausgelesen und anhand dieser die Event-Data Klasse initialisiert. Zusätzlich wird die EventGui und die EventApplicationLogic Klasse initialisiert.
+
+\textit{onBackPressed}:\\
+In dieser Methode wird das normale vorgehen ersetzt durch die Funktion returnToOverview der EventApplicationLogic um wieder in die Overview-Klasse zurückzukehren.
+
+\textit{onCreateOptionsMenu}:\\
+In dieser Methode wird das Menü mit dem Event Menü gefüllt.\\
+
+\subparagraph{LOGIC}
+\subparagraph*{EventApplicationLogic}
+Diese Klasse ist die zentrale Logik der Activity.\\
+\\
+\textit{updateGui}\\
+Diese Methode setzt alle Werte aus dem Event-Objekt aus der EventData Klasse in die aktuelle Gui ein.\\
+\\
+\textit{returnToOverview}\\
+Mit Hilfe dieser Methode wird die Activity verlassen und kehrt zurück zur Overview Activty.\\
+\\
+\textit{setAlarm}\\
+Wenn ein Reminder erstellt wird, wird hier der Zeitpunkt zum AlarmManager hinzugefügt (solange der Zeitpunkt in der Zukunft liegt).\\
+\\
+\textit{updateReminder}\\
+Wenn sich die Zeit verändert, müssen auch die Zeitpunkte der Reminder angepasst werden. Dies geschieht in dieser Methode.\\
+\\
+\textit{onNewReminderClicked}\\
+Diese Methode kümmert sich um das Erstellen eines neuen Reminders, solange noch nicht alle vier möglichen Reminder hinzugefügt wurden.\\
+\\
+\textit{onTextChanged}\\
+Sobald der Textwatcher ausgelöst wird, wird diese Funktion aufgerufen um das Event Objekt dynamisch zu speichern.\\
+\\
+\textit{onCloseReminderClicked}\\
+Diese Methode kümmert sich um das Löschen einer Reminders. Dazu gehört auch, diesen aus dem Alarm Manager zu entfernen.\\
+\\
+\textit{onMenuItemClicked}\\
+Diese Methode wird aufgerufen, sobald auf einen der drei Menüpunkte geklicked wurde.\\
+\\
+\textit{onNavicationIconClicked}\\
+Wurde auf das Icon neben der Adresse geklickt, so erstellt diese Funktion einen Google Maps Intent, der die Adresse in Google Maps öffnet.\\
+\\
+\textit{onRecurrinTypeClicked}\\
+Diese Funktion öffnet einen AlertDialog in welchem man den Wiederholungstypen auswählen kann.
+
+\subparagraph{listener Klassen}
+Die listener Klassen in dem LOGIC Paket erben alle von View.onClickListener, text.TextWatcher und Toolbar.onClickListener. In ihnen wird differenziert welches Element den Listener ausgelöst hat und führt dementsprechend eine Methode aus.
+
+
+\subparagraph{DATA}
+\subparagraph*{EventData}
+In dieser Klasse findet die komplette Datenhaltung statt.\\
+\\
+\textit{updateEvent}\\
+In dieser Methode wird des Services ``Update'' der Datenbank genutzt um ein Event-Objekt zu speichern.\\
+\\
+\textit{deleteEvent}\\
+In dieser Methode wird des Service ``Delete'' der Datenbank genutzt um ein Event-Objekt zu löschen.\\
+\\
+\textit{shareEvent}\\
+Diese Methode wird Aufgerufen falls der User im ein Event teilen möchte. Von hier aus wird die shareEvent-Methode im ShareModule aufgerufen.\\
+\\
+\textit{getFormateDate}\\
+Diese Methode gibt das Datum des Events in sprach-formattierung zurück, wie z.B. 25. Januar 2019.\\
+\\
+\textit{exportToCalendar}\\
+Diese Methode erstellt aus dem Event ein Intent, welches von allen gängigen Kalender Applikationen untersützt und geöffnet werden kann.\\
+\subparagraph{Reminder}
+Diese Klasse hilft beim Umgang mit Remindern. So müssen z.B. Reminder neu berechnet werden, wenn sich die Zeit des Events verändert hat.\\
+\\
+\textit{getLabelFromReminder}\\
+Diese Methode gerrechnet aus der Differenz zwischen dem Zeitpunkt der Erinnerung und dem Zeitpunkt des Events die Beschriftung (z.B. ``1 Stunde vorher'').\\
+\\
+\textit{getReminderFromLabel}\\
+Diese Methode errechnet aus der Beschrifftung den richtigen Zeitpunkt einer Erinnerung.
+
+
+
+\subparagraph{GUI}
+\subparagraph*{EventGui}
+Diese klassse beinhaltet alle Benutzeroberflächenattribute, auf welche so zugegriffen werden kann.\\
+\\
+\textit{setColor}\\
+Die bunte Farbgestalltung ist ein Kernelement unseres Designs. Daher enthält jedes TEN-Objekt auch feste Farbattribute, welche beim Aufbau der Gui dargestellt werden müssen. Diese Methode weißt aus den Farbwerten des Event-Objektes, den Gui Elementen ihre spezifische Farbe zu.\\
+\\
+\textit{setReminder}\\
+Diese Klasse stellt die Reminder, die im Event-Objekt nur als Zeitpunkte dargestellt sind, auf der Oberfläche da. Dafür interagiert diese mit der Reminder Klasse und passt auch das Auswahl-Menü für weitere Reminder an.
+
+\subparagraph{DatePicker und TimePicker}
+Diese Klassen sind fast identisch. Sie erben von der Klasse DialogFragment und überschreiben notwendige Methoden.\\
+\\
+\textit{onCreateDialog}\\
+In dieser Methode wird ein Calendar Objekt erstellt um in ihm später die Ausgewählten Zeiten zu speichern. Falls bereits eine Zeit existiert, wird diese übernommen. Anschließend wird ein DatePickerDialog erstellt.\\
+\\
+\textit{onDateSet} oder \textit{onTimeSet}\\
+Falls eine Zeit ausgewählt wurde, ruft diese Methode, die entsprechenden Methoden in der EventApplicationLogic auf und übergibt die ausgewählten Zeite.\\
+\\
+\textit{setTime}\\
+Da über einen Konstruktor eine vorhandene Zeit eines Events noch nicht übergeben werden kann, muss der Date/Time-Picker zuerst erstellt werden und anschließend kann über diese Methode die bereits vorhandene Zeit eingestellt werden.
+
+\subparagraph{RecurringTypeHelper}
+Diese Funktion stellt eine Verbindung zwischen dem Enum Objekt ReccuringType und den Beschriftungen der Wiederholungen her.
+
+
 \subsection{Dokumentation der Navigation zwischen Activities (Yannick Rüttgers)}
 %%%%%%%%%%%
 %Yannick
