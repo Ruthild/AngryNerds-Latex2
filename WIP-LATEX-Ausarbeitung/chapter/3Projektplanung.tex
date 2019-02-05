@@ -15,6 +15,7 @@ Durch die Events soll der Benutzer zu spezifizierten Zeitpunkten an Ereignisse e
 
 Die Notes ermöglichen es dem Benutzer Informationen zu speichern. Die Informationen können aus einer Notiz, Stichworten und Bildern bestehen. Die Daten der verschiedenen Ansichten sollen in einer Datenbank gespeichert werden, bzw. die Daten sollen dann auch wieder aus der Datenbank geladen werden können.
 
+\newpage
 \subsection{Projektablaufplan (Fabia Schmid)}
 %%%%%%%%%
 %Fabia
@@ -80,43 +81,47 @@ Das Design leitet sich von Googles Designsprache \textit{Material Design} ab, we
 Dies liegt vor allem daran, das in diesen Applikationen das Material Design sehr gut umgesetzt wurde. Aus Google Notizen wurde die Übersichtsseite und die charakteristische, schwebende Appbar übernommen. So sind auch unsere TENs in der Übersichtsseite als Fragmente dargestellt, in denen sich die wichtigsten Informationen schnell ablesen lassen. Die Detail- bzw. Bearbeitungsseiten der TENs wurde angelehnt an die Bearbeitungsseite des Google Kalenders. Hier wurden die Kategorien bzw. Einstellmöglichkeiten durch feine Linien visuell voneinander abgetrennt. Durch die eindeutigen Icons und dem auslassen von Beschriftungen wird der Bildschirm optimal genutzt. Auch Wunderlist schafft es in den Detailansichten von ToDos mit wenigen Hinweisen, ein minimalistische, aber ituitive und vorallem infomative Darstellung zu schaffen, von der wir uns inspiriert haben. Bei Google Fotos wurde die untere Navigationsleiste übernommen. So ist es in unserer App nun möglich mit einem Klick zwischen einer Übersicht über alle TENs, zu einer Übersicht über die unterschiedlichen Kategorien zu wechseln. Dies nutzt auf effektive Weise den Platz auf dem Tablet und bietet die Funktion an einer intuitiven Position an. Außerdem können wir so auf einen so genannten Navigation Drawer verzichten, da dieser die Applikation unnötig aufplustert und unsere Applikation kaum Funktionalitäten anbietet, die in diesem Drawer positioniert werden hätte können.
 
 In Adobe Xd lassen sich nicht nur die Oberflächen Designen, sondern auch die User Experience abbilden. So lassen sich Flächen mit einander Verbinden, die nun durch einen Klick geöffnet werden können. Auf diese Art und Weise war es uns möglich Personen aus unserem Umkreis unsere App testen zu lassen. Das Feedback war ausschließlich Positiv. Da wir Elemente aus oft genutzten Apps übernommen haben, stellte die Bedienung unserer App für alle Tester kein Problem dar. Außerdem kam das Feedback, das unsere Oberfläche zur ersten Nutzung einlädt und nicht durch Überladung von Informationen abschreckt.
+
 \begin{figure}[H]
-\caption{Übersicht}
 \centering
-\includegraphics[width=8cm]{img/OverviewActivity.pdf}
-\source{Mockups - Übersicht über alle TENs} % Quelle
-	\label{img:OverviewActivity}
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Mockups - Übersicht über alle TENs} % Überschrift
+\includegraphics[height=20cm]{img/OverviewActivity}\\ % Pfad
+\source{Erstellt von Robin Menzel} % Quelle
+\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
-\caption{Event Activity - Unsere Events}
 \centering
-	\includegraphics[width=7.25cm]{img/EventActivity.pdf}
-	\includegraphics[width=7.25cm]{img/EventActivityNew.pdf}
-\source{Mockups - Übersicht über ein vorhandenes und ein neues Event}
-	\label{img:EventActivity}
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Mockups - Übersicht über ein vorhandenes und ein neues Event} % Überschrift
+\includegraphics[width=7.25cm]{img/EventActivity} % Pfad
+\includegraphics[width=7.25cm]{img/EventActivityNew}\\ % Pfad
+\source{Erstellt von Robin Menzel} % Quelle
+\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
-	\caption{Note Activity - Unsere Notizen}
-	\centering
-	\includegraphics[width=7.25cm]{img/NoteActivity.pdf}
-	\includegraphics[width=7.25cm]{img/NoteActivityNew.pdf}
-	\includegraphics[width=7.25cm]{img/NoteActivityImage.pdf}
-	\source{Mockups - Übersicht über ein vorhandene, eine leere und eine Bild-Notiz}
-	\label{img:NoteActivity}
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Mockups - Übersicht über ein vorhandene, eine leere und eine Bild-Notiz} % Überschrift
+\includegraphics[width=7.25cm]{img/NoteActivity} % Pfad
+\includegraphics[width=7.25cm]{img/NoteActivityNew}\\ % Pfad
+\includegraphics[width=7.25cm]{img/NoteActivityImage}\\ % Pfad
+\source{Erstellt von Robin Menzel} % Quelle
+\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
-	\caption{Todo Activity - Unsere ToDos}
-	\centering
-	\includegraphics[width=7.25cm]{img/ToDoActivity.pdf}
-	\includegraphics[width=7.25cm]{img/ToDoActivityNew.pdf}
-	\source{Mockups - Übersicht über vorhandene und neue Todos}
-	\label{img:ToDoActivity}
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Mockups - Übersicht über vorhandene und neue Todos} % Überschrift
+\includegraphics[width=7.25cm]{img/ToDoActivity} % Pfad
+\includegraphics[width=7.25cm]{img/ToDoActivityNew}\\ % Pfad
+\source{Erstellt von Robin Menzel} % Quelle
+\end{minipage}
 \end{figure}
 
-\newpage
 \subsubsection{Planung der Datenstruktur und Schnittstellen (Ruthild Gilles)}
 %%%%%%%%%
 %Ruthild
@@ -159,14 +164,13 @@ Das Datenteam plante die Activity-übergreifenden Klassen und deren Methoden anh
 
 Da der Aufwand für die Umsetzung aller geforderten Anforderungen zu Projektstart lediglich grob geschätzt werden konnte, definierte das Datenteam abgesehen von der Schnittstelle zur Datenbank noch einige weitere Schnittstellen. Die Implementierung dieser weiteren Schnittstellen wurde nicht in den Anforderungen gefordert und würde nur bei genug Zeitüberschuss umgesetzt werden. Zu den weiteren optionalen Schnittstellen gehören das Exportieren von Todos, Events und Notes in die Zwischenablage oder auch in andere Applikationen, die auf dem entsprechenden Endgerät installiert sind. Für ein Event soll es die Möglichkeit geben eine Adresse hinzuzufügen. Hier wäre eine weitere optionale Schnittstelle die Verknüpfung mit Google Maps. Auch könnte eine Schnittstelle zu einer anderen Kalender App implementiert werden, in die ein Event exportiert werden könnte.
 
-\newpage
-
 \subsubsection{Planung der Activities und Layouts (Florian Rath)}
 %%%%%%%%%
 %Florian
 %%%%%%%%%
 
 Hier den Text einfach hin kopieren.
+FHDW
 
 \subsubsection{Planung der Navigation zwischen den Activities (Yannick Rüttgers)}
 %%%%%%%%%
@@ -183,6 +187,7 @@ Soll stattdessen ein bereits bestehendes TEN angezeigt werden, wird der Activity
 
 Wird aus den jeweiligen TEN-Activities zurücknavigiert, soll wieder die Übersichtsactivity angezeigt werden, in der die getätigten Änderungen angezeigt werden sollten.
 
+\newpage
 \subsection{Geplante Aufgabenverteilung im Team (Fabia Schmid)}
 %%%%%%%%%
 %Fabia
