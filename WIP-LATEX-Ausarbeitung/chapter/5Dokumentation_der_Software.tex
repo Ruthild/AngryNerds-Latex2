@@ -29,15 +29,17 @@ Das Paket beinhaltet insgesamt fünf Activities mit jeweils einer ApplicationLog
 \end{minipage}
 \end{figure}
 
-
+\newpage
 \subsection{Dokumentation der Activities}
 %%%%%%%%%%%
 %Alle
 %%%%%%%%%%%
 
 \subsubsection{Main Activity}
+\fancyhead[L]{Main Activity}
+
 %Yannick
-\textbf{Aufgabe und Funktionen (Yannick Rüttgers)}\\
+\paragraph{Aufgabe und Funktionen (Yannick Rüttgers)}
 Die in diesem Kapitel erläuterte Activity Overview dient dem Nutzer als Einstiegspunkt in die Applikation. Von hier aus werden alle weiteren Activities aufgerufen.
 
 Wenn der Nutzer die Applikation startet, sieht er als erstes diese Activity. Diese enthält alle bereits erstellten TENs in Kachelform mit einigen Infos. Die Kacheln sind in einer oder mehreren Spalten, je nach Größe des Displays angeordnet. Diese Kacheln sind scrollbar.
@@ -56,7 +58,7 @@ Die Activity selbst besteht aus einer Oberfläche mit den genannten Buttons. Die
 
 
 %Fabia
-\textbf{Layouts (Fabia Schmid)}\\
+\paragraph{Layouts (Fabia Schmid)}
 Das Layout der Overview Activity orientiert sich an dem vorher erstellten Mockup und besteht aus drei Grundkomponenten. Es gibt am oberen Bildschirmrand eine Leiste zum Erstellen von Notes, Events und ToDos, sowie ein Button zum Suchen. Unter dieser leiste befindet sich ein Container, welcher die verschiedenen Fragments der vorhandenen Notes, Events und ToDos beinhaltet. Am unteren Bildschirmrand befindet sich noch eine Leiste mit vier Buttons zum Filtern der  Fragments.
 
 \begin{figure}[H]
@@ -137,7 +139,7 @@ Auch bei der Suchfunktion wird die obere Leiste angepasst. Dabei kann nun ein be
 \end{figure}
 
 %Yannick
-\textbf{Use Case (Yannick Rüttgers)}\\
+\paragraph{Use Case (Yannick Rüttgers)}
 Wie bereits geschrieben, dient diese Activity dem Nutzer als Einstiegspunkt in die Applikation. Hier kann er einige Aktionen durchführen.
  
 Zum einen kann er die Oberfläche der Übersicht selbst beeinflussen. Hierzu gibt es am unteren Bildschirmrand einige Buttons, mit denen er nach den verschiedene TEN-Arten filtern kann. Zusätzlich kann er über eine Suchfunktion alle TENs durchsuchen.
@@ -158,7 +160,7 @@ Im Folgenden ist das Usecase-Diagramm für die Übersicht zu sehen.
 \end{figure}
 
 %Yannick
-\textbf{Datenstruktur und Typen (Yannick Rüttgers)}\\
+\paragraph{Datenstruktur und Typen (Yannick Rüttgers)}
 Die Daten für diese Activity werden hauptsächlich über die Klasse OverviewData verwaltet.
 
 Wenn die Activity initiiert wird, werden zuerst alle nötigen Instanzen erstellt. Hierzu gehört unter anderen eine Instanz der Klasse OverviewData. Diese Klasse ruft in ihrem Konstruktor mithilfe einer statischen Servicemethode alle TENs als Objekte ab. Diese Objekte werden in einer ArrayList gespeichert. Bei Bedarf werden diese Daten neu geladen.
@@ -172,7 +174,7 @@ Wenn Fragments generiert werden, bekommen diese die Daten des zugehörigen TEN-O
 Zusätzlich hält jedes Fragment zwei Informationen über sich. Dies ist zum einen der Löschzustand, über den das Fragment steuern kann, ob es zum Löschen markiert werden kann oder nicht. Zum anderen hält das Fragment die Information, ob es markiert ist, um dies im Falle einer Löschung angeben zu können. Diese beiden Informationen können aus dem Fragment abgerufen werden.
 
 %Yannick
-\textbf{Dokumentation des Quelltextes der Activity (Yannick Rüttgers)}\\
+\paragraph{Dokumentation des Quelltextes der Activity (Yannick Rüttgers)}
 Allgemein
 Die OverviewActivity besteht aus 35 verschiedenen Klassen. Diese Klassen sind in verschiedene Pakete unterteilt.
 Zum einen gibt es die Klassen, die unmittelbar zur OverviewActivity an sich gehören. Zu diesen zugehörig sind die Klassen, die für den Header der Activity genutzt werden.
@@ -373,9 +375,11 @@ Diese Klasse stellt die Logik des Image-Fragments dar. Hier werden den Feldern d
 -public void applyData()
 Diese Methode übergibt die Attribute des Dataobjekts an das Guiobjekt, damit die Views aktualisiert werden können.
 
+\newpage
 \subsubsection{Todo Activity}
+\fancyhead[L]{Todo Activity}
 %Florian
-\textbf{Aufgabe und Funktionen (Florian Rath)}\\
+\paragraph{Aufgabe und Funktionen (Florian Rath)}
 Die Activity Todo dient dem Nutzer dazu, seine Aufgaben zu organisieren. Wenn er eine neue Todo erstellt hat, hat er die Möglichkeit einen Titel und eine Beschreibung einzugeben. Diese Eingabemöglichkeiten sind jedoch optional und hindern den Nutzer nicht daran, die Todo wieder zu verlassen und somit abzuspeichern. Der Titel für eine Todo könnte beispielsweise „Einkaufsliste“ lauten, während die Beschreibung nähere Informationen wie zum Beispiel „Für die Geburtstagsparty von meiner Tochter“ beinhalten kann. So hat der Benutzer die Möglichkeit mehrere Einkaufslisten anzulegen und sie mit einer Beschreibung voneinander differenzieren.
 
 Neben dem Titel und der Beschreibung können auch ein Start- und Enddatum festgelegt werden. Dies ist hilfreich, wenn für eine Todo bestimmte Fristen vorhanden sind. Geht es in der Todo z.B. um eine Prüfungsvorbereitung, kann der Benutzer auswählen, wann er spätestens mit dem Lernen anfangen muss und bis wann er spätestens mit dem Lernen Zeit hat. Diese Funktionalität ist ebenfalls optional. Man kann also auch Todos verwenden, ohne ein bestimmtes Start- und Enddatum anzugeben. Die App zeigt dann immer jeweils das aktuelle Datum in den Eingabefeldern an.
@@ -387,7 +391,7 @@ Unterstrichen wird die Gesamtfunktionalität mit einer Fortschrittsanzeige. Ein 
 Der User hat auch die Möglichkeit eine Todo zu löschen.
 
 %Sertan
-\textbf{Layout, Screenshots (Sertan Cetin)}\\
+\paragraph{Layout, Screenshots (Sertan Cetin)}
 Um eine maximale Bedienbarkeit zu gewährleisten, verfügt diese Activity insgesamt genau über zwei Layouts. Während das eine Layout die Benutzersteuerelement im Porträtmodus darstellt, dient das andere Layout dazu, die Elemente im Landscape-Modus darzustellen. Der Unterschied zwischen den beiden Layouts liegt in der Anordnung der Elemente. Im Porträtmodus belegt jedes Element eine Zeile auf dem Bildschirm. Sie sind also untereinander angeordnet. Im Landscape-Modus ist die Ansicht in zwei Spalten geteilt. In der linken Spalte sind der Titel, Beschreibung, Start- und Enddatum untereinander angeordnet. In der rechten Spalte befinden sich die einzelnen Aufgaben. Die Breite der linken Spalte hat einen festen Wert, nämlich 640px. Die Prozentanzeige befindet sich unabhängig von den beiden Spalten immer mittig am unteren Bildschirmrand.
 
 Oben ist eine Toolbar vorhanden, mit einem Zurück-Button, um zur Hauptübersicht zu gelangen, und einem Menü, in welchem die Todo gelöscht werden kann.
@@ -426,13 +430,13 @@ Nachdem auf eines der Eingabefelder für Daten getippt wurde, initialisiert die 
 \end{figure}
 
 %Florian
-\textbf{Use Case (Florian Rath)}\\
+\paragraph{Use Case (Florian Rath)}
 Die Todo-Activity kann man über zwei Wege erreichen. Beide Wege erfolgen aus der Übersichts-Activity.
 
 Der User kann entweder eine neue Todo erstellen, sodass in der Todo-Activity eine nicht vorhandene Todo-ID übergeben wird, oder er kann auf eine bereits vorhandene Todo tippen. Die ID dieser Todo wird dann aus der Datenbank geladen und in der Activity dargestellt. Die Todo-Activity deckt die Funktionalitäten des Todo-TEN‘s ab.
 
 %Sertan
-\textbf{Datenstrukturen und -typen (Sertan Cetin)}\\
+\paragraph{Datenstrukturen und -typen (Sertan Cetin)}
 Um die gewünschten Anforderungen zu erfüllen und dabei sowohl eine hohe Wartbarkeit als auch Modularität zu gewährleisten, wurden innerhalb der Todo-Activity mehrere Klassen implementiert. Nachfolgend werden diese Klassen vorgestellt.
 
 Wenn die Todo-Activity aus der Overview-Activity gestartet wird, wird eine Instanz der Klasse Init, die die Schnittstelle AppCompatActivity implementiert, erstellt. In dieser Klasse werden weitere Klassen, die im Rahmen des Projektes angelegt wurden, erstellt. Bei diesen Klassen handelt es sich um Gui, TodoApplicationLogic und Data. Auf diese wird im Nachfolgenden näher eingegangen.
@@ -443,7 +447,7 @@ Die Data-Klasse speichert das Todo und stellt die Schnittstelle zwischen der Dat
 
 In der TodoApplicationLogic-Klasse findet die gesamte Geschäftslogik statt. Sie verbindet im Wesentlich die Data mit der Gui. Sie ist unteranderem für die Interaktion zuständig.
 
-\textbf{Dokumentation des Quelltextes der Activity}\\
+\paragraph{Dokumentation des Quelltextes der Activity}
 In diesem Kapitel wird der Quelltext der Todo-Activity vorgestellt und erläutert. Dabei wird Klasse für Klasse, Methode für Methode vorgegangen. 
 Methoden der Init-Klasse (Sertan Soner Cetin)
 Die Init Klasse verfügt insgesamt über 10 Methoden. Da die Klasse die Schnittstelle AppCompatActivity implementiert, sind die Methoden onCreate, onCreateOptionsMenu, onSaveInstanceState, onActivityResult, onBackPress und onConfigurationChanged vorhanden. Daneben sind noch Methoden wie initData, initGUI und initApplicationLogic vorhanden.
@@ -530,7 +534,9 @@ Diese Methode speichert zuerst das Todo-Objekt aus der Data-Klasse in einer loka
 Public void onConfigurationChanged(Gui pGui)
 Bei dieser Methode handelt es sich um einen Event-Handler. Diese initialisiert die Gui und Listener erneut. Dazu werden die beschriebenen Methoden initGui und initListener aufgerufen.
 
+\newpage
 \subsubsection{Event Activity (Robin Menzel)}
+\fancyhead[L]{Event Activity}
 %Robin
 Dieses Kappitel beschreibt die Funktionsweise der Event-Ansicht innerhalb des TEN-Managers. Diese wird aufgerufen, wenn ein Event aus der Übersichtsseite angeklickt wird oder ein neues Event erstellt wird.
 
@@ -704,8 +710,6 @@ Diese Methode gerrechnet aus der Differenz zwischen dem Zeitpunkt der Erinnerung
 \textit{getReminderFromLabel}\\
 Diese Methode errechnet aus der Beschrifftung den richtigen Zeitpunkt einer Erinnerung.
 
-
-
 \subparagraph{GUI}
 \subparagraph*{EventGui}
 Diese klassse beinhaltet alle Benutzeroberflächenattribute, auf welche so zugegriffen werden kann.\\
@@ -731,7 +735,13 @@ Da über einen Konstruktor eine vorhandene Zeit eines Events noch nicht übergeb
 \subparagraph{RecurringTypeHelper}
 Diese Funktion stellt eine Verbindung zwischen dem Enum Objekt ReccuringType und den Beschriftungen der Wiederholungen her.
 
+\newpage
+\subsubsection{Note Activity}
+\fancyhead[L]{Note Activity}
+FHDW
 
+\newpage
+\fancyhead[L]{}
 \subsection{Dokumentation der Navigation zwischen Activities (Yannick Rüttgers)}
 %%%%%%%%%%%
 %Yannick
