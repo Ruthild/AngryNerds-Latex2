@@ -1139,86 +1139,161 @@ Die NoteApplicationLogic-Klasse ist die zentrale Logik-Klasse in der Note-Activi
 \end{minipage}
 \end{figure}
 
-\paragraph{Dokumentation des Quelltextes der Activity (Joscha Nassenstein und Jan} Beilfuß)
-Im Nachfolgenden sind die einzelnen Klassen der Note-Activity mit den jeweiligen wichtigsten Funktionen kurz beschrieben. In einem Beispiel ist ein Quellcodeausschnitt beigefügt.
-Klasse: NoteActivity (Joscha Nassenstein)
+\paragraph{Dokumentation des Quelltextes der Activity (Joscha Nassenstein und Jan Beilfuß)}
+\paragraph{Dokumentation des Quelltextes der Activity}
+Im Nachfolgenden sind die einzelnen Klassen der \textit{Note-Activity} mit den jeweiligen wichtigsten Funktionen kurz beschrieben. In einem Beispiel ist ein Quellcodeausschnitt beigefügt.
+\subparagraph{Klasse: NoteActivity (Joscha Nassenstein)}
 Diese Klasse ist der zentrale Einstiegspunkt der Note-Activity und ist aus der AppCompatActivity-Klasse abgeleitet. Hier werden einige Methoden letzterer überschrieben und an die eigenen Anforderungen angepasst.
-onCreate
+
+\textit{onCreate}:\\
 In dieser Methode wird die im Intent übergebene ID ausgelesen und anhand dessen die NoteData-Klasse initialisiert. Zusätzlich werden NoteGui, NoteApplicationLogic und EventDispersion initialisiert. Falls keine ID übergeben wurde, wird die Tastatur eingeblendet und die NoteGui-Klasse mit dem Parameter pNewNote = true initialisiert, wodurch das Titelfeld zur direkten Eingabe durch den Benutzer fokussiert wird.
-onActivityResult
+
+\textit{onActivityResult}:\\
 An dieser Stelle wird das Ergebnis einer zuvor gestarteten externen Activity abgefangen und an die NoteApplicationLogic weitergegeben, wo das Ergebnis weiterverarbeitet werden kann.
-onCreateContextMenu
+
+\textit{onCreateContextMenu}:\\
 Diese Methode wird jeweils für die Erstellung des Kontextmenüs innerhalb der Activity und in der Toolbar überschrieben. Die Methoden unterscheiden sich dabei durch den Rückgabetyp und den Parameter. Die Erstellung des Kontextmenüs findet letztlich in der Klasse EventDispersion statt.
-onContextItemSelected
+
+\textit{onContextItemSelected}:\\
 Hier wird ebenfalls die entsprechende Methode in EventDispersion aufgerufen.
-onConfigurationChanged
+
+\textit{onConfigurationChanged}:\\
 Diese Methode wird aufgerufen, falls die Konfiguration des Gerätes, beispielsweise die Ausrichtung, verändert wird. Normalerweise wird bei einer Konfigurationsänderung die aktuelle Instanz der Activity beendet und eine neue Instanz aufgerufen. Dies wird jedoch durch die explizite  Einstellung im AndroidMainfest verhindert, damit hier ein eigener Ablauf implementiert werden kann. Konkret wird die Datenklasse erhalten, um weiterhin den aktuellen Stand der Daten zur Verfügung zu stellen. Die Oberfläche der Activity wird hingegen neu erstellt, da sich einige Elemente ändern. Dazu zählt primär der horizontale Scrollview, welcher in der Landscape-Ansicht einem Vertikalen weichen soll. Zusätzlich wird die entsprechende Methode in der NoteApplicationLogic aufgerufen, um weitere Aktionen durchzuführen.
-Klasse: NoteConstants (Jan Beilfuß) 
+
+\subparagraph{Klasse: NoteConstants (Jan Beilfuß)}
 Diese Klasse enthält alle Konstanten, die in der Programmierung der Notiz-Activity Verwendung finden. Dazu gehören IDs und Requestcodes für den Datenaustausch mit den aus der Notiz-Activity aufgerufenen Intents Gallery, Kamera und NoteTagActivity, aber auch Skalierungsfaktoren und Größen, die in der Gui verwendet werden.
-Klasse: NoteDataHelper (Jan Beilfuß)
+
+\subparagraph{Klasse: NoteDataHelper (Jan Beilfuß)}
 Diese Klasse hat den Zweck Methoden zu bündeln, welche nicht am direkten Datenaustausch mit dem Backend oder Gui zu tun haben. Dazu zählt beispielsweise eine Methode, um zu checken, ob das gehaltene Notiz-Objekt lediglich mit default-Werten gefüllt ist.
-isSaveable
+
+\textit{isSaveable}:\\
  Diese Methode prüft, ob der Titel und die Beschreibung leere Strings sind. Weiterhin wird geprüft, ob die enthaltenen Listen tags und pictures leer sind. Sind alle Strings und Listen leer, wird das Objekt aus der Datenbank gelöscht und false zurückgegeben. Dadurch soll verhindert werden, dass leere Notiz-Kacheln in der Overview-Activity angezeigt werden.
-DATA
-Klasse: NoteData (Joscha Nassenstein)
+
+\subparagraph{DATA}
+\subparagraph{Klasse: NoteData (Joscha Nassenstein)}
 Die NoteData-Klasse spiegelt die zentrale Datenverwaltungsklasse wieder, aus der die backend- beziehungsweise benutzeroberflächen-bezogenen Datenklassen angesprochen werden.
-shareNote
+
+\textit{shareNote}:\\
 Diese Methode wird aufgerufen, falls der Benutzer im Kontextmenü die Option des Teilens ausgewählt hat. Von hier aus wird die shareNote-Methode im ShareModule aufgerufen.
-Klasse: NoteDataBackend (Jan Beilfuß)
+
+\subparagraph{Klasse: NoteDataBackend (Jan Beilfuß)}
 In dieser Klasse werden alle Datenfunktionen gesteuert, welche mit dem Backend interagieren. Weiterhin wird hier die Liste der Bilder gehalten, welche beim Speicher zu löschen sind. Wenn der Nutzer beispielsweise ein Bild löscht und dann die App ohne speichern schließt, ist das Bild beim nächsten Laden im Vergleich zum direkten Löschen noch vorhanden.
-deleteImage
+
+\textit{deleteImage}:\\
 Diese Methode entfernt das zu löschende Bild aus dem Note-Objekt und fügt dieses der Liste mit den zu löschenden Bildern hinzu.
-triggerOriginalImageLoad
+
+\textit{triggerOriginalImageLoad}:\\
 Diese Methode ruft im Taskmanager eine Funktion auf, um ein Bild in voller Auflösung im Hintergrund nachzuladen.
-setColors
+
+\textit{setColors}:\\
 Diese Methode lädt die Haupt un die Akzentfarbe zu dem Notizobjekt, dessen ID übergeben wurde und setzt diese in dem in NoteData gehaltenenen Notizobjekt.
-executeSaveRoutine
+
+\textit{executeSaveRoutine}:\\
 Diese Methode veranlasst das persistente Löschen der Bilder. Wenn die Notiz komplett leer ist, wird diese gelöscht, andernfalls wird sie in der Datenbank gespeichert. 
-finallyDeleteImages
+
+\textit{finallyDeleteImages}:\\
 Diese Methode geht über alle ImageObjekte in der Liste mit den zu löschenden Bildern und übergibt diese der Delete-Methode im ImageService. Dadurch werden die Bilder im Dateisystem gelöscht.
-deleteNote 
+
+\textit{deleteNote}:\\
 Diese Methode wird aufgerufen, wenn man die Notiz in der Datenbank löschen möchte. Wenn das NoteObjekt existiert, wird dessen ID der Delete-Methode im Delete-Service aufgerufen und die ID übergeben.
-loadNote
+
+\textit{loadNote}:\\
 Diese Methode wird im Erstellungprozess der Notiz-Activitiy aufgerufen und veranlasst das Laden des Notizobjektes. Dafür wird im Taskmanager die Methode loadNote aufgerufen.
-deleteImageFromDisk
+
+\textit{deleteImageFromDisk}:\\
 Diese Methode löscht ein einzelnes Bild im Speicher. Sie wird aufgerufen, um die Datei, welche temporär für die Kamera-Activitiy angelegt wurde zu löschen. 
-saveImage
+
+\textit{saveImage}:\\
  Diese Methode speichert ein übergebenes Bild. Sie wird verwendet nachdem eine Bitmap aus der Note oder Kameraactivity geladen und mit einer ID versehen wurde, um diese im Datenordner der Applikation abzulegen.
-Klasse: Alle async Task Klassen, siehe package – Jan please
-Klasse: NoteDataGui (Jan Beilfuß)
-Das hast du meiner Meinung nach auch alles gemacht, also deins. Falls ich falsch liege, sag Bescheid.
-In dieser Klasse werden alle Datenfunktionen gesteuert, welche mit der Benutzeroberfläche interagieren. 
-Klasse: PreviewImageCreator (Joscha Nassenstein)
+
+\subparagraph{Klasse: TaskManager (Jan Beilfuß)}
+Diese Klasse verwaltet den Einsatz aller asynchrone Tasks, die zum Laden von Daten aus der Datenbank und dem Dateisystem verwendet werden. 
+
+\textit{triggerOriginalImagePriorityLoad}:\\
+Diese Methode erzeugt ein Objekt der Klasse PriorityOriginalImageLoader. Über dieses Objekt wird das Bild zu dem übergebenen Index in originaler Größe asynchron geladen.
+
+\textit{loadPreviewImages}:\\
+Diese Methode erzeugt ein Objekt der Klasse NotePreviewImageLoader. Über dieses Objekt wird das Bild zu dem übergebenen Index in Vorschaugröße asynchron geladen.
+
+\textit{loadNote}:\\
+Diese Methode erzeugt ein Objekt der Klasse NoteLoader. Über dieses Objekt wird das Noteobjekt zu der übergebenen ID asynchron geladen.
+
+\subparagraph{Klasse: NotePreviewImageLoader (Jan Beilfuß)}
+Diese Klasse erzeugt einen asynchrone Task der Klasse LoadPreviewImageTask, welche von AsyncTask erbt.
+
+\textit{loadPreviewImage}:\\
+Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird eine Kopie des Image-Objektes aus dem NoteObjekt angefertigt und in diese das gewünschte Vorschaubild geladen. Nach dem Laden wird in textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode textit{addAsyncPreviewImage} in die Note Activity geladen.
+
+\subparagraph{Klasse: PriorityOriginalIMageLoader (Jan Beilfuß)}
+Diese Klasse erzeugt einen asynchrone Task der Klasse LoadOriginalImageTask, welche von AsyncTask erbt.
+
+\textit{loadOriginalImage}:\\
+Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird das Bild in originaler Größe geladen. Vor dem Laden wird in textit{onPreExecute} der Ladespinner gestartet. Nach dem Laden wird in textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode textit{addAsyncPreviewImage} in die Note Activity geladen, der Ladespinner gestoppt und das Bild als Popup angezeigt.
+
+\subparagraph{Klasse: NoteLoader (Jan Beilfuß)}
+Diese Klasse erzeugt einen asynchrone Task der Klasse LoadNoteTask, welche von AsyncTask erbt.
+\textit{loadNote}:\\
+Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird das Note-Objekt aus der Datenbank geladen. Nach dem Laden wird in textit{onPostExecute} das Note-Objekt in NoteData gesetzt und die Methode textit{dataToGui} ausgeführt, um dieses in der Oberfläche anzuzeigen.
+\subparagraph{Klasse: NoteDataGui (Jan Beilfuß)}
+In dieser Klasse werden alle Datenfunktionen gebündelt, welche Datenänderungen durch Nutzer-Interaktion mit der Oberfläche erzeugen. Weiterhin wird hier die Liste der Bilder gehalten, welche in der Oberfläche als Vorschaubilder angezeigt werden.
+\textit{addImageFromGallery}:\\
+Diese Methode bekommt die Bitmap des aus der Gallerie importierten Bildes übergeben. Daraus wird über die Methode textit{addPreviewImageFromOriginal} ein Vorschaubild erzeugt und dieses der Liste mit Vorschaubildern hinzugefügt. Weiterhin wird das Originale Bild in den applikationseigenen Ordnern abgespeichert.
+\textit{addPreviewImageFromOriginal}:\\
+Diese Methode erzeugt aus einem originalen Bild ein Vorschaubild und fügt dieses der klasseneigenen Liste an Vorschaubildern hinzu.
+\textit{addImageFromCamera}:\\
+Diese Methode fügt das aus der Kamera-Activity übergebene Bild hinzu. Dazu wird die Methode textit{addImageFromGallery} aufgerufen und zusätzlich die zuvor temporär erstellte Datei gelöscht.
+\textit{getOriginalImage}:\\
+Diese Methode wird aufgerufen, wenn man auf ein Bild klickt, um dieses in originaler Größe zu laden. Sofern dieses nicht in dem Note-Objekt in NoteData gespeichert ist, wird in NoteDataBackend die Methode textit{triggerOriginalImageLoad} aufgerufen, um dieses aus dem Dateisystem zu laden.
+\textit{deleteImage}:\\
+Diese Methode wird aufgerufen, wenn der Nutzer in der Oberfläche ein Bild löchen möchte. Dieses Bild wird aus der Liste an Vorschaubildern gelöscht und die Oberfläche aufgefrischt.
+\textit{refreshImages}:\\
+Diese Methode ruft in der NoteGuiRefresherLogic die Methode textit{refreshImages} auf, um die Gui bei Änderungen im Datenbestand zu aktualisieren.
+\textit{getLatestImage}:\\
+Diese Methode gibt das letzte Bild der Liste an Vorschaubildern zurück. Dies wird verwendet, damit man dieses beim Asynchronen Laden als einzelnes Bild animiert dem Layout hinzufügen kann.
+\subparagraph{Klasse: PreviewImageCreator (Joscha Nassenstein)}
 Diese Klasse beinhaltet die Methode, um ein Bild auf Vorschaugröße zu skalieren.
-getPreviewImage
+
+\textit{getPreviewImage}:\\
 Erstellt aus dem Originalbild, welches als Parameter übergeben wird, ein verkleinertes und im Seitenverhältnis angepasstes Bild. In der aktuellen Form wird dabei ein quadratisches Bild in Größe der entsprechenden Konstanten in NoteConstants erstellt.
 
-GUI
-Klasse: NoteGui (Joscha Nassenstein)
+\subparagraph{GUI}
+\subparagraph{Klasse: NoteGui (Joscha Nassenstein)}
 Die NoteGui-Klasse beinhaltet die Benutzeroberflächenelemente als Attribute, wodurch auf diese zugegriffen werden kann. Zusätzlich werden von hier aus die Animationen für das asynchrone Laden der Bilder gesteuert.
-initiateOrientationDependentViews
+
+\textit{initiateOrientationDepententViews}:\\
 Die Layouts für den Portrait- und den Landscapemodus beinhalten in der Note-Activity verschiedene Elemente, um eine optimale Darstellung zu ermöglichen. Einerseits gibt in der Portrait-Ansicht einen Separator mehr als in der Landscape-Ansicht, andererseits ist das ScrollView in der Portrait-Ansicht horizontal und in der Landscape-Ansicht vertikal scrollbar. Um diese Views entsprechend der Orientation des Gerätes auszurichten, wird in dieser Methode die aktuelle Orientation abgefragt und entsprechend des Ergebnisses die Variablen initialisiert.
-setColors
+
+\textit{setColors}:\\
 Da jede Notiz zwei verschiedene Farben enthält, werden in dieser Methode die Benutzeroberflächenelemente anhand der Farben aus der Notiz angepasst.
-formatTags
+
+\textit{formatTags}:\\
 In dieser Methode werden die Stichwörter aus der Notiz für die Ansicht formatiert.
-Klasse: GraphicsContainer (Joscha Nassenstein)
+
+\subparagraph{Klasse: GraphicsContainer (Joscha Nassenstein)}
 Diese Klasse stellt die Überklasse für die beiden nachfolgenden Klassen dar und beinhaltet ein LinearLayout, in welches ein Vorschaubild beziehungsweise ein Icon eingefügt werden kann. Dieses wird wiederum in den ScrollView der Note-Ansicht eingefügt. Das LinearLayout besitzt eine ID, welche für die Erkennung des zu löschenden Bildes bei der entsprechenden Benutzereingabe verwendet wird.
-Klasse: ImageContainer (Joscha Nassenstein)
+
+\subparagraph{Klasse: ImageContainer (Joscha Nassenstein)}
 Diese Klasse beinhaltet ein ImageView, in welches durch die nachfolgende Methode das entsprechende Vorschaubild eingefügt werden kann. Der ImageView kann von außerhalb der Klasse mithilfe eines Getters abgerufen werden, um in diesem spezifischen Falle eine Animation für das Erscheinen nach dem asynchronen Laden zu ermöglichen. Der ImageView wird im Konstruktor der Klasse ebenfalls für das Kontext-Menü registriert, um das Löschen eines Bildes zu ermöglichen.
-initiateView
+
+\textit{initiateView}:\\
 Anhand eines übergebenen Bildes wird ein imageView initialisiert und auf das LinearLayout aus der GraphicsContainer-Klasse gesetzt.
-Klasse: IconContainer (Joscha Nassenstein)
+
+\subparagraph{Klasse: IconContainer (Joscha Nassenstein)}
 In dieser Klasse wird in der nachfolgenden Methode ebenfalls ein ImageView erstellt, hier jedoch mit einem Icon an Stelle eines Bildes. Der ImageView selbst wird hier nicht gehalten, da dieser nur temporär in der nachfolgenden Methode benötigt wird.
-initiateView
+
+\textit{initiateView}:\\
 Anhand des im Konstruktors übergebenen Icons wird der ImageView initialisiert und auf das LinearLayout aus der GraphicsContainer-Klasse gesetzt. Die Layout-Parameter werden anhand der aktuellen Orientierung ausgewählt, um eine unnötig breite Erscheinung des Layouts zu vermeiden.
-Klasse: ImageOverlay (Joscha Nassenstein)
+
+\subparagraph{Klasse: ImageOverlay (Joscha Nassenstein)}
 In dieser Klasse wird anhand eines übergebenen Bildes und der aktuellen Displayeigenschaften ein AlertDialog erstellt, welcher das Bild im Großformat anzeigt.
-display
+
+\textit{display}:\\
 Der bereits erwähnte AlertDialog wird mit dem übergebenen Bild und entsprechend der in der nachfolgenden Methode berechneten Größe erstellt und anschließend angezeigt.
-calculateSize
+
+\textit{calculateSize}:\\
 Hier wird anhand der in die Klasse übergebenen aktuellen Displayeigenschaften, sprich der Displaygröße, das aktuelle Seitenverhältnis ausgerechnet. Dies wird ebenfalls für das Bild durchgeführt. Anschließend wird anhand verschiedener Vergleiche die optimale Bildgröße ermittelt, sodass das Bild in maximaler Größe angezeigt werden kann und der AlertDialog keine Ränder aufweist. Ermittelt wird diese Größe dadurch, dass überprüft wird, ob das Bild bei einer Skalierung zunächst die Breite oder die Höhe des Bildschirms überschreiten würde. Zusätzlich wird ein in NoteConstants vermerkter Füllfaktor berücksichtigt, welcher bestimmt, zu welchem Grad der Bildschirm mit dem Bild ausgefüllt werden soll.
-Der Quellcode ist im Nachfolgenden dargestellt:
+Der Quellcode ist im Nachfolgenden dargestellt: 
+
 
 \begin{figure}[H]
 \centering
@@ -1229,91 +1304,253 @@ Der Quellcode ist im Nachfolgenden dargestellt:
 \end{minipage}
 \end{figure}
 
-changeOrientation
+\textit{changeOrientation}:\\
 Bei einer Konfigurationsänderung wird in der NoteApplicationLogic stets überprüft, ob aktuell ein ImageOverlay angezeigt wird. Ist dies der Fall, wird diese Methode aufgerufen, um den aktuellen AlertDialog zu verwerfen und entsprechend der neuen Displayeigenschaften einen Neuen zu erstellen, damit der Bildschirm wieder maximal ausgefüllt wird.
 
-LOGIC
-Klasse: NoteApplicationLogic (Joscha Nassenstein)
+\subparagraph{LOGIC}
+\subparagraph{Klasse: NoteApplicationLogic (Joscha Nassenstein)}
 Diese Klasse stellt die zentrale Stelle für die Logik der Note-Activity dar und verwaltet die anderen Klassen, welche in diesem Paket zu finden sind.
-onConfigurationChanged
+
+\textit{onConfigurationChanged}:\\
 Diese Methode wird aus NoteActivity aufgerufen, falls sich die Konfiguration der Geräts geändert hat. Anhand der neu übergebenen Gui-Klasse werden dabei die ClickListener neu gesetzt und die Benutzeroberfläche mit den bestehenden Daten aufgefüllt. Zusätzlich wird die Methode changeConfiguration in der ImagePopupLogic aufgerufen.
-Klasse: ClickListener (Joscha Nassenstein)
+
+\subparagraph{Klasse: ClickListener (Joscha Nassenstein)}
 Die Klasse ClickListener implementiert das Interface View.OnClickListener und kann dementsprechend instanziiert auf ein View als OnClickListener gesetzt werden.
-onClick
-Hier wird die Methode aus der Basisklasse überschrieben und an die eigenen Anforderungen angepasst. Konkret wird überprüft, ob auf die Stichworte oder auf den Zurückpfeil in der Toolbar geklickt wurde, auf die jeweils ein ClickListener gesetzt wurde. Ist dies nicht der Fall, wird anhand der ID überprüft, ob auf ein Bild geklickt wurde und auf welches, um letztlich das Popup mit dem Bild anzuzeigen.
-Klasse: DialogClickListener (Joscha Nassenstein)
+
+\textit{onClick}:\\
+Hier wird die Methode aus der Basisklasse überschrieben und an die eigenen Anforderungen angepasst. Konkret wird überprüft, ob auf die Stichworte oder auf den Zurückpfeil in der Toolbar geklickt wurde, auf die jeweils ein ClickListener gesetzt wurde. Ist dies nicht der Fall, wird anhand der ID überprüft, ob auf ein Bild geklickt wurde und auf welches, um letztlich das Popup mit dem Bild anzuzeigen
+
+\subparagraph{Klasse: DialogClickListener (Joscha Nassenstein)}
 Diese Klasse implementiert das Interface DialogInterface.OnClickListener und wird in diesem Falle auf das Menü zur Auswahl der Bildquelle gesetzt.
-onClick
+
+\textit{onClick}:\\
 Hier wird ermittelt, ob die Option Galerie oder die Option Kamera ausgewählt wurde und dementsprechend die jeweilige Methode in der Klasse ImageImport aufgerufen.
-Klasse: EventDispersion (Joscha Nassenstein)
+
+\subparagraph{Klasse: EventDispersion (Joscha Nassenstein)}
 Diese Klasse ist für das Erstellen und das Behandeln des Kontextmenüs zuständig, welches hier auf ein Bild im ScrollView gesetzt wird, falls der Nutzer lange auf dieses drückt.
-onCreateContextMenu
+
+\textit{onCreateContextMenu}:\\
 Hier wird das Menü auf den View gesetzt und die ID des Views gespeichert, um bei einer Auswahl der Option „Bild löschen“ die ID für das Bild zu haben, welches gelöscht werden soll.
-onContextItemSelected
+
+\textit{onContextItemSelected}:\\
 Wird ausgewählt, dass das Bild gelöscht werden soll, wird hier die entsprechende Methode in der NoteApplicationLogic anhand der zuvor gespeicherten ID aufgerufen.
-Klasse: ImageOverlayListener (Jan Beilfuß)
-Text
-Klasse: MenuItemClickListener (Joscha Nassenstein)
+
+\subparagraph{Klasse: ImageOverlayListener (Jan Beilfuß)}
+Diese Klasse implementiert das Interface DialogInterface.OnCancelListener.
+textit{onCancel}
+Diese Methode wird aufgerufen, wenn der Dialog, welchem der KlickListener hinzugefügt wurde durch den Nutzer geschlossen wird. Es werden dann zum einen alle Bitmaps, mit Bildern in Originalgröße aus dem Arbeitsspeicher gelöscht und das ImageOverlay ebenfalls auf null gesetzt, um den Speicherverbrauch zu optimieren.
+
+\subparagraph{Klasse: MenuItemClickListener (Joscha Nassenstein)}
 Diese Klasse implementiert das Interface Toolbar.OnMenuItemClickListener und ist für das Behandeln der Optionen im Menü der Toolbar zuständig.
-onMenuItemClick
+
+\textit{onMenuItemClick}:\\
 Falls der Nutzer eine Option ausgewählt hat, wird hier die Methode onMenuItemClicked in der Klasse NoteClickHandler aufgerufen und das MenuItem als Parameter übergeben.
-Klasse: MotionListener
+
+\subparagraph{Klasse: MotionListener (Joscha Nassenstein)}
 Die Klasse MotionListener implementiert das Interface View.OnTouchListener und wird hier als OnTouchListener auf den ImageView des Popups gesetzt, um Wischgesten erkennen zu können.
-onTouch
+
+\textit{onTouch}:\\
 Die Methode onTouch überschreibt die Methode der Basisklasse und ermittelt anhand des übermittelten MotionEvents, ob und falls ja, in welche Richtung gewischt wurde. Die minimale Distanz ist dabei in NoteConstants festgelegt. Anhand der Richtung wird bei Erfüllung dieses Kriteriums die jeweilige Methode in NoteImagePopupLogic aufgerufen. Bei einer horizontalen Wischgeste wird dabei das nächste bzw. vorherige Bild aufgerufen (falls dies existiert) und bei einer vertikalen Wischgeste wird das Overlay geschlossen.
-Klasse: NoteListenerHandler (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteListenerHandler (Joscha Nassenstein)}
 Diese Klasse beinhaltet alle Methoden, welche aus den onClick-Methoden der Listener- bzw. Watcher-Klassen aufgerufen werden und bestimmte Aktionen ausführen.
-onImageClicked
+
+\textit{onImageClicked}:\\
 Diese Methode wird aufgerufen, falls auf ein Bild beziehungsweise das „Bild hinzufügen“-Icon im ScrollView geklickt wurde. In letzterem Falle wird das Importieren eines Bildes initialisiert. Falls ein Bild angeklickt wurde, wird das Popup zur Vollbildanzeige des Bildes initialisiert.
-onTagsClicked
+
+\textit{onTagsClicked}:\\
 Falls der TextView, welcher die Stichworte enthält, angeklickt wurde, wird die Methode startTagActivity() in der NoteNavigationLogic aufgerufen, welche die neue Activity zur Verwaltung der Stichwörter startet.
-onTextChanged
+
+\textit{onTextChanged}:\\
 Hier wird, je nachdem, ob der Text im Titel oder in der Beschreibung geändert wurde, stets der aktuelle Stand in das Note-Objekt gespeichert.
-onMenuItemClicked
+
+\textit{onMenuItemClicked}:\\
 Diese Methode wird aus dem menü der Toolbar heraus aufgerufen und ist je nach Auswahl dafür zuständig, den „Notiz teilen“-Vorgang aus dem ShareModule heraus zu starten beziehungsweise die Notiz zu löschen und zur Übersicht zurückzukehren (mittels der Methode returnToOverview() der NoteNavigationLogic).
-Klasse: NoteListenerInitializer (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteListenerInitializer (Joscha Nassenstein)}
 Diese Klasse hat den ClickListener der Note-Activity als Attribut enthalten und ist für dessen Initialisieren zuständig.
-initListener
+
+\textit{initListener}:\\
 In dieser Methode wird der ClickListener auf die verschiedenen Views gesetzt. Zu den Views zählen das LinearLayout, welches im ScrollView die einzelnen Bilder und das Icon beinhaltet, sowie der TextView mit den Stichwörtern und der Zurück-Button der Toolbar. Zusätzlich werden auf die EditText-Views für Titel und Beschreibung jeweils ein TextWatcher gesetzt und der MenuItemClickListener auf das Toolbar-Menü gesetzt.
-Klasse: NoteTextWatcher (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteTextWatcher (Joscha Nassenstein)}
 Der NoteTextWatcher implementiert das Interface android.text.TextWatcher und ist zur Speicherung von Eingaben in Titel und Beschreibung zuständig.
-onTextChanged
+
+\textit{onTextChanged}:\\
 Diese Methode überschreibt die entsprechende Methode der Basisklasse und ist dafür zuständig, die OnTextChanged-Methode im NoteClickHandler aufzurufen, falls ein Text geändert wurde, und die entsprechende CharSequence und den View, in welchem die Änderun stattgefunden hat, zu übergeben.
-Klasse: NoteImageImportLogic (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteImageImportLogic (Joscha Nassenstein)}
 In dieser Klasse sind die Funktionen beinhaltet, welche das Importieren von Bildern aus Kamera und Galerie anstoßen.
-requestImageSource
+
+\textit{requestImageSource}:\\
 In dieser Methode wird zunächst überprüft, ob das Gerät eine Kamera besitzt. Ist dies nicht der Fall, wird die Methode importImageFromGallery aufgerufen. Falls das Gerät eine Kamera besitzt, wird dem Nutzer ein Dialog angezeigt, welcher abfragt, ob der Benutzer ein Bild aufnehmen oder aus der Gallerie importieren möchte. Der DialogClickListener, welcher auf den AlertDialog gesetzt wird, erfasst die Benutzereingabe.
-importImageFromCamera
+
+\textit{importImageFromCamera}:\\
 In dieser Methode wird ein Intent erstellt, welcher anhand der Methode Activity.startActivityForResult die Android-eigene Kamera-Activity startet. Um die Aufnahme als Datei speichern zu können, wird durch den ImageService, welcher in den Activity-übergreifenden Klassen zu finden ist, eine Bilddatei erstellt (Methode: createImageFile) und die entsprechende Uri durch den Intent an die Kamera-Activity mitgegeben. In Android Version unter Android 6.0 („Marshmallow“) müssen diesem Intent zusätzlich zwei Flags mitgegeben werden, welche das Lesen und Schreiben dieser Uri erlauben und somit eine SecurityException vermeiden.
 Die Kamera-Activity wird anhand eines in NoteConstants festgelegten, spezifischen RequestCodes gestartet, um das Ergebnis nach Rückkehr richtig zuordnen zu können.
-importImageFromGallery
+
+\textit{importImageFromGallery}:\\
 Hier wird ein Intent erstellt, in welchem nach Start der Activity ein Bild aus der Gallerie importiert werden kann. Da der Pfad zu dem jeweiligen Bild direkt aus dem Result extrahiert werden kann, muss hier keine Datei erstellt werden. Auch hier wird ein in NoteConstants spezifizierter Requestcode mitgegeben. 
-Klasse: NoteAsyncLoadingLogic (Jan Beilfuß)
-Klasse: NoteGalleryImportLogic (Jan Beilfuß)
-Klasse: NoteGuiRefresherLogic (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteAsyncLoadingLogic (Jan Beilfuß)}
+Diese Klasse bündelt alle Methoden, welche beim asynchronen Nachladen von Bildern aufgerufen werden, um Veränderungen in der Oberfläche zu bewirken.
+
+\textit{addAsyncPreviewImage}:\\
+Diese Methode wird aus dem asynchronen Task LoadPreviewImageTask aufgerufen. Sie fügt das Bild der Liste an Vorschaubildern in NoteDataGui hinzu und lässt das Bild animiert in der Gui hinzufügen.
+
+\textit{startLoadingSpinner}:\\
+Diese Methode ruft in der Gui die Methode textit{disableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld deaktiviert und reagieren nicht mehr auf Klick-Events. Weiterhin wird der Ladespinner angezeigt.
+\textit{stopLoadingSpinner}:\\
+Diese Methode ruft in der Gui die Methode textit{enableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld wieder aktiviert und reagieren auf Klick-Events. Weiterhin wird der Ladespinner wieder ausgeblendet.
+
+\subparagraph{Klasse: NoteGalleryImportLogic (Jan Beilfuß)}
+Diese Klasse bündelt alle Methoden, die den Bilderimport aus der Gallerie managen.
+
+\textit{getPath}:\\
+Diese Methode ermittelt aus dem Context und der aus der Gallery Intent zurückgegeben Uri den absoluten Pfad. Ein Objekt der Klasse Cursor zeigt auf die entsprechende Datei, und gibt den Pfad dieser zurück. Im Anschluss wird dieses geschlossen und der Pfad zurückgegeben.
+\textit{importImageFromGallery}:\\
+Diese Methode bildet den gesamten Prozess ab, um ein Bild aus der Gallerie zu Importieren. Beginnend beim Pfinden des Pfads, der Kompression, falls das Bild zu groß ist und die Korrektur der Rotation. Danach wird in NoteData die Methode textit{addImageFromGallery} aufgerufen, um das Bild den Datenhinzuzufügen und danach die Oberfläche aktualisiert.
+
+\subparagraph{Klasse: NoteGuiRefresherLogic (Joscha Nassenstein)}
 Diese Klasse ist dafür zuständig, die Benutzeroberfläche zu aktualisieren, beispielsweise bei Aufruf der Activity und bei einer Konfigurationsänderung.
-dataToGui
+
+\textit{dataToGui}:\\
 Aus dieser Methode heraus werden die Farben der Benutzeroberfläche gesetzt und anhand des Note-Objekts die Felder Titel, Beschreibung und Stichworte mit Inhalt gefüllt. Anschließend wird die nachfolgende Methode zur Erneuerung der Vorschaubilder aufgerufen.
-refreshImages
+
+\textit{refreshImages}:\\
 In dieser Methode werden zunächst alle Views aus dem LinearLayout, welches im ScrollView der Activity die Bilder beinhaltet, gelöscht. Anschließend werden alle PreviewImages aus NoteData auf das LinearLayout gesetzt und jeweils mit einer ID und einem ClickListener versehen. Als letzter Schritt wird das „Bild hinzufügen“-Icon auf das LinearLayout gesetzt und ebenfalls mit einer ID und einem Clicklistener versehen.
-Klasse: ImagePopupLogic (Joscha Nassenstein und Jan Beilfuß)
+
+\subparagraph{Klasse: ImagePopupLogic (Joscha Nassenstein und Jan Beilfuß)}
 In dieser Klasse wird das ImageOverlay erstellt und gestartet.
-openImagePopup (Joscha Nassenstein)
+
+\textit{openImagePopup (Joscha Nassenstein}:\\
 In dieser Methode werden die aktuellen Displayeigenschaften abgefragt und anhand der aktuellen Maßen das ImageOverlay erstellt und gestartet.
-changeConfiguration (Jan Beilfuß)
-Text
-displayPreviousImage
-Falls eine Wischgeste von links nach rechts auf dem ImagePopup erkannt wurde, welche die Mindestdistanz in NoteConstants übertrifft, wird diese Methode ausgeführt. Hier wird überprüft, ob ein vorheriges Bild existiert. Falls dies der Fall ist, wird die Methode displayNewImage mit der neuen ID aufgerufen. In der Methode displayPreviousImage wird der gegenteilige Fall behandelt.
-displayNewImage
+
+\textit{changeConfiguration (Jan Beilfuß)}:\\
+
+Diese Methode wird ausgeführt wenn man ein Image-Popup geöffnet hat und den Bildschirm öffnet. Über die neue Konfiguration kann man sich die Bildschirmmaße nach der Drehung in dp ausgeben lassen. Über die Pixeldichte wird Größe auf Pixel hochgerechnet und der Methode textit{changeOrientation} des ImageOverlays mitgegeben. Diese erzeugt das Overlay dann auf die neue Displaygröße angepasst.
+
+\textit{displayPreviousImage / displayNextImage }:\\
+Falls eine Wischgeste von links nach rechts auf dem ImagePopup erkannt wurde, welche die Mindestdistanz in NoteConstants übertrifft, wird diese Methode ausgeführt. Hier wird überprüft, ob ein vorheriges Bild existiert. Falls dies der Fall ist, wird die Methode displayNewImage mit der neuen ID aufgerufen. In der Methode displayNextImage wird der gegenteilige Fall behandelt.
+
+\textit{displaynewImage}:\\
 Hier wird der aktuelle AlertDialog geschlossen, die geladenen Bitmaps zur Speicheroptimierung gelöscht und anschließend anhand der übergebenen ID ein neuer AlertDialog aufgerufen.
-Klasse: NoteNavigationLogic (Joscha Nassenstein)
+
+\subparagraph{Klasse: NoteNavigationLogic (Joscha Nassenstein)}
 In dieser Klasse werden alle Interaktionen mit anderen Activities gesteuert.
-saveAndReturnToOverview
+
+\textit{saveAndReturnToOverview}:\\
 Hier wird die Methode executeSaveRoutine in NoteData ausgeführt und anschließend die NoteActivity beendet, wodurch der Nutzer zu der Übersicht zurückkehrt.
-onActivityReturned
+
+\textit{onActivityReturned}:\\
 In dieser Methode wird anhand des übergebenen Requestcodes ermittelt, aus welcher zuvor gestarteten Activity das Ergebnis stammt. Zu den Activities gehören die Android Kamera- und Galeriefunktion sowie die TagActivity zur Verwaltung der Stichwörter. Anschließend wird das Ergebnis in anderen Logik-Klassen weiterverarbeitet. Im Falle der Stichwörter werden diese direkt in das Note-Objekt und die Oberfläche eingefügt.
-startTagActivity
+
+\textit{startTagActivity}:\\
 Hier wird der Intent erstellt, welcher für das Starten der TagActivity genutzt wird. Dem Intent werden die aktuelle Stichwortliste sowie die Farbe und die Akzentfarbe der Notiz mitgegeben. Anschließend wird die TagActivity gestartet.
+
+\subsubsection{Note Activity}
+Aus der Notiz-Ansicht heraus kann man sich zwar die Stichwörter zu der jeweiligen Notiz ansehen, diese können jedoch nicht bearbeitet werden. Für die Bearbeitung der Liste steht eine weitere Activity zur Verfügung, dessen Erstellungsprozess im Folgenden beschrieben werden soll.
+
+\paragraph{Aufgabe und Funktion}
+Die Aufgabe der Activity ist, dem Nutzer das Bearbeiten der Liste zu ermöglichen. Die Activity wird stets aus der Notiz heraus gestartet und bekommt die aktuelle Liste der Stichwörter sowie die beiden Farben der Notiz übergeben. Beim Beenden der Activity wird die Liste an die Note-Activity zurückgegeben. Bei der Bearbeitung können die einzelnen Stichworte geändert, weitere Stichworte hinzugefügt und Stichworte gelöscht werden. Zusätzlich besteht eine Option, alle Stichwörter direkt zu löschen.
+
+\paragraph{Layout, Screenshots}
+Für die NoteTag-Activity war das Erstellen von zwei Layouts nötig. Aufgrund der Einfachheit des Layouts wurde auf eine andere Darstellung je nach Ausrichtung des Geräts verzichtet.
+
+Zunächst wurde hier die allgemeine Ansicht erstellt. Es umfasst die Toolbar, einen ListView zum Anzeigen der Stichworte, einen Separator in Form eines 1dp-hohen Views sowie einen Button zum Hinzufügen weiterer Stichworte.
+
+Für die einzelnen Zeilen des ListViews wurde anschließend ein separates Layout erstellt, welches einen TextView zum Anzeigen der Raute, ein EditText zum Bearbeiten des jeweiligen Stichwortes sowie einen ImageButton umfasst, welcher in Form eines X das Löschen des jeweiligen Stichwortes ermöglicht.
+Im Folgenden ist das Layout dargestellt.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{NoteTags Stichwortansicht} % Überschrift
+\includegraphics[height=20cm]{img/note_tagOverview}\\ % Pfad
+\source{Screenshot aus der Benutzeroberfläche} % Quelle
+\end{minipage}
+\end{figure}
+
+Im oberen Bildschirmbereich ist die Toolbar zu sehen. Darunter findet sich der ListView, welcher dynamisch erweitert werden kann und zu Beginn mit den übergebenen Stichworten initialisiert wird. Auf der rechten Seite können die einzelnen Stichworte gelöscht werden.
+
+Unten befindet sich der Button zum Hinzufügen von Stichworten. Dieser wird dabei stets am unteren Rand des Displays angezeigt und verschiebt sich mit der Tastatur nach oben, falls diese aufgeklappt wird.
+
+Die Farben der Activity werden aus der Notiz, aus welcher der Aufruf erfolgt ist, übernommen. Die Toolbar ermöglicht das Zurückkehren zur Notiz sowie das Löschen aller Stichworte über das Menü.
+
+\paragraph{Use-Case}
+Der Use-Case dieser Activity besteht darin, die Stichwortliste umfassend bearbeiten zu können. Die Möglichkeiten wurden dabei bereits in dem vorangegangenen Kapitel Aufgabe und Funktion dargestellt. 
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{NoteTag Use-Case Diagramm} % Überschrift
+\includegraphics[width=1 \textwidth]{img/noteTagsUseCase}\\ % Pfad
+\source{Erstellt von Joscha Nassenstein} % Quelle
+\end{minipage}
+\end{figure}
+
+\paragraph{Datenstruktur und -typen}
+Da die NoteTag-Activity nur einen sehr kleinen Umfang hat und deshalb nur wenige Klassen besitzt, wurde hier auf eine Unterstrukturierung in Packages verzichtet. Die Struktur orientiert sich an der in der Vorlesung vorgestellten Aufteilung. Alle Klassen mit Ausnahme der NoteTagActivity-Klasse sind dabei package-private, damit von außerhalb des Paketes nicht darauf zugegriffen werden kann.
+
+\paragraph{Dokumentation des Quelltextes der Activity}
+Im Nachfolgenden sind die einzelnen Klassen der NoteTag-Activity mit den jeweiligen wichtigsten Funktionen kurz beschrieben.
+
+\subparagraph{Klasse: NoteTagActivity}
+Diese Klasse ist der zentrale Einstiegspunkt der NoteTag-Activity und ist aus der AppCompatActivity-Klasse abgeleitet. Hier werden einige Methoden letzterer überschrieben und an die eigenen Anforderungen angepasst.
+
+\textit{onCreate}:\\
+In dieser Methode werden die über den Intent übergebenen Informationen, darunter die Stichwortliste, die Farbe und die Akzentfarbe, ausgelesen und mithilfe dieser die ApplicationLogic initialisiert. Zusätzlich wird die Gui-Klasse initialisiert.
+
+\subparagraph{Klasse: ApplicationLogic}
+Die ApplicationLogic-Klasse beinhaltet die Logik der NoteTag-Activity. Zusätzlich ist hier die ArrayList mit den Stichwörtern beinhaltet, da dies die einzigen Daten sind, welche für die NoteTag-Activity gehalten werden müssen und eine dedizierte Data-Klasse dafür zu viel Overhead produzieren würde.
+
+\textit{returnToNoteActivity}:\\
+In dieser Methode wird der Intent gebildet, welche als Result für die Activity gesetzt wird, damit dieser bei Abschluss der Activity an die NoteActivity übergeben wird. Zunächst werden dafür alle leeren Felder aus der Stichwortliste gelöscht und anschließend die Liste zum Intent hinzugefügt.
+
+\textit{onDeleteButtonClicked}:\\
+Hier wird anhand der übergebenen ID das entsprechende Stichwort gelöscht, der Adapter für den ListView benachrichtigt und anschließend die Tastatur ausgeblendet, falls diese eingeblendet war.
+
+\textit{onTextChanged}:\\
+Hier wird der übergebene Wert anhand der ID des Views, in welchem der Text geändert wurde, in die Stichwortliste eingefügt.
+
+\textit{addInputTagField}:\\
+In dieser Methode wird ein leerer String an die Stichwortliste angefügt und anschließend der Adapter benachrichtigt, sodass ein neues Feld für die Benutzereingabe erscheint.
+
+\textit{onMenuItemClick}:\\
+Diese Methode wird aufgerufen, falls der Benutzer im Toolbarmenü die Option „Alle Stichworte löschen“ ausgewählt hat. Hier wird die Liste der Stichworte geleert und anschließend zur Note-Activity zurückgekehrt. Eine weitere Abfrage ist hier nicht implementiert, da für das Löschen aller Stichworte so schon zwei Klicks nötig sind.
+
+\subparagraph{Klasse: ClickListener}
+Die Klasse ClickListener implementiert das Interface View.OnClickListener und kann dementsprechend auf ein View gesetzt werden, um die Benutzereingabe zu erkennen und Aktionen durchzuführen.
+
+\textit{onClick}:\\
+Hier wird überprüft, auf welchem View das Klick-Event ausgelöst wurde. Zur Auswahl stehen dabei der Zurück-Button der Toolbar, der Button, um ein Stichwort hinzuzufügen, sowie die einzelnen Entfernen-Buttons innerhalb des Listviews für jedes Stichwort. Je nach Ort der Ausführung wird die entsprechende Methode innerhalb der ApplicationLogic ausgeführt.
+
+\subparagraph{Klasse: Gui}
+Die Gui-Klasse beinhaltet die Benutzeroberflächenelemente als Attribute, wodurch auf diese zugegriffen werden kann. 
+
+\textit{initiateListView}:\\
+In dieser Methode wird der als Parameter übergebene ListViewAdapter auf den ListView gesetzt.
+
+\textit{hideKeyboard}:\\
+Hier wird das SoftKeyboard ausgeblendet.
+
+\subparagraph{Klasse: ListViewAdapter}
+Die Klasse ListViewAdapter erweitert ArrayAdapter<String> und kann dadurch auf einen ListView gesetzt werden.
+
+\textit{getView}:\\
+In dieser Methode wird eine Zeile des ListViews anhand des in den Layouts spezifizierten Zeilenlayouts initialisiert, die Position in der Liste als IDs auf die Views gesetzt und jeweils ein ClickListener für den Löschen-Button und ein TextWatcher für das Stichwort gesetzt. Anschließend wird der View zurückgegeben.
+
+\subparagraph{Klasse: MenuItemClickListener}
+Diese Klasse implementiert das Interface Toolbar.OnMenuItemClickListener und ist dafür zuständig, das Klicken auf ein Menüitem in der Toolbar, hier „Alle Stichworte löschen“, zu behandeln und dementsprechend hier die Methode in ApplicationLogic aufzurufen.
+
+\subparagraph{Klasse: TextWatcher}
+Der NoteTextWatcher implementiert das Interface android.text.TextWatcher und ist zur Speicherung von Eingaben in einem Stichwortfeld zuständig.
+
+\textit{onTextChanged}:\\
+Diese Methode überschreibt die entsprechende Methode der Basisklasse und ist dafür zuständig, die OnTextChanged-Methode in der ApplicationLogic aufzurufen, wo der Text in der ArrayList gespeichert wird.
+
+\textit{afterTextChanged}:\\
+In dieser Methode wird verhindert, dass die Texte Leerzeichen enthalten, da Stichworte immer als ein Wort geschrieben werden sollen.
 
 \newpage
 \fancyhead[L]{}
