@@ -3,34 +3,50 @@
 \fancyhead[R]{Anhang - Quelltexte}
 \label{instal}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Titel und Name ändern. Pfad ändern (nur Klassenname).
-%\lstinputlisting [caption=Titel (Vorname Nachname)]{code/Klassenname.java}
-%Alternativ in die Mitte den Quellcode kopieren
-\begin{figure}[H]
-\begin{lstlisting}[caption=Titel (Vorname Nachname)]
-
-\end{lstlisting}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%?
-\subsection{Overview}
-	\subsubsection{Event Fragment}
-	\subsubsection{Header}
-		\paragraph{Create Fragment}
-		\paragraph{Delete Fragment}
-		\paragraph{Search Fragment}
-	\subsubsection{Image Fragment}
-	\subsubsection{Note Fragment}
-	\subsubsection{Overview Activity}
-		\paragraph{Fragment Manager}
-	\subsubsection{Super Classes}
-	\subsubsection{Todo Fragments}
-%?
-
 \subsection{Activities}
+	\subsubsection{Overview}
+		\paragraph{Event Fragment}
+\lstinputlisting [caption=OverviewEventController (Yannick Rüttgers)]{code/OverviewEventController.java}
+\lstinputlisting [caption=OverviewEventData (Yannick Rüttgers)]{code/OverviewEventData.java}
+\lstinputlisting [caption=OverviewEventGui (Yannick Rüttgers)]{code/OverviewEventGui.java}
+\lstinputlisting [caption=OverviewEventInit (Yannick Rüttgers)]{code/OverviewEventInit.java}
+		\paragraph{Header}
+\lstinputlisting [caption=OverviewHeaderClickListener (Fabia Schmid)]{code/OverviewHeaderClickListener.java}
+\lstinputlisting [caption=OverviewHeaderCreateFragment (Yannick Rüttgers)]{code/OverviewHeaderCreateFragment.java}
+\lstinputlisting [caption=OverviewHeaderDeleteFragment (Yannick Rüttgers)]{code/OverviewHeaderDeleteFragment.java}
+\lstinputlisting [caption=OverviewHeaderSearchFragment (Yannick Rüttgers)]{code/OverviewHeaderSearchFragment.java}
+		\paragraph{Image Fragment}
+\lstinputlisting [caption=OverviewImageController (Yannick Rüttgers)]{code/OverviewImageController.java}
+\lstinputlisting [caption=OverviewImageData (Yannick Rüttgers)]{code/OverviewImageData.java}
+\lstinputlisting [caption=OverviewImageGui (Yannick Rüttgers)]{code/OverviewImageGui.java}
+\lstinputlisting [caption=OverviewImageInit (Yannick Rüttgers)]{code/OverviewImageInit.java}
+		\paragraph{Note Fragment}
+\lstinputlisting [caption=OverviewNoteController (Yannick Rüttgers)]{code/OverviewNoteController.java}
+\lstinputlisting [caption=OverviewNoteData (Yannick Rüttgers)]{code/OverviewNoteData.java}
+\lstinputlisting [caption=OverviewNoteGui (Yannick Rüttgers)]{code/OverviewNoteGui.java}
+\lstinputlisting [caption=OverviewNoteInit (Yannick Rüttgers)]{code/OverviewNoteInit.java}
+		\paragraph{Overview Activity}
+\lstinputlisting [caption=OverviewFragmentFactory (Yannick Rüttgers)]{code/OverviewFragmentFactory.java}
+\lstinputlisting [caption=OverviewFragmentInserter (Yannick Rüttgers)]{code/OverviewFragmentInserter.java}
+\lstinputlisting [caption=OverviewClickListener (Yannick Rüttgers)]{code/OverviewClickListener.java}
+\lstinputlisting [caption=OverviewController (Yannick Rüttgers)]{code/OverviewController.java}
+\lstinputlisting [caption=OverviewData (Yannick Rüttgers)]{code/OverviewData.java}
+\lstinputlisting [caption=OverviewDeleteHandler (Yannick Rüttgers)]{code/OverviewDeleteHandler.java}
+\lstinputlisting [caption=OverviewGui (Yannick Rüttgers)]{code/OverviewGui.java}
+\lstinputlisting [caption=OverviewInit (Yannick Rüttgers)]{code/OverviewInit.java}
+\lstinputlisting [caption=OverviewNewClickHandler (Yannick Rüttgers)]{code/OverviewNewClickHandler.java}
+		\paragraph{Super Classes}
+\lstinputlisting [caption=OverviewFragmentClickListener (Fabia Schmid)]{code/OverviewFragmentClickListener.java}
+\lstinputlisting [caption=OverviewFragmentController (Yannick Rüttgers)]{code/OverviewFragmentController.java}
+\lstinputlisting [caption=OverviewFragmentData (Yannick Rüttgers)]{code/OverviewFragmentData.java}
+\lstinputlisting [caption=OverviewFragmentGui (Yannick Rüttgers)]{code/OverviewFragmentGui.java}
+\lstinputlisting [caption=OverviewFragmentInit (Yannick Rüttgers)]{code/OverviewFragmentInit.java}
+\lstinputlisting [caption=OverviewFragmentLongClickListener (Fabia Schmid)]{code/OverviewFragmentLongClickListener.java}
+		\paragraph{Todo Fragments}
+\lstinputlisting [caption=OverviewTodoController (Yannick Rüttgers)]{code/OverviewTodoController.java}
+\lstinputlisting [caption=OverviewTodoData (Yannick Rüttgers)]{code/OverviewTodoData.java}
+\lstinputlisting [caption=OverviewTodoGui (Yannick Rüttgers)]{code/OverviewTodoGui.java}
+\lstinputlisting [caption=OverviewTodoInit (Yannick Rüttgers)]{code/OverviewTodoInit.java}
 	\subsubsection{Event}
 \lstinputlisting [caption=EventActivity (Robin Menzel)]{code/EventActivity.java}
 		\paragraph{Data}
@@ -113,366 +129,11 @@
 \lstinputlisting [caption=TouchListener (Sertan Cetin)]{code/TouchListener.java}
 \subsection{Data}
 	\subsubsection{Models}
-		\paragraph{TENs}	
-\begin{figure}[H]
-\begin{lstlisting}[caption=Todo (Joscha Nassenstein)]
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Todo extends TEN {
-    private double progress;
-    private String note;
-    private Date startDate;
-    private Date endDate;
-    private ArrayList<Task> tasks;
-    //Constructors
-    public Todo(){
-        super();
-        this.note = "";
-        this.startDate = new Date();
-        this.endDate = new Date();
-        this.tasks = new ArrayList<>();
-        tasks.add(new Task());
-    }
-    public Todo(String title){
-        super(title);
-        this.startDate = new Date();
-        this.endDate = new Date();
-        this.tasks = new ArrayList<>();
-        tasks.add(new Task());
-    }
-    public Todo(String title, String note){
-        super(title);
-        this.note = note;
-        this.startDate = new Date();
-        this.endDate = new Date();
-        this.tasks = new ArrayList<>();
-        tasks.add(new Task());
-    }
-    public Todo(String title, String note, ArrayList<Task> tasks){
-        super(title);
-        this.note = note;
-        this.tasks = tasks;
-        this.progress = calculateProgress();
-        this.startDate = new Date();
-        this.endDate = new Date();
-    }
-    public Todo(String title, String note, ArrayList<Task> tasks, Date endDate){
-        super(title);
-        this.note = note;
-        this.tasks = tasks;
-        this.progress = calculateProgress();
-        this.startDate = new Date();
-        this.endDate = endDate;
-    }
-    public Todo(String title, String note, ArrayList<Task> tasks, Date startDate, Date endDate){
-        super(title);
-        this.note = note;
-        this.tasks = tasks;
-        this.progress = calculateProgress();
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-    //all Attributes for complete reconstruction
-    public Todo(String title, String ID, int color, int accentColor, Date dateOfCreation, String note, ArrayList<Task> tasks, Date startDate, Date endDate){
-        super(title, ID, color, accentColor, dateOfCreation);
-        this.note = note;
-        this.tasks = tasks;
-        this.progress = calculateProgress();
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-    /*@Override
-    public boolean isFound(String pSearchString) {
-        return super.isFound(pSearchString)?super.isFound(pSearchString):note.contains(pSearchString);
-    }*/
-    public Bundle getBundle(){
-        Bundle bundle = super.getBundle();
-        bundle.putString(BundleKeys.KEY_TODO_NOTE, note);
-        boolean[] status = new boolean[tasks.size()];
-        String[] description = new String[tasks.size()];
-        int index = 0;
-        for(Task task : tasks){
-            description[index] = task.getDescription();
-            status[index] = task.getStatus();
-            index++;
-        }
-        bundle.putBooleanArray(BundleKeys.KEY_TODO_STATUS, status);
-        bundle.putStringArray(BundleKeys.KEY_TODO_DESCRIPTION, description);
-        return bundle;
-    }
-    //Getters and Setters
-    public double getProgress(){return progress;}
-    public String getNote(){return note;}
-    public void setNote(String note){this.note = note;}
-    public Date getStartDate(){return startDate;}
-    public void setStartDate(Date startDate){this.startDate = startDate;}
-    public Date getEndDate(){return endDate;}
-    public void setEndDate(Date endDate){this.endDate = endDate;}
-    public ArrayList<Task> getTasks() {return tasks;}
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-        progress = calculateProgress();
-    }
-    public double calculateProgress(){
-        int completed = 0;
-        if(tasks == null)
-            return 0;
-        for(Task task:tasks){
-            if(task.getStatus())
-                completed++;
-        }
-        return (double)completed/tasks.size();
-    }
-}
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[H]
-\begin{lstlisting}[caption=Event (Joscha Nassenstein)]
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Event extends TEN {
-    private Date time;
-    private ArrayList<Date> reminder;
-    private String address;
-    private RecurringType recurringType;
-    //Constructor
-    //empty default
-    public Event() {
-        super();
-        this.time = new Date();
-        this.reminder = new ArrayList<>();
-        this.address = "";
-        this.recurringType = RecurringType.NONE;
-    }
-    //simple for usage
-    public Event(String title, Date time, ArrayList<Date> reminder, String address) {
-        super(title);
-        this.time = time;
-        this.reminder = reminder;
-        this.address = address;
-        this.recurringType = RecurringType.NONE;
-    }
-    //all Attributes for reconstruction of complete Object
-    public Event(String title, String ID, int color, int accentColor, Date dateOfCreation, Date time, ArrayList<Date> reminder, String address, RecurringType recurringType) {
-        super(title, ID, color, accentColor, dateOfCreation);
-        this.time = time;
-        this.reminder = reminder;
-        this.address = address;
-        this.recurringType = recurringType;
-    }
-    //Getter and Setter
-    public Date getTime() {
-        return time;
-    }
-    public void setTime(Date time) {
-        this.time = time;
-    }
-    public ArrayList<Date> getReminder() {
-        return reminder;
-    }
-    public void setReminder(ArrayList<Date> reminder) {
-        this.reminder = reminder;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public RecurringType getRecurringType() {
-        return recurringType;
-    }
-    public void setRecurringType(RecurringType recurringType) {
-        this.recurringType = recurringType;
-    }
-    public Bundle getBundle() {
-        Bundle bundle = super.getBundle();
-        bundle.putLong(BundleKeys.KEY_EVENT_TIME, time.getTime());
-        bundle.putString(BundleKeys.KEY_EVENT_ADDRESS, address);
-        return bundle;
-    }
-}
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[H]
-\begin{lstlisting}[caption=Note (Joscha Nassenstein)]
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Note extends TEN {
-    private String description;
-    private ArrayList<String> tags;
-    private ArrayList<Image> pictures;
-    public int imageIDCounter;
-    //Constructors
-    public Note() {
-        super();
-        this.description = "";
-        this.tags = new ArrayList<>();
-        this.pictures = new ArrayList<>();
-        this.imageIDCounter = 0;
-    }
-    public Note(String title, String description) {
-        super(title);
-        this.description = description;
-        this.tags = new ArrayList<String>();
-        this.pictures = new ArrayList<Image>();
-    }
-    //all Attributes for complete Reconstruction
-    public Note(String title, String ID, int color, int accentColor, Date dateOfCreation, String description, ArrayList<String> tags, ArrayList<Image> pictures, int imageIDCounter) {
-        super(title, ID, color, accentColor, dateOfCreation);
-        this.description = description;
-        this.tags = tags;
-        this.pictures = pictures;
-        this.imageIDCounter = imageIDCounter;
-    }
-    //Getter and Setter
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
-    }
-    public Image addImage(Bitmap bitmap) {
-        this.imageIDCounter++;
-        String imageID = this.getID() + FileSystemConstants.IMAGE_CORE_ID + this.imageIDCounter;
-        Image image = new Image(imageID, bitmap);
-        Log.i("cool", image.getId());
-        this.pictures.add(image);
-        return image;
-    }
-    public void addImage(Image pImage) {
-        Log.i("NoteRemake", "Pictures Size: " + pictures.size());
-        for (int i = 0; i < pictures.size(); i++) {
-            if (pImage.getId().equals(pictures.get(i).getId())) {
-                pictures.set(i, pImage);
-            }
-        }
-    }
-    public ArrayList<Image> getPictures() {
-        return pictures;
-    }
-    public Bundle getBundle() {
-        Bundle bundle = super.getBundle();
-        bundle.putString(BundleKeys.KEY_NOTE_DESCRIPTION, description);
-        bundle.putStringArrayList(BundleKeys.KEY_NOTE_TAGS, tags);
-        if (!pictures.isEmpty())
-            bundle.putString(BundleKeys.KEY_NOTE_PICTURES, pictures.get(0).getId());
-        return bundle;
-    }
-    public void imageNotFound(Image image) {
-        for (int i = 0; i < this.getPictures().size(); i++) {
-            if (image.getId().equals(this.getPictures().get(i).getId())) {
-                this.getPictures().remove(i);
-            }
-        }
-    }
-    @Override
-    public boolean isFound(String pSearchString){
-        if(super.isFound(pSearchString))
-            return true;
-        for(String tag : tags) {
-            if (tag.toLowerCase().contains(pSearchString.toLowerCase()))
-                return true;
-        }
-        return false;
-    }
-}
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[H]
-\begin{lstlisting}[caption=TEN (Joscha Nassenstein)]
-public class TEN {
-    private String title;
-    @JsonIgnore
-    private String ID;
-    @ColorInt
-    @JsonIgnore
-    private int color;
-    @ColorInt
-    @JsonIgnore
-    private int accentColor;
-    @JsonIgnore
-    private Date dateOfCreation;
-    //Constructor
-    //empty default
-    public TEN() {
-        this.ID = null;
-        this.title = "";
-        int colorIndex = Colors.getRandomColorIndex();
-        this.color = Colors.COLORS[colorIndex];
-        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
-        this.dateOfCreation = new Date();
-    }
-    //simple for usage
-    public TEN(String title) {
-        this.ID = null;
-        this.title = title;
-        int colorIndex = Colors.getRandomColorIndex();
-        this.color = Colors.COLORS[colorIndex];
-        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
-        this.dateOfCreation = new Date();
-    }
-    //complete Object must be reconstructed
-    public TEN(String title, String ID, int color, int accentColor, Date dateOfCreation) {
-        this.ID = ID;
-        this.title = title;
-        this.color = color;
-        this.accentColor = accentColor;
-        this.dateOfCreation = dateOfCreation;
-    }
-    public boolean isFound(String pSearchString){
-        return title!=null?title.toLowerCase().contains(pSearchString.toLowerCase()):false;
-    }
-    public Bundle getBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString(BundleKeys.KEY_TEN_ID, ID);
-        bundle.putString(BundleKeys.KEY_TEN_TITLE, title);
-        bundle.putInt(BundleKeys.KEY_TEN_COLOR, color);
-        bundle.putInt(BundleKeys.KEY_TEN_ACCENT_COLOR, accentColor);
-        bundle.putLong(BundleKeys.KEY_TEN_DATE_OF_CREATION, this.dateOfCreation.getTime());
-        return bundle;
-    }
-    //Getter and Setter
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getID() {
-        return ID;
-    }
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-    public int getColor() {
-        return color;
-    }
-    public int getAccentColor() {
-        return accentColor;
-    }
-    public void setColor(int color) {
-        this.color = color;
-    }
-    public void setAccentColor(int accentColor) {
-        this.accentColor = accentColor;
-    }
-    public void setDateOfCreation(Date dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-    public Date getDateOfCreation() {
-        return dateOfCreation;
-    }
-}
-\end{lstlisting}
-\end{figure}
+		\paragraph{TENs}
+\lstinputlisting [caption=TEN (Joscha Nassenstein)]{code/TEN.java}
+\lstinputlisting [caption=Todo (Joscha Nassenstein)]{code/Todo.java}
+\lstinputlisting [caption=Event (Joscha Nassenstein)]{code/Event.java}
+\lstinputlisting [caption=Note (Joscha Nassenstein)]{code/Note.java}
 		\paragraph{Utils}
 \begin{figure}[H]
 \begin{lstlisting}[caption=BundleKeys (Jan Beilfuß)]
