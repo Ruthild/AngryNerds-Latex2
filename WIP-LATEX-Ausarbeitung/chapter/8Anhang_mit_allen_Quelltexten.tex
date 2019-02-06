@@ -3,6 +3,16 @@
 \fancyhead[R]{Anhang - Quelltexte}
 \label{instal}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Titel und Name ändern. Quelltext in die Mitte kopieren.
+\begin{figure}[H]
+\begin{lstlisting}[caption=Titel (Vorname Nachname)]
+
+\end{lstlisting}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \subsection{Activities}
 	\subsubsection{Event}
 		\paragraph{Data}
@@ -19,300 +29,7 @@
 	\subsubsection{Todo}
 \subsection{Data}
 	\subsubsection{Models}
-		\paragraph{TENs}
-\begin{figure}[H]
-\begin{lstlisting}[caption=Event (Joscha Nassenstein)]
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Event extends TEN {
-    private Date time;
-    private ArrayList<Date> reminder;
-    private String address;
-    private RecurringType recurringType;
-
-    //Constructor
-
-    //empty default
-    public Event() {
-        super();
-        this.time = new Date();
-        this.reminder = new ArrayList<>();
-        this.address = "";
-        this.recurringType = RecurringType.NONE;
-    }
-
-    //simple for usage
-    public Event(String title, Date time, ArrayList<Date> reminder, String address) {
-        super(title);
-        this.time = time;
-        this.reminder = reminder;
-        this.address = address;
-        this.recurringType = RecurringType.NONE;
-    }
-
-    //all Attributes for reconstruction of complete Object
-    public Event(String title, String ID, int color, int accentColor, Date dateOfCreation, Date time, ArrayList<Date> reminder, String address, RecurringType recurringType) {
-        super(title, ID, color, accentColor, dateOfCreation);
-        this.time = time;
-        this.reminder = reminder;
-        this.address = address;
-        this.recurringType = recurringType;
-    }
-
-    //Getter and Setter
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public ArrayList<Date> getReminder() {
-        return reminder;
-    }
-
-    public void setReminder(ArrayList<Date> reminder) {
-        this.reminder = reminder;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public RecurringType getRecurringType() {
-        return recurringType;
-    }
-
-    public void setRecurringType(RecurringType recurringType) {
-        this.recurringType = recurringType;
-    }
-
-    public Bundle getBundle() {
-        Bundle bundle = super.getBundle();
-        bundle.putLong(BundleKeys.KEY_EVENT_TIME, time.getTime());
-        bundle.putString(BundleKeys.KEY_EVENT_ADDRESS, address);
-        return bundle;
-    }
-}
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[H]
-\begin{lstlisting}[caption=Note (Joscha Nassenstein)]
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Note extends TEN {
-
-    private String description;
-    private ArrayList<String> tags;
-    private ArrayList<Image> pictures;
-    public int imageIDCounter;
-
-    //Constructors
-    public Note() {
-        super();
-        this.description = "";
-        this.tags = new ArrayList<>();
-        this.pictures = new ArrayList<>();
-        this.imageIDCounter = 0;
-    }
-
-    public Note(String title, String description) {
-        super(title);
-        this.description = description;
-        this.tags = new ArrayList<String>();
-        this.pictures = new ArrayList<Image>();
-    }
-
-    //all Attributes for complete Reconstruction
-    public Note(String title, String ID, int color, int accentColor, Date dateOfCreation, String description, ArrayList<String> tags, ArrayList<Image> pictures, int imageIDCounter) {
-        super(title, ID, color, accentColor, dateOfCreation);
-        this.description = description;
-        this.tags = tags;
-        this.pictures = pictures;
-        this.imageIDCounter = imageIDCounter;
-    }
-
-    //Getter and Setter
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
-    }
-
-    public Image addImage(Bitmap bitmap) {
-        this.imageIDCounter++;
-        String imageID = this.getID() + FileSystemConstants.IMAGE_CORE_ID + this.imageIDCounter;
-        Image image = new Image(imageID, bitmap);
-        Log.i("cool", image.getId());
-        this.pictures.add(image);
-        return image;
-    }
-
-    public void addImage(Image pImage) {
-        Log.i("NoteRemake", "Pictures Size: " + pictures.size());
-        for (int i = 0; i < pictures.size(); i++) {
-            if (pImage.getId().equals(pictures.get(i).getId())) {
-                pictures.set(i, pImage);
-            }
-        }
-    }
-
-    public ArrayList<Image> getPictures() {
-        return pictures;
-    }
-
-    public Bundle getBundle() {
-        Bundle bundle = super.getBundle();
-        bundle.putString(BundleKeys.KEY_NOTE_DESCRIPTION, description);
-        bundle.putStringArrayList(BundleKeys.KEY_NOTE_TAGS, tags);
-        if (!pictures.isEmpty())
-            bundle.putString(BundleKeys.KEY_NOTE_PICTURES, pictures.get(0).getId());
-        return bundle;
-    }
-
-    public void imageNotFound(Image image) {
-        for (int i = 0; i < this.getPictures().size(); i++) {
-            if (image.getId().equals(this.getPictures().get(i).getId())) {
-                this.getPictures().remove(i);
-            }
-        }
-    }
-
-    @Override
-    public boolean isFound(String pSearchString){
-        if(super.isFound(pSearchString))
-            return true;
-
-        for(String tag : tags) {
-            if (tag.toLowerCase().contains(pSearchString.toLowerCase()))
-                return true;
-        }
-        return false;
-    }
-}
-\end{lstlisting}
-\end{figure}
-
-\begin{figure}[H]
-\begin{lstlisting}[caption=TEN (Joscha Nassenstein)]
-public class TEN {
-    private String title;
-    @JsonIgnore
-    private String ID;
-    @ColorInt
-    @JsonIgnore
-    private int color;
-    @ColorInt
-    @JsonIgnore
-    private int accentColor;
-    @JsonIgnore
-    private Date dateOfCreation;
-
-    //Constructor
-
-    //empty default
-    public TEN() {
-        this.ID = null;
-        this.title = "";
-        int colorIndex = Colors.getRandomColorIndex();
-        this.color = Colors.COLORS[colorIndex];
-        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
-        this.dateOfCreation = new Date();
-    }
-
-    //simple for usage
-    public TEN(String title) {
-        this.ID = null;
-        this.title = title;
-        int colorIndex = Colors.getRandomColorIndex();
-        this.color = Colors.COLORS[colorIndex];
-        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
-        this.dateOfCreation = new Date();
-    }
-
-    //complete Object must be reconstructed
-    public TEN(String title, String ID, int color, int accentColor, Date dateOfCreation) {
-        this.ID = ID;
-        this.title = title;
-        this.color = color;
-        this.accentColor = accentColor;
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public boolean isFound(String pSearchString){
-        return title!=null?title.toLowerCase().contains(pSearchString.toLowerCase()):false;
-    }
-
-    public Bundle getBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString(BundleKeys.KEY_TEN_ID, ID);
-        bundle.putString(BundleKeys.KEY_TEN_TITLE, title);
-        bundle.putInt(BundleKeys.KEY_TEN_COLOR, color);
-        bundle.putInt(BundleKeys.KEY_TEN_ACCENT_COLOR, accentColor);
-        bundle.putLong(BundleKeys.KEY_TEN_DATE_OF_CREATION, this.dateOfCreation.getTime());
-        return bundle;
-    }
-
-    //Getter and Setter
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public int getAccentColor() {
-        return accentColor;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public void setAccentColor(int accentColor) {
-        this.accentColor = accentColor;
-    }
-
-    public void setDateOfCreation(Date dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public Date getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-}
-\end{lstlisting}
-\end{figure}
-
+		\paragraph{TENs}	
 \begin{figure}[H]
 \begin{lstlisting}[caption=Todo (Joscha Nassenstein)]
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -425,11 +142,991 @@ public class Todo extends TEN {
 \end{lstlisting}
 \end{figure}
 
+\begin{figure}[H]
+\begin{lstlisting}[caption=Event (Joscha Nassenstein)]
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Event extends TEN {
+    private Date time;
+    private ArrayList<Date> reminder;
+    private String address;
+    private RecurringType recurringType;
+    //Constructor
+    //empty default
+    public Event() {
+        super();
+        this.time = new Date();
+        this.reminder = new ArrayList<>();
+        this.address = "";
+        this.recurringType = RecurringType.NONE;
+    }
+    //simple for usage
+    public Event(String title, Date time, ArrayList<Date> reminder, String address) {
+        super(title);
+        this.time = time;
+        this.reminder = reminder;
+        this.address = address;
+        this.recurringType = RecurringType.NONE;
+    }
+    //all Attributes for reconstruction of complete Object
+    public Event(String title, String ID, int color, int accentColor, Date dateOfCreation, Date time, ArrayList<Date> reminder, String address, RecurringType recurringType) {
+        super(title, ID, color, accentColor, dateOfCreation);
+        this.time = time;
+        this.reminder = reminder;
+        this.address = address;
+        this.recurringType = recurringType;
+    }
+    //Getter and Setter
+    public Date getTime() {
+        return time;
+    }
+    public void setTime(Date time) {
+        this.time = time;
+    }
+    public ArrayList<Date> getReminder() {
+        return reminder;
+    }
+    public void setReminder(ArrayList<Date> reminder) {
+        this.reminder = reminder;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public RecurringType getRecurringType() {
+        return recurringType;
+    }
+    public void setRecurringType(RecurringType recurringType) {
+        this.recurringType = recurringType;
+    }
+    public Bundle getBundle() {
+        Bundle bundle = super.getBundle();
+        bundle.putLong(BundleKeys.KEY_EVENT_TIME, time.getTime());
+        bundle.putString(BundleKeys.KEY_EVENT_ADDRESS, address);
+        return bundle;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Note (Joscha Nassenstein)]
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Note extends TEN {
+    private String description;
+    private ArrayList<String> tags;
+    private ArrayList<Image> pictures;
+    public int imageIDCounter;
+    //Constructors
+    public Note() {
+        super();
+        this.description = "";
+        this.tags = new ArrayList<>();
+        this.pictures = new ArrayList<>();
+        this.imageIDCounter = 0;
+    }
+    public Note(String title, String description) {
+        super(title);
+        this.description = description;
+        this.tags = new ArrayList<String>();
+        this.pictures = new ArrayList<Image>();
+    }
+    //all Attributes for complete Reconstruction
+    public Note(String title, String ID, int color, int accentColor, Date dateOfCreation, String description, ArrayList<String> tags, ArrayList<Image> pictures, int imageIDCounter) {
+        super(title, ID, color, accentColor, dateOfCreation);
+        this.description = description;
+        this.tags = tags;
+        this.pictures = pictures;
+        this.imageIDCounter = imageIDCounter;
+    }
+    //Getter and Setter
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
+    public Image addImage(Bitmap bitmap) {
+        this.imageIDCounter++;
+        String imageID = this.getID() + FileSystemConstants.IMAGE_CORE_ID + this.imageIDCounter;
+        Image image = new Image(imageID, bitmap);
+        Log.i("cool", image.getId());
+        this.pictures.add(image);
+        return image;
+    }
+    public void addImage(Image pImage) {
+        Log.i("NoteRemake", "Pictures Size: " + pictures.size());
+        for (int i = 0; i < pictures.size(); i++) {
+            if (pImage.getId().equals(pictures.get(i).getId())) {
+                pictures.set(i, pImage);
+            }
+        }
+    }
+    public ArrayList<Image> getPictures() {
+        return pictures;
+    }
+    public Bundle getBundle() {
+        Bundle bundle = super.getBundle();
+        bundle.putString(BundleKeys.KEY_NOTE_DESCRIPTION, description);
+        bundle.putStringArrayList(BundleKeys.KEY_NOTE_TAGS, tags);
+        if (!pictures.isEmpty())
+            bundle.putString(BundleKeys.KEY_NOTE_PICTURES, pictures.get(0).getId());
+        return bundle;
+    }
+    public void imageNotFound(Image image) {
+        for (int i = 0; i < this.getPictures().size(); i++) {
+            if (image.getId().equals(this.getPictures().get(i).getId())) {
+                this.getPictures().remove(i);
+            }
+        }
+    }
+    @Override
+    public boolean isFound(String pSearchString){
+        if(super.isFound(pSearchString))
+            return true;
+        for(String tag : tags) {
+            if (tag.toLowerCase().contains(pSearchString.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=TEN (Joscha Nassenstein)]
+public class TEN {
+    private String title;
+    @JsonIgnore
+    private String ID;
+    @ColorInt
+    @JsonIgnore
+    private int color;
+    @ColorInt
+    @JsonIgnore
+    private int accentColor;
+    @JsonIgnore
+    private Date dateOfCreation;
+    //Constructor
+    //empty default
+    public TEN() {
+        this.ID = null;
+        this.title = "";
+        int colorIndex = Colors.getRandomColorIndex();
+        this.color = Colors.COLORS[colorIndex];
+        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
+        this.dateOfCreation = new Date();
+    }
+    //simple for usage
+    public TEN(String title) {
+        this.ID = null;
+        this.title = title;
+        int colorIndex = Colors.getRandomColorIndex();
+        this.color = Colors.COLORS[colorIndex];
+        this.accentColor = Colors.DARKER_ACCENT_COLORS[colorIndex];
+        this.dateOfCreation = new Date();
+    }
+    //complete Object must be reconstructed
+    public TEN(String title, String ID, int color, int accentColor, Date dateOfCreation) {
+        this.ID = ID;
+        this.title = title;
+        this.color = color;
+        this.accentColor = accentColor;
+        this.dateOfCreation = dateOfCreation;
+    }
+    public boolean isFound(String pSearchString){
+        return title!=null?title.toLowerCase().contains(pSearchString.toLowerCase()):false;
+    }
+    public Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString(BundleKeys.KEY_TEN_ID, ID);
+        bundle.putString(BundleKeys.KEY_TEN_TITLE, title);
+        bundle.putInt(BundleKeys.KEY_TEN_COLOR, color);
+        bundle.putInt(BundleKeys.KEY_TEN_ACCENT_COLOR, accentColor);
+        bundle.putLong(BundleKeys.KEY_TEN_DATE_OF_CREATION, this.dateOfCreation.getTime());
+        return bundle;
+    }
+    //Getter and Setter
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getID() {
+        return ID;
+    }
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+    public int getColor() {
+        return color;
+    }
+    public int getAccentColor() {
+        return accentColor;
+    }
+    public void setColor(int color) {
+        this.color = color;
+    }
+    public void setAccentColor(int accentColor) {
+        this.accentColor = accentColor;
+    }
+    public void setDateOfCreation(Date dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
+    }
+    public Date getDateOfCreation() {
+        return dateOfCreation;
+    }
+}
+\end{lstlisting}
+\end{figure}
 		\paragraph{Utils}
+\begin{figure}[H]
+\begin{lstlisting}[caption=BundleKeys (Jan Beilfuß)]
+public class BundleKeys {
+    //TEN Keys
+    public static final String KEY_TEN_ID = "TenID";
+    public static final String KEY_TEN_TITLE = "TenTitle";
+    public static final String KEY_TEN_COLOR = "TenColor";
+    public static final String KEY_TEN_ACCENT_COLOR = "TenAccentColor";
+    public static final String KEY_TEN_DATE_OF_CREATION = "TenDateOfCreation";
+    //Event Keys
+    public static final String KEY_EVENT_TIME = "EventTime";
+    public static final String KEY_EVENT_ADDRESS = "EventAdress";
+    //Note Keys
+    public static final String KEY_NOTE_DESCRIPTION = "NoteDescription";
+    public static final String KEY_NOTE_TAGS = "NoteTags";
+    public static final String KEY_NOTE_PICTURES = "NotePictures";
+    //To Do Keys
+    public static final String KEY_TODO_NOTE = "TodoNote";
+    public static final String KEY_TODO_STATUS = "TodoStatus";
+    public static final String KEY_TODO_DESCRIPTION = "TodoDescription";
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Colors (Jan Beilfuß)]
+public class Colors {
+    //700er Material Colors
+    public static final int[] COLORS = {
+            0xFF0288D1, //light blue
+            0xFFEF5350, //red
+            0xFFAFB42B, //lime
+            0xFF388E3C, //green
+            0xFFFB8C00, //Orange
+            0xFF7E57C2, //Deep Purple
+            0xFFEC407A, //Pink
+            0xFF009688, //Teal
+    };
+    //900er Material Colors
+    public static final int[] DARKER_ACCENT_COLORS = {
+            0xFF01579B, //light blue
+            0xFFB71C1C, //red
+            0xFF827717, //lime
+            0xFF1B5E20, //green
+            0xFFEF6C00, //orange
+            0xFF512DA8, //Deep Purple
+            0xFFC2185B, //Pink
+            0xFF00796B, //Teal
+    };
+    public static int getRandomColorIndex() {
+        int index = Colors.COLORS.length;
+        while (index == Colors.COLORS.length) {
+            index = (int) (Math.random() * Colors.COLORS.length);
+        }
+        return index;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Image (Jan Beilfuß)]
+public class Image {
+    private String id;
+    @JsonIgnore
+    private Bitmap bitmap;
+    //Constructor
+    public Image() {
+        this.id = "";
+        this.bitmap = null;
+    }
+    public Image(String id) {
+        this.id = id;
+        this.bitmap = null;
+    }
+    public Image(String id, Bitmap bitmap) {
+        this.id = id;
+        this.bitmap = bitmap;
+    }
+    public Image (Image image){
+        this.id = "" + image.getId();
+        if(image.getBitmap()!=null){
+            this.bitmap = Bitmap.createBitmap(image.getBitmap());
+        }
+    }
+    //Getter and Setter
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=MockData (Jan Beilfuß)]
+
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=ReccuringType (Joscha Nassenstein)]
+public enum RecurringType {
+    NONE,DAILY,WEEKLY,MONTHLY,YEARLY
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=Tasks (Joscha Nassenstein)]
+public class Task {
+    private String description;
+    private boolean status;
+    //Constructors
+    public Task(){
+        this.description = "";
+        this.status = false;
+    }
+    public Task(String description){
+        this.description = description;
+        this.status = false;
+    }
+    public Task(String description, boolean status){
+        this.description = description;
+        this.status = status;
+    }
+    //Getters and Setters
+    public String getDescription(){return description;}
+    public void setDescription(String description) {this.description = description;}
+
+    public boolean getStatus(){return status;}
+    public void setStatus(boolean status){this.status = status;}
+}
+\end{lstlisting}
+\end{figure}
 	\subsubsection{Repository}
+\begin{figure}[H]
+\begin{lstlisting}[caption=DatabaseRepository (Jan Beilfuß)]
+/Class that manages All Requests to the Database
+//Author: Jan Beilfuss
+public class DatabaseRepository {
+    ReadRepository mReadRepository;
+    WriteRepository mWriteRepository;
+    public DatabaseRepository() {
+        this.mReadRepository = new ReadRepository();
+        this.mWriteRepository = new WriteRepository();
+    }
+    public Todo getTodoByID(String pId) {
+        return mReadRepository.getTodoByID(pId);
+    }
+    public Event getEventByID(String pId) {
+        return mReadRepository.getEventByID(pId);
+    }
+    public Note getNoteByID(String pId) {
+        return mReadRepository.getNoteByID(pId);
+    }
+    //for new TEN-Objects
+    public void insertTEN(TEN pTen) { mWriteRepository.insertTEN(pTen); }
+    //for already saved TEN-Objects
+    public void updateTEN(TEN pTen) {
+        mWriteRepository.updateTEN(pTen);
+    }
+    public ArrayList<TEN> getAllTENs() {
+        return mReadRepository.getAllTENs();
+    }
+    public boolean deleteTEN(String pTenId) {
+        return mWriteRepository.deleteTEN(pTenId);
+    }
+    //returns main and accent color for given TEN-Object-ID
+    public int[] getTENColors(String pTenId) {
+        return mReadRepository.getTENColors(pTenId);
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=DataContextManager (Jan Beilfuß)]
+//Class that provides the database to the DatabaseRepository-Classes and Functions
+//Author: Jan Beilfuss
+public class DataContextManager {
+    public static Database database = null;
+    public static Context context = null;
+    //Gets Database from Context if it is not set
+    public static void initDatabase(Context pContext) {
+        if (DataContextManager.getDatabase() == null) {
+            DataContextManager.context = null;
+            DataContextManager.context = pContext;
+            try {
+                DatabaseConfiguration config = new DatabaseConfiguration(pContext.getApplicationContext());
+                DataContextManager.database = new Database(RepositoryConstants.DATABASENAME, config);
+                compactDatabase();
+            } catch (CouchbaseLiteException e) {
+                Toast.makeText(pContext, "Fehler bei der Datenbankerstellung", Toast.LENGTH_LONG);
+            }
+        }
+    }
+    //Compacts the Database = Cleans all Empty Entries (they are just flagged on Delete)
+    public static void compactDatabase() {
+        try {
+            DataContextManager.getDatabase().compact();
+        } catch (CouchbaseLiteException e) {
+        }
+    }
+    //returns the number of Documents in the Database. ONLY needed when using Mockdata
+    public static int getNumberOfDocuments() {
+        Query query = QueryBuilder.select(SelectResult.expression(Meta.id)).from(DataSource.database(DataContextManager.getDatabase()));
+        try {
+            ResultSet rs = query.execute();
+            return rs.allResults().size();
+        } catch (CouchbaseLiteException e) {
+            return -1;
+        }
+    }
+    public static Database getDatabase() {
+        return DataContextManager.database;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=RepositoryConstants (Jan Beilfuß)]
+//Author: Jan Beilfuss
+public class RepositoryConstants {
+    //database name
+    public static final String DATABASENAME = "TENDB";
+    //Keys for Key-Value-Pairs in Document
+    public static final String OBJECT_KEY = "ObjectKey";
+    public static final String TYPE_KEY = "TypeKey";
+    public static final String CREATION_DATE_KEY = "CreationDateKey";
+    public static final String COLOR_KEY = "ColorKey";
+    public static final String ACCENT_COLOR_KEY = "AccentColorKey";
+    public static final String COUCHBASE_ID_KEY = "id";
+    //Type corresponding to TEN-Classes
+    public static final String EVENT_TYPE = "Event";
+    public static final String NOTE_TYPE = "Note";
+    public static final String TODO_TYPE = "Todo";
+}
+\end{lstlisting}
+\end{figure}
 		\paragraph{Converter}
+\begin{figure}[H]
+\begin{lstlisting}[caption=QuerriedTenConverter (Jan Beilfuß)]
+//class that manages the Conversion from Query Result to TEN Java Object
+//Author: Jan Beilfuss
+public class QueriedTenConverter {
+
+    private TenJsonParser mTenJsonParser;
+    private SeparateAttributesConverter mSeparateAttributesConverter;
+
+    public QueriedTenConverter() {
+        this.mTenJsonParser = new TenJsonParser();
+        this.mSeparateAttributesConverter = new SeparateAttributesConverter();
+    }
+
+    //Method that maps the Dictionary of a Query Result To a TEN-Object
+    //Object only contains Information from the JSON, but non of the ones stored in the document
+    public TEN createTENFromResult(Result pResult) {
+
+        Dictionary dictionary = pResult.getDictionary(RepositoryConstants.DATABASENAME);
+        String type = dictionary.getString(RepositoryConstants.TYPE_KEY);
+        String objectJSON = dictionary.getString(RepositoryConstants.OBJECT_KEY);
+
+        TEN resultTEN = null;
+        switch (type) {
+            case RepositoryConstants.EVENT_TYPE:
+                resultTEN = mTenJsonParser.stringToEvent(objectJSON);
+                break;
+            case RepositoryConstants.NOTE_TYPE:
+            resultTEN = mTenJsonParser.stringToNote(objectJSON);
+                break;
+            case RepositoryConstants.TODO_TYPE:
+            resultTEN = mTenJsonParser.stringToTodo(objectJSON);
+                break;
+            default:
+        }
+        if (resultTEN != null) {
+            resultTEN = this.mSeparateAttributesConverter.addTENPropertiesFromResult(resultTEN, pResult);
+        }
+        return resultTEN;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=SeparateAttributesConverter (Jan Beilfuß)]
+//Methods that adds all Attributes not stored in the JSON
+//Author: Jan Beilfuss
+public class SeparateAttributesConverter {
+
+    //Document is the Databasereturn when getting only a single TEN
+    public TEN addTENPropertiesFromDocument(TEN pTen, Document pDocument) {
+        pTen.setID(pDocument.getId());
+        pTen.setColor(pDocument.getInt(RepositoryConstants.COLOR_KEY));
+        pTen.setAccentColor(pDocument.getInt(RepositoryConstants.ACCENT_COLOR_KEY));
+        pTen.setDateOfCreation(pDocument.getDate(RepositoryConstants.CREATION_DATE_KEY));
+        return pTen;
+    }
+
+    //Result is the Databasereturn when querying a set of TENs
+    public TEN addTENPropertiesFromResult(TEN pTen, Result pResult) {
+        Dictionary dictionary = pResult.getDictionary(RepositoryConstants.DATABASENAME);
+        pTen.setID(pResult.getString(RepositoryConstants.COUCHBASE_ID_KEY));
+        pTen.setColor(dictionary.getInt(RepositoryConstants.COLOR_KEY));
+        pTen.setAccentColor(dictionary.getInt(RepositoryConstants.ACCENT_COLOR_KEY));
+        pTen.setDateOfCreation(dictionary.getDate(RepositoryConstants.CREATION_DATE_KEY));
+
+        return pTen;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=TensJsonParser (Jan Beilfuß)]
+//Class, that parses the JSON into a TEN Object
+//Author: Jan Beilfuss
+public class TenJsonParser {
+
+    private ObjectMapper mObjectMapper;
+
+    public TenJsonParser() {
+        this.mObjectMapper = new ObjectMapper();
+    }
+
+    //parses To-do
+    public Todo stringToTodo(String pJson) {
+        try {
+            Todo todo = this.mObjectMapper.readValue(pJson, Todo.class);
+            return todo;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    //parses Event
+    public Event stringToEvent(String pJson) {
+        try {
+            Event event = this.mObjectMapper.readValue(pJson, Event.class);
+            return event;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    //parses Note
+    public Note stringToNote(String pJson) {
+        try {
+            Note note = this.mObjectMapper.readValue(pJson, Note.class);
+            return note;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
 		\paragraph{Filesystem}
+\begin{figure}[H]
+\begin{lstlisting}[caption=ImageDeleter (Jan Beilfuß)]
+public class ImageDeleter {
+
+    FileRepository mFileRepository;
+
+    //Class that creates async Task to delete Images from the Filesystem
+    //Author: Jan Beilfuss
+    public ImageDeleter(FileRepository pFileRepository) {
+        this.mFileRepository = pFileRepository;
+    }
+
+    public void execute(Image image) {
+        DeleteImageTask deleteImageTask = new DeleteImageTask();
+        deleteImageTask.execute(image);
+    }
+
+    private class DeleteImageTask extends AsyncTask<Image, Integer, Void> {
+
+        //Deletes Image in preview and original folder
+        @Override
+        protected Void doInBackground(Image... images) {
+            String[] folders = {FileSystemConstants.IMAGE_ORIGINAL_FOLDER, FileSystemConstants.IMAGE_PREVIEW_FOLDER};
+
+            for (String folder : folders) {
+                String directoryPath = mFileRepository.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/" + folder + "/";
+                String filePath = directoryPath + images[0].getId() + ".jpg";
+
+                File file = new File(filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+            return null;
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=ImageSaver (Jan Beilfuß)]
+public class ImageSaver {
+
+    FileRepository mFileRepository;
+
+    //Class that creates async Task to save Images to the filesystem
+    //Author: Jan Beilfuss
+    public ImageSaver(FileRepository pFileRepository) {
+        this.mFileRepository = pFileRepository;
+    }
+
+    public void execute(Image image) throws IOException {
+        Image copy = new Image(image);
+        image.setBitmap(null);
+        SaveImageTask saveImageTask = new SaveImageTask();
+        saveImageTask.execute(copy);
+    }
+
+    private class SaveImageTask extends AsyncTask<Image, Integer, Void> {
+
+        //saves Image to preview and original folder
+        @Override
+        protected Void doInBackground(Image... images) {
+            PreviewImageCreator previewImageCreator = new PreviewImageCreator();
+            Context context = DataContextManager.context;
+            String[] folders = {FileSystemConstants.IMAGE_ORIGINAL_FOLDER, FileSystemConstants.IMAGE_PREVIEW_FOLDER};
+
+            for (String folder : folders) {
+                String folderPath = Environment.DIRECTORY_PICTURES + "/" + folder;
+                String imageName = images[0].getId() + FileSystemConstants.JPEG;
+
+                File storageDir = context.getExternalFilesDir(folderPath);
+                FileOutputStream fos = null;
+                Bitmap bitmap = images[0].getBitmap();
+                File image = new File(storageDir, imageName);
+
+                if (!image.exists()) {
+                    if (bitmap != null) {
+                        if (folder.equals(FileSystemConstants.IMAGE_PREVIEW_FOLDER)) {
+                            bitmap = previewImageCreator.getPreviewImage(bitmap);
+                        }
+                        try {
+                            fos = new FileOutputStream(image);
+                        } catch (FileNotFoundException e) {
+                        }
+
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, FileSystemConstants.COMPRESSION_FACTOR, fos);
+                        try {
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+            }
+            images[0].setBitmap(null);
+            return null;
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=FileRepositroy (Jan Beilfuß)]
+//Class that handles everything regarding persistent Images
+//Author: Jan Beilfuss
+public class FileRepository {
+    public Context getContext() {
+        return DataContextManager.context;
+    }
+
+    //creates ImageSaver to save Images to the Filesystem
+    public void saveImagePersistent(Image pImage) throws IOException {
+        ImageSaver imageSaver = new ImageSaver(this);
+        imageSaver.execute(pImage);
+    }
+
+    //reads and decodes Image from the Filesystem
+    public Image readImageFromDirectory(Image image, String directory) {
+        Context context = DataContextManager.context;
+        String directoryPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/" + directory + "/";
+        String filePath = directoryPath + image.getId() + FileSystemConstants.JPEG;
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        Image result = new Image(image.getId(), bitmap);
+        return result;
+    }
+
+    //deletes single file at given path
+    public void deleteImageFromDirectories(String path) {
+        File file = new File(path);
+        if(file.exists()) file.delete();
+    }
+
+    //creates ImageDeleter to delete Files from orignal and preview folder
+    public void deleteImageFromDirectories(Image image) {
+        ImageDeleter imageDeleter = new ImageDeleter(this);
+        imageDeleter.execute(image);
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=FileSystemConstants (Jan Beilfuß)]
+public class FileSystemConstants {
+    public static final String JPEG = ".jpg";
+    public static final int COMPRESSION_FACTOR = 75;
+
+    public static final String IMAGE_CORE_ID = "imageID";
+
+    public static final String IMAGE_ORIGINAL_FOLDER = "original";
+    public static final String IMAGE_PREVIEW_FOLDER = "preview";
+}
+\end{lstlisting}
+\end{figure}
 		\paragraph{Sub-Repositories}
+\begin{figure}[H]
+\begin{lstlisting}[caption=GetAllTensQuery (Jan Beilfuß)]
+//Class that contains our currently only Database-Query
+//Author: Jan Beilfuss
+public class GetAllTensQuery {
+
+    private QueriedTenConverter mQueriedTenConverter;
+
+    public GetAllTensQuery() { this.mQueriedTenConverter = new QueriedTenConverter(); }
+
+    //Creates Query for all Saved TENs and returns converted java objects
+    public ArrayList<TEN> getAllTENs() {
+        Query query = QueryBuilder.select(
+                SelectResult.all(),
+                SelectResult.expression(Meta.id))
+                .from(DataSource.database(DataContextManager.getDatabase()))
+                .orderBy(Ordering.property(RepositoryConstants.CREATION_DATE_KEY).descending());
+        ArrayList<TEN> resultList = new ArrayList<TEN>();
+
+        try {
+            ResultSet rs = query.execute();
+
+            List<Result> allResults = rs.allResults();
+            for (Result result : allResults) {
+                TEN tenObject = this.mQueriedTenConverter.createTENFromResult(result);
+                resultList.add(tenObject);
+            }
+            return resultList;
+
+        } catch (CouchbaseLiteException e) {
+            return null;
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=ReadRepository (Jan Beilfuß)]
+//Class, that manages all reading Requests onto the Database
+//Author: Jan Beilfuss
+public class ReadRepository {
+    TenJsonParser mTenJsonParser;
+    SeparateAttributesConverter mSeparateAttributesConverter;
+    GetAllTensQuery mGetAllTensQuery;
+
+    public ReadRepository (){
+        this.mTenJsonParser = new TenJsonParser();
+        this.mSeparateAttributesConverter = new SeparateAttributesConverter();
+        this.mGetAllTensQuery = new GetAllTensQuery();
+    }
+
+    //returns To-Do with given ID
+    public Todo getTodoByID(String pId) {
+        Document todoDocument = DataContextManager.getDatabase().getDocument(pId);
+        String json = todoDocument.getString(RepositoryConstants.OBJECT_KEY);
+        Todo finalTodo = this.mTenJsonParser.stringToTodo(json);
+        finalTodo = (Todo) this.mSeparateAttributesConverter.addTENPropertiesFromDocument(finalTodo, todoDocument);
+        return finalTodo;
+    }
+
+    //returns Event with given ID
+    public Event getEventByID(String pId) {
+        Document eventDocument = DataContextManager.getDatabase().getDocument(pId);
+        String json = eventDocument.getString(RepositoryConstants.OBJECT_KEY);
+        Event finalEvent = this.mTenJsonParser.stringToEvent(json);
+        finalEvent = (Event) this.mSeparateAttributesConverter.addTENPropertiesFromDocument(finalEvent, eventDocument);
+        return finalEvent;
+    }
+
+    //returns Note with given ID
+    public Note getNoteByID(String pId) {
+        Document noteDocument = DataContextManager.getDatabase().getDocument(pId);
+        String json = noteDocument.getString(RepositoryConstants.OBJECT_KEY);
+        Note finalNote = this.mTenJsonParser.stringToNote(json);
+        finalNote = (Note) this.mSeparateAttributesConverter.addTENPropertiesFromDocument(finalNote, noteDocument);
+        return finalNote;
+    }
+
+    //returns all saved TEN-Objects
+    public ArrayList<TEN> getAllTENs() {
+        return mGetAllTensQuery.getAllTENs();
+    }
+
+    //Needed when TEN is loaded asynchronously for setting the Color of the Activity
+    public int[] getTENColors(String pTenId) {
+        Document document = DataContextManager.getDatabase().getDocument(pTenId);
+        int[] colors = new int[2];
+        colors[0] = document.getInt(RepositoryConstants.COLOR_KEY);
+        colors[1] = document.getInt(RepositoryConstants.ACCENT_COLOR_KEY);
+        return colors;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=DocumentSaver (Jan Beilfuß)]
+//class that manages the persistent saving process of Tens
+//Author: Jan Beilfuss
+public class DocumentSaver {
+
+    ObjectMapper mObjectMapper;
+    FileRepository mFileRepository;
+
+    public DocumentSaver() {
+        this.mObjectMapper = new ObjectMapper();
+        this.mFileRepository = new FileRepository();
+    }
+
+    //manages process of writing a ten to a document and saving this
+    public boolean updateCompleteDocument(TEN pTen, MutableDocument pMutableTENDocument) {
+        pMutableTENDocument = setTypeOfDocument(pMutableTENDocument, pTen);
+        pMutableTENDocument = saveSeparateAttributes(pMutableTENDocument, pTen);
+        try {
+            pMutableTENDocument.setString(RepositoryConstants.OBJECT_KEY, this.mObjectMapper.writeValueAsString(pTen));
+            try {
+                DataContextManager.getDatabase().save(pMutableTENDocument);
+                return true;
+            } catch (CouchbaseLiteException e) {
+                return false;
+            }
+        } catch (JsonProcessingException e) {
+            return false;
+        }
+    }
+
+    //saves attributes not saved in the JSON-String
+    private MutableDocument saveSeparateAttributes(MutableDocument pMutableDocument, TEN pTen){
+        pMutableDocument.setDate(RepositoryConstants.CREATION_DATE_KEY, pTen.getDateOfCreation());
+        pMutableDocument.setInt(RepositoryConstants.COLOR_KEY, pTen.getColor());
+        pMutableDocument.setInt(RepositoryConstants.ACCENT_COLOR_KEY, pTen.getAccentColor());
+
+        return pMutableDocument;
+    }
+
+    //Sets Type depending of the class of the given Object
+    private MutableDocument setTypeOfDocument(MutableDocument pMutableDocument, TEN pTen) {
+
+        if (pTen.getClass().getName().contains("Event")) {
+            pMutableDocument.setString(RepositoryConstants.TYPE_KEY, RepositoryConstants.EVENT_TYPE);
+
+        } else if (pTen.getClass().getName().contains("Note")) {
+            pMutableDocument.setString(RepositoryConstants.TYPE_KEY, RepositoryConstants.NOTE_TYPE);
+
+        } else if (pTen.getClass().getName().contains("Todo")) {
+            pMutableDocument.setString(RepositoryConstants.TYPE_KEY, RepositoryConstants.TODO_TYPE);
+        }
+        return pMutableDocument;
+    }
+}
+
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+\begin{lstlisting}[caption=WriteRepository (Jan Beilfuß)]
+//Class that handles all writing accesses to the database
+//Author: Jan Beilfuss
+public class WriteRepository {
+
+    private DocumentSaver mDocumentSaver;
+    private TenJsonParser mTenJsonParser;
+    private FileRepository mFileRepository;
+
+    public WriteRepository(){
+        this.mDocumentSaver = new DocumentSaver();
+        this.mTenJsonParser = new TenJsonParser();
+        this.mFileRepository = new FileRepository();
+    }
+
+    //new TEN to the Database
+    public void insertTEN(TEN pTen) {
+        MutableDocument mutableTENDocument = new MutableDocument();
+        pTen.setID(mutableTENDocument.getId());
+        this.mDocumentSaver.updateCompleteDocument(pTen, mutableTENDocument);
+    }
+
+    //already Existing TEN to the Database
+    public void updateTEN(TEN pTen) {
+        MutableDocument mutableTENDocument = DataContextManager.getDatabase().getDocument(pTen.getID()).toMutable();
+        this.mDocumentSaver.updateCompleteDocument(pTen, mutableTENDocument);
+    }
+
+    public boolean deleteTEN(String pTenId) {
+        Document document = DataContextManager.getDatabase().getDocument(pTenId);
+        deleteNoteImages(document);
+        try {
+            if(document != null){
+                DataContextManager.getDatabase().delete(document);
+                return true;
+            }
+            return false;
+        } catch (CouchbaseLiteException e) {
+            return false;
+        }
+    }
+
+    //Side Effects of Deleting a Note
+    public void deleteNoteImages(Document pDocument) {
+        if (pDocument.getString(RepositoryConstants.TYPE_KEY).equals(RepositoryConstants.NOTE_TYPE)) {
+            String json = pDocument.getString(RepositoryConstants.OBJECT_KEY);
+            Note note = mTenJsonParser.stringToNote(json);
+            for(Image image: note.getPictures()){
+                mFileRepository.deleteImageFromDirectories(image.getId());
+            }
+        }
+    }
+}
+\end{lstlisting}
+\end{figure}
 	\subsubsection{Services}
 \begin{figure}[H]
 \begin{lstlisting}[caption=Create (Ruthild Gilles)]
@@ -598,7 +1295,6 @@ public class ImageService {
 \end{lstlisting}
 \end{figure}
 
-	\subsubsection{Tasks}
 \subsection{Modules}
 	\subsubsection{Image Compression}
 	\subsubsection{Share}
