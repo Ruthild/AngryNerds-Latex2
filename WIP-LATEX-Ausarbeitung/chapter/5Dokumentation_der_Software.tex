@@ -1110,12 +1110,12 @@ Im Folgenden ist ein Use-Case Diagramm abgebildet, welche diese Funktionen zusam
 \paragraph{Datenstruktur und -typen}
 Die Notiz-Activity wird aus der Overview-Activity mittels eines Intents gestartet, welcher, falls die Notiz bereits besteht und keine neue Notiz angelegt werden soll, die jeweilige ID der Notiz übergibt, damit darüber auf die Datenbank zugegriffen werden kann. Die Klasse NoteActivity ist aus der Klasse AppCompatActivity abgeleitet und überschreibt die für die Funktionen relevanten Methoden dieser Klasse und initialisiert die im Nachfolgenden angesprochenen Verwaltungsklassen NoteData, NoteGui sowie NoteApplicationLogic.
 
-\subparagraph{Restruktrierung der Pakete (Jan Beilfuß)}
-Als bereits ein Großteil des Funktionsumfangs der Notiz-Activity implementiert war, gab es eine NoteData-Klasse und eine NoteApplicationLogic-Klasse. Alle Klassen der Notiz-Activity befanden sich in einem Paket.
+\subparagraph{Restrukturierung der Pakete (Jan Beilfuß)}
+Als bereits ein Großteil des Funktionsumfangs der Notiz-Activity implementiert war, gab es eine einzelne NoteData-Klasse und eine NoteApplicationLogic-Klasse. Alle Klassen der Notiz-Activity befanden sich in einem Paket.
 
-Die Klassen NoteData und NoteApplicationLogic enthielten eine eine Vielzahl von Methoden mit unterschiedlichend fachlichen wie technischen Funktionen. Die Länge der beiden Klassen von 200 bis 300 Zeilen machte diese unübersichtlich. Alle Klassen lagen in einem Paket. Als Folge dessen sinkt die Erweiterbarkeit und der Aufwand bei der Fehlerfindung steigt.
+Die Klassen NoteData und NoteApplicationLogic enthielten eine eine Vielzahl von Methoden mit unterschiedlichend fachlichen wie technischen Funktionen. Die Länge der beiden Klassen von 200 bis 300 Zeilen machte diese unübersichtlich. Als Folge dessen sinkt die Erweiterbarkeit und der Aufwand bei der Fehlerfindung steigt.
 
-Es wurden folgende Maßnahmen getroffen, um die beschriebene Problemstellung zu lösen. Zu einen wurde im Paket note die drei Pakete data, logic und gui angelegt. Diese wurden weiter in Unterpakete aufgeteilt, sodass garantiert war, dass nicht mehr als sechs bis sieben Klassen im selben Paket liegen. Ebenfalls wurden die Klassen nach ihrer Funktion in die entsprechenden Pakete sortiert.
+Es wurden folgende Maßnahmen getroffen, um die beschriebene Problemstellung zu lösen. Zu einen wurde im Paket note die drei Pakete data, logic und gui angelegt. Diese wurden weiter in Unterpakete aufgeteilt, sodass garantiert war, dass nicht mehr als sechs bis sieben Klassen im selben Paket liegen. Ebenfalls wurden die Klassen nach ihrer Funktion aufgeteilt und dann in die entsprechenden Pakete einsortiert.
 
 Durch die ergriffenene Maßnahmen konnte bei der Weiterentwicklung der Applikation jeweils ein schneller Einstieg gefunden werden. Weiterhin konnte die gewählte Struktur flexibel für Implementierungen, die aus dem Debuggingprozess hervorgegangen sind, angepasst und erweitert werden.
 
@@ -1176,7 +1176,7 @@ Die NoteData-Klasse spiegelt die zentrale Datenverwaltungsklasse wieder, aus der
 Diese Methode wird aufgerufen, falls der Benutzer im Kontextmenü die Option des Teilens ausgewählt hat. Von hier aus wird die shareNote-Methode im ShareModule aufgerufen.
 
 \subparagraph*{Klasse: NoteDataBackend (Jan Beilfuß)}
-In dieser Klasse werden alle Datenfunktionen gesteuert, welche mit dem Backend interagieren. Weiterhin wird hier die Liste der Bilder gehalten, welche beim Speicher zu löschen sind. Wenn der Nutzer beispielsweise ein Bild löscht und dann die App ohne speichern schließt, ist das Bild beim nächsten Laden im Vergleich zum direkten Löschen noch vorhanden.
+In dieser Klasse werden alle Datenfunktionen bebündelt, welche mit dem Backend interagieren. Weiterhin wird hier die Liste der Bilder gehalten, welche beim Speicher zu löschen sind. Wenn der Nutzer beispielsweise ein Bild löscht und dann die App ohne speichern schließt, ist das Bild beim nächsten Laden im Vergleich zum direkten Löschen noch vorhanden.
 
 \textit{deleteImage}:\\
 Diese Methode entfernt das zu löschende Bild aus dem Note-Objekt und fügt dieses der Liste mit den zu löschenden Bildern hinzu.
@@ -1185,13 +1185,13 @@ Diese Methode entfernt das zu löschende Bild aus dem Note-Objekt und fügt dies
 Diese Methode ruft im Taskmanager eine Funktion auf, um ein Bild in voller Auflösung im Hintergrund nachzuladen.
 
 \textit{setColors}:\\
-Diese Methode lädt die Haupt un die Akzentfarbe zu dem Notizobjekt, dessen ID übergeben wurde und setzt diese in dem in NoteData gehaltenenen Notizobjekt.
+Diese Methode lädt die Haupt- und die Akzentfarbe zu dem Notizobjekt, dessen ID übergeben wurde und setzt diese in dem in NoteData gehaltenenen Notizobjekt.
 
 \textit{executeSaveRoutine}:\\
-Diese Methode veranlasst das persistente Löschen der Bilder. Wenn die Notiz komplett leer ist, wird diese gelöscht, andernfalls wird sie in der Datenbank gespeichert. 
+Diese Methode bildet den Prozess der persistenten Speicherung in der Notiz-Activity ab. Zu erst wird das persistente Löschen der während der Laufzeit in der Oberfläche gelöschten Bilder durchgeführt. Darüber hinaus wird geprüft, ob die Notiz komplett leer ist. Wenn dies der Fall ist wird diese gelöscht, andernfalls wird sie in der Datenbank gespeichert. 
 
 \textit{finallyDeleteImages}:\\
-Diese Methode geht über alle ImageObjekte in der Liste mit den zu löschenden Bildern und übergibt diese der Delete-Methode im ImageService. Dadurch werden die Bilder im Dateisystem gelöscht.
+Diese Methode geht über alle Image-Objekte in der Liste mit den zu löschenden Bildern und übergibt diese der Delete-Methode im ImageService. Dadurch werden die Bilder im Dateisystem gelöscht.
 
 \textit{deleteNote}:\\
 Diese Methode wird aufgerufen, wenn man die Notiz in der Datenbank löschen möchte. Wenn das NoteObjekt existiert, wird dessen ID der Delete-Methode im Delete-Service aufgerufen und die ID übergeben.
@@ -1221,33 +1221,32 @@ Diese Methode erzeugt ein Objekt der Klasse NoteLoader. Über dieses Objekt wird
 Diese Klasse erzeugt einen asynchrone Task der Klasse LoadPreviewImageTask, welche von AsyncTask erbt.
 
 \textit{loadPreviewImage}:\\
-Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird eine Kopie des Image-Objektes aus dem NoteObjekt angefertigt und in diese das gewünschte Vorschaubild geladen. Nach dem Laden wird in textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode textit{addAsyncPreviewImage} in die Note Activity geladen.
+Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode \textit{doInBackground} wird eine Kopie des Image-Objektes aus dem NoteObjekt angefertigt und in diese das gewünschte Vorschaubild geladen. Nach dem Laden wird in \textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode \textit{addAsyncPreviewImage} in die Note Activity geladen.
 
 \subparagraph*{Klasse: PriorityOriginalIMageLoader (Jan Beilfuß)}
 Diese Klasse erzeugt einen asynchrone Task der Klasse LoadOriginalImageTask, welche von AsyncTask erbt.
 
 \textit{loadOriginalImage}:\\
-Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird das Bild in originaler Größe geladen. Vor dem Laden wird in textit{onPreExecute} der Ladespinner gestartet. Nach dem Laden wird in textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode textit{addAsyncPreviewImage} in die Note Activity geladen, der Ladespinner gestoppt und das Bild als Popup angezeigt.
+Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode \textit{doInBackground} wird das Bild in originaler Größe geladen. Vor dem Laden wird in \textit{onPreExecute} der Ladespinner gestartet. Nach dem Laden wird in \textit{onPostExecute} das Bild aus dem Noteobjekt gelöscht, falls keine Bitmap geladen werden konnte, oder andernfalls das Bild über die Methode \textit{addAsyncPreviewImage} in die Note Activity geladen, der Ladespinner gestoppt und das Bild als Popup angezeigt.
 
 \subparagraph*{Klasse: NoteLoader (Jan Beilfuß)}
 Diese Klasse erzeugt einen asynchrone Task der Klasse LoadNoteTask, welche von AsyncTask erbt.
 \textit{loadNote}:\\
-Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode textit{doInBackground} wird das Note-Objekt aus der Datenbank geladen. Nach dem Laden wird in textit{onPostExecute} das Note-Objekt in NoteData gesetzt und die Methode textit{dataToGui} ausgeführt, um dieses in der Oberfläche anzuzeigen.
-
+ Diese Methode erzeugt den asynchronen Task und führt diesen aus. In der Methode \textit{doInBackground} wird das Note-Objekt aus der Datenbank geladen. Nach dem Laden wird in \textit{onPostExecute} das Note-Objekt in NoteData gesetzt und die Methode \textit{dataToGui} ausgeführt, um dieses in der Oberfläche anzuzeigen.
+ 
 \subparagraph*{Klasse: NoteDataGui (Jan Beilfuß)}
 In dieser Klasse werden alle Datenfunktionen gebündelt, welche Datenänderungen durch Nutzer-Interaktion mit der Oberfläche erzeugen. Weiterhin wird hier die Liste der Bilder gehalten, welche in der Oberfläche als Vorschaubilder angezeigt werden.
 \textit{addImageFromGallery}:\\
-Diese Methode bekommt die Bitmap des aus der Gallerie importierten Bildes übergeben. Daraus wird über die Methode textit{addPreviewImageFromOriginal} ein Vorschaubild erzeugt und dieses der Liste mit Vorschaubildern hinzugefügt. Weiterhin wird das Originale Bild in den applikationseigenen Ordnern abgespeichert.
-\textit{addPreviewImageFromOriginal}:\\
+ Diese Methode bekommt die Bitmap des aus der Gallerie importierten Bildes übergeben. Daraus wird über die Methode \textit{addPreviewImageFromOriginal} ein Vorschaubild erzeugt und dieses der Liste mit Vorschaubildern hinzugefügt. Weiterhin wird das Originale Bild in den applikationseigenen Ordnern abgespeichert.
+ \textit{addPreviewImageFromOriginal}:\\
 Diese Methode erzeugt aus einem originalen Bild ein Vorschaubild und fügt dieses der klasseneigenen Liste an Vorschaubildern hinzu.
 \textit{addImageFromCamera}:\\
-Diese Methode fügt das aus der Kamera-Activity übergebene Bild hinzu. Dazu wird die Methode textit{addImageFromGallery} aufgerufen und zusätzlich die zuvor temporär erstellte Datei gelöscht.
+ Diese Methode fügt das aus der Kamera-Activity übergebene Bild hinzu. Dazu wird die Methode \textit{addImageFromGallery} aufgerufen und zusätzlich die zuvor temporär erstellte Datei gelöscht.
 \textit{getOriginalImage}:\\
-Diese Methode wird aufgerufen, wenn man auf ein Bild klickt, um dieses in originaler Größe zu laden. Sofern dieses nicht in dem Note-Objekt in NoteData gespeichert ist, wird in NoteDataBackend die Methode textit{triggerOriginalImageLoad} aufgerufen, um dieses aus dem Dateisystem zu laden.
-\textit{deleteImage}:\\
+ Diese Methode wird aufgerufen, wenn man auf ein Bild klickt, um dieses in originaler Größe zu laden. Sofern dieses nicht in dem Note-Objekt in NoteData gespeichert ist, wird in NoteDataBackend die Methode \textit{triggerOriginalImageLoad} aufgerufen, um dieses aus dem Dateisystem zu laden.\textit{deleteImage}:\\
 Diese Methode wird aufgerufen, wenn der Nutzer in der Oberfläche ein Bild löchen möchte. Dieses Bild wird aus der Liste an Vorschaubildern gelöscht und die Oberfläche aufgefrischt.
 \textit{refreshImages}:\\
-Diese Methode ruft in der NoteGuiRefresherLogic die Methode textit{refreshImages} auf, um die Gui bei Änderungen im Datenbestand zu aktualisieren.
+ Diese Methode ruft in der NoteGuiRefresherLogic die Methode \textit{refreshImages} auf, um die Gui bei Änderungen im Datenbestand zu aktualisieren.
 \textit{getLatestImage}:\\
 Diese Methode gibt das letzte Bild der Liste an Vorschaubildern zurück. Dies wird verwendet, damit man dieses beim Asynchronen Laden als einzelnes Bild animiert dem Layout hinzufügen kann.
 
@@ -1339,7 +1338,7 @@ Wird ausgewählt, dass das Bild gelöscht werden soll, wird hier die entsprechen
 \subparagraph*{Klasse: ImageOverlayListener (Jan Beilfuß)}
 Diese Klasse implementiert das Interface DialogInterface.OnCancelListener.
 textit{onCancel}
-Diese Methode wird aufgerufen, wenn der Dialog, welchem der KlickListener hinzugefügt wurde durch den Nutzer geschlossen wird. Es werden dann zum einen alle Bitmaps, mit Bildern in Originalgröße aus dem Arbeitsspeicher gelöscht und das ImageOverlay ebenfalls auf null gesetzt, um den Speicherverbrauch zu optimieren.
+Diese Methode wird aufgerufen, wenn der Dialog, welchem der Listener hinzugefügt wurde durch den Nutzer geschlossen wird. Es werden dann zum einen alle Bitmaps, mit Bildern in Originalgröße aus dem Arbeitsspeicher gelöscht und das ImageOverlay ebenfalls auf null gesetzt, um den Speicherverbrauch zu optimieren.
 
 \subparagraph*{Klasse: MenuItemClickListener (Joscha Nassenstein)}
 Diese Klasse implementiert das Interface Toolbar.OnMenuItemClickListener und ist für das Behandeln der Optionen im Menü der Toolbar zuständig.
@@ -1400,17 +1399,15 @@ Diese Klasse bündelt alle Methoden, welche beim asynchronen Nachladen von Bilde
 Diese Methode wird aus dem asynchronen Task LoadPreviewImageTask aufgerufen. Sie fügt das Bild der Liste an Vorschaubildern in NoteDataGui hinzu und lässt das Bild animiert in der Gui hinzufügen.
 
 \textit{startLoadingSpinner}:\\
-Diese Methode ruft in der Gui die Methode textit{disableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld deaktiviert und reagieren nicht mehr auf Klick-Events. Weiterhin wird der Ladespinner angezeigt.
-\textit{stopLoadingSpinner}:\\
-Diese Methode ruft in der Gui die Methode textit{enableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld wieder aktiviert und reagieren auf Klick-Events. Weiterhin wird der Ladespinner wieder ausgeblendet.
-
+Diese Methode ruft in der Gui die Methode \textit{disableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld deaktiviert und reagieren nicht mehr auf Klick-Events. Weiterhin wird der Ladespinner angezeigt.\textit{stopLoadingSpinner}:\\
+Diese Methode ruft in der Gui die Methode \textit{enableAll} auf. Dadurch werden die Texteingabefelder und das Tagfeld wieder aktiviert und reagieren auf Klick-Events. Weiterhin wird der Ladespinner wieder ausgeblendet.
+ 
 \subparagraph*{Klasse: NoteGalleryImportLogic (Jan Beilfuß)}
 Diese Klasse bündelt alle Methoden, die den Bilderimport aus der Gallerie managen.
 
 \textit{getPath}:\\
-Diese Methode ermittelt aus dem Context und der aus der Gallery Intent zurückgegeben Uri den absoluten Pfad. Ein Objekt der Klasse Cursor zeigt auf die entsprechende Datei, und gibt den Pfad dieser zurück. Im Anschluss wird dieses geschlossen und der Pfad zurückgegeben.
-\textit{importImageFromGallery}:\\
-Diese Methode bildet den gesamten Prozess ab, um ein Bild aus der Gallerie zu Importieren. Beginnend beim Pfinden des Pfads, der Kompression, falls das Bild zu groß ist und die Korrektur der Rotation. Danach wird in NoteData die Methode textit{addImageFromGallery} aufgerufen, um das Bild den Datenhinzuzufügen und danach die Oberfläche aktualisiert.
+Diese Methode ermittelt aus dem Context und der aus der Gallery Intent zurückgegeben Uri den absoluten Pfad des ausgewählten Bildes. Ein Objekt der Klasse Cursor zeigt auf die entsprechende Datei, und gibt den Pfad dieser zurück. Im Anschluss wird dieses geschlossen und der Pfad zurückgegeben.\textit{importImageFromGallery}:\\
+Diese Methode bildet den gesamten Prozess ab, um ein Bild aus der Gallerie zu importieren. Beginnend beim Ermitteln des Pfades, der Kompression, falls das Bild zu groß ist und die Korrektur der Rotation. Danach wird in NoteData die Methode \textit{addImageFromGallery} aufgerufen, um das Bild den Datenhinzuzufügen und danach die Oberfläche aktualisiert.
 
 \subparagraph*{Klasse: NoteGuiRefresherLogic (Joscha Nassenstein)}
 Diese Klasse ist dafür zuständig, die Benutzeroberfläche zu aktualisieren, beispielsweise bei Aufruf der Activity und bei einer Konfigurationsänderung.
@@ -1424,12 +1421,12 @@ In dieser Methode werden zunächst alle Views aus dem LinearLayout, welches im S
 \subparagraph*{Klasse: ImagePopupLogic (Joscha Nassenstein und Jan Beilfuß)}
 In dieser Klasse wird das ImageOverlay erstellt und gestartet.
 
-\textit{openImagePopup (Joscha Nassenstein}:\\
-In dieser Methode werden die aktuellen Displayeigenschaften abgefragt und anhand der aktuellen Maßen das ImageOverlay erstellt und gestartet.
+\textit{openImagePopup (Joscha Nassenstein)}:\\
+In dieser Methode werden die aktuellen Displayeigenschaften abgefragt und anhand der aktuellen Maße das ImageOverlay erstellt und gestartet.
 
 \textit{changeConfiguration (Jan Beilfuß)}:\\
 
-Diese Methode wird ausgeführt wenn man ein Image-Popup geöffnet hat und den Bildschirm öffnet. Über die neue Konfiguration kann man sich die Bildschirmmaße nach der Drehung in dp ausgeben lassen. Über die Pixeldichte wird Größe auf Pixel hochgerechnet und der Methode textit{changeOrientation} des ImageOverlays mitgegeben. Diese erzeugt das Overlay dann auf die neue Displaygröße angepasst.
+Diese Methode wird relevant, wenn man ein Image-Popup geöffnet hat und den Bildschirm dreht. Über die neue Konfiguration kann man sich die Bildschirmmaße nach der Drehung in dp ausgeben lassen. Über die Pixeldichte wird Größe auf Pixel hochgerechnet und der Methode \textit{changeOrientation} des ImageOverlays mitgegeben. Diese erzeugt das Overlay dann auf die neue Displaygröße angepasst.
 
 \textit{displayPreviousImage / displayNextImage }:\\
 Falls eine Wischgeste von links nach rechts auf dem ImagePopup erkannt wurde, welche die Mindestdistanz in NoteConstants übertrifft, wird diese Methode ausgeführt. Hier wird überprüft, ob ein vorheriges Bild existiert. Falls dies der Fall ist, wird die Methode displayNewImage mit der neuen ID aufgerufen. In der Methode displayNextImage wird der gegenteilige Fall behandelt.
@@ -1579,7 +1576,7 @@ Wenn aus den einzelnen TEN-Activities zurücknavigiert wird, gelangt der Nutzer 
 \paragraph{Objekte}
 Im Bereich der persistenten Datenspeicherung gab es die Herausforderung, dass es eine breite Auswahl an Speichermöglichkeiten gibt. Es musste zu Beginn evaluiert werden, welche Technologie für das Projekt am geeignetsten war. Zur Auswahl standen Bundles und Datenbanken, welche sich weiter in SQL-Datenbanken und NoSQL-Datenbanken unterteilen lassen. Darüber hinaus war zu Projektbeginn nicht bekannt, welche Datenbankimplementierungen für den Einsatz auf mobilen Geräten geeignet sind. Nach einiger Recherche wurde die Implementierung im Bundle als zu aufwendig und nicht flexibel genug erachtet. In der Folge wurde sich für den Einsatz einer Datenbank entschieden.
 
-Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanken bekannt. Diese unterscheiden sich von NoSQL-Datenbanken, indem man eine klare Datenstruktur, in der Regel in Tabellenform vorgibt. NoSQL-Datenbanken sind beispielsweise dokumenten- oder graphenbasiert. Dokumente sind flexibel und diesen können einfache Felder in Form von Key-Value-Paaren hinzugefügt werden. Im mobilen Umfeld hat man häufig Änderungen am Datenmodell, sodass einem in diesem Bereich eine NoSQL-Datenbank entgegen kommt. Weiterhin hat man bei SQL-Datenbanken einen Aufwand zur Erzeugung und Definition von Tabellen sowie bei deren Änderung. Und da man aus den Anforderungen an die App ableiten konnte, dass keine komplexen Tabellenrechnungen gefordert waren, wurde sich für eine dokumentenbasierte NoSQL-Datenbank entschieden.
+Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanken bekannt. Diese unterscheiden sich von NoSQL-Datenbanken, indem man eine klare Datenstruktur, in der Regel in Tabellenform vorgibt. NoSQL-Datenbanken sind beispielsweise dokumenten- oder graphenbasiert. Dokumente sind flexibel und diesen können einfach Felder in Form von Key-Value-Paaren hinzugefügt werden. Im mobilen Umfeld hat man häufig Änderungen am Datenmodell, sodass einem in diesem Bereich eine NoSQL-Datenbank entgegen kommt. Weiterhin hat man bei SQL-Datenbanken einen Aufwand zur Erzeugung und Definition von Tabellen sowie bei deren Änderung. Und da man aus den Anforderungen an die App ableiten konnte, dass keine komplexen Tabellenrechnungen gefordert waren, wurde sich für eine dokumentenbasierte NoSQL-Datenbank entschieden.
 
 Bei der Wahl der spezifischen Datenbanktechnologie entschied man sich am Ende für Couchbase Lite, da diese gut dokumentiert ist, einem eine lokale Datenbank und Tools wie ein Gateway zur Hand gibt, wenn man es langfristig in Erwägung zieht Todos, Events und Notizen über einen Server zu synchronisieren.
 
@@ -1594,12 +1591,12 @@ Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfache
 \end{minipage}
 \end{figure}
 
-Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möchte.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Objekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
+Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möchte. Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Objekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
 
 \paragraph{Bilder}
 Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendiger erwiesen, da diese mehr Speicherplatz und Rechenleistung benötigen.
 
-Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzulegen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in hoher Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und geringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
+Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzulegen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in voller Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und geringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
 
 \subsubsection{Repository}
 Das Repository bildet in der Applikationsstruktur die unterste Ebene und ist für das Handling der Datenbank und die Bereitstellung der persistent gespeicherten Daten verantwortlich.
@@ -1616,7 +1613,7 @@ Das Repository bildet in der Applikationsstruktur die unterste Ebene und ist fü
 \paragraph{Klassenstruktur}
 
 \subparagraph{Klasse: DatabaseRepository (Jan Beilfuß)}
-Diese Klasse wird aus der Service-Schicht angesprochen. Sie bündelt Methoden, um Daten aus der Datenbank zu lesen oder zu schreiben. Alle Methoden rufen Methoden in den Klassen WriteRepository oder ReadRepository auf.
+Diese Klasse wird aus der Service-Schicht angesprochen. Sie bündelt Methoden, um Daten aus der Datenbank zu lesen oder in diese zu schreiben. Alle Methoden rufen Methoden in den Klassen WriteRepository oder ReadRepository auf.
 
 \textit{ getTodoByID}:\\
 Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Todoobjekt zurück. 
@@ -1669,7 +1666,7 @@ Diese Methode erzeugt eine neues veränderbares Dokument und setzt in dem überg
 Diese Methode lädt das Dokument aus der Datenbank und entfernt den Schreibschutz von diesem. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSaver übergeben.
 
 \textit{ deleteTEN }:\\
-Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank. Weiterhin wird deleteNoteImages aufgerufen. Wenn ein Dokument zu der übergebenen ID existiert, wird dieses gelöscht.
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank. Weiterhin wird \textit{deleteNoteImages} aufgerufen, um die Bilder zu dem geladenen zu löschenden Objekt auch persistent zu löschen. Wenn ein Dokument zu der übergebenen ID existiert, wird dieses gelöscht.
 
 \textit{ deleteNoteImages }:\\
 Diese Methode entfernt alle mit dem zu löschenden Objekt assoziierten Bilder aus dem persistenten Speicher, sofern das zu löschende Objekt ein Note-Objekt ist.
@@ -1681,22 +1678,22 @@ Diese Klasse enthält alle Methoden, welche benötigt werden, um die Attribute e
 Diese Methode wird aus dem WriteRepository aufgerufen und bildet den ganzen Prozess von der Dokumentenvorbereitung über das Hinzufügen der einzelnen Key-Value-Paare bis hin zum finalen speichern des Dokumentes ab.
 
 \textit{ saveSeparateAttributes }:\\
-Diese Methode legt alle Attribute, welche in der Deserialisierung durch Jackson nicht beachtet warden, als Key-Value-Paare im Dokument ab. Dazu zählt das Erzeugungsdatum des TEN-Objektes, die Farbe und die Akzentfarbe.
+Diese Methode legt alle Attribute, welche in der Serialisierung durch Jackson nicht beachtet warden, als Key-Value-Paare im Dokument ab. Dazu zählt unter anderem das Erzeugungsdatum des TEN-Objektes, die Farbe und die Akzentfarbe.
 
 \textit{ setTypeOfDocument }:\\
-Diese Methode bestimmt abhängig von der Klasse des übergebenen TEN-Objektes, welcher Typ in dem Dokument gespeichert werden muss. Dies ist notwendig, da bei der Deserialisierung des Json-Strings, die Zielklasse angegeben werden muss.
+Diese Methode bestimmt abhängig von der Klasse des übergebenen TEN-Objektes, welcher Typ in dem Dokument gespeichert werden muss. Dies ist notwendig, da bei der Deserialisierung des JSON-Strings, die Zielklasse angegeben werden muss.
 
 \subparagraph{Klasse: ReadRepository (Jan Beilfuß)}
 Diese Klasse beinhaltet alle Methoden, die einen lesenden Zugriff auf die Datenbank haben.
 
 \textit{ getTodoByID }:\\
-Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Todo-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Todo-Objekt um. Dazu wird erst aus dem JSON-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
 
 \textit{ getEventByID }:\\
-Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Event-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Event-Objekt um. Dazu wird erst aus dem JSON-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
 
 \textit{ getNoteByID }:\\
-Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Note-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Note-Objekt um. Dazu wird erst aus dem JSON-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
 
 \textit{ getAllTENs }:\\
 Diese Methode ruft die Query getAllTENs auf und gibt dann das Ergebnis dieser, eine Liste aller in der Datenbank gespeicherten TEN-Objekte, zurück.
@@ -1707,16 +1704,16 @@ Diese Methode lädt das Dokument zu der übergebenen ID aus der Datenbank und gi
 Diese Klasse enhält die Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden.
 
 \textit{ getAllTENs }:\\
-Diese Methode baut eine Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden. Das Einträge des ResultSets werden dem entsprechenden Converter übergeben, dort umgewandelt und dann einer Liste aus TEN-Objekten hinzugefügt, welche am Ende zurückgegeben wird.
+Diese Methode baut eine Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden. Die Einträge des ResultSets werden dem entsprechenden Converter übergeben, dort umgewandelt und dann einer Liste aus TEN-Objekten hinzugefügt, welche am Ende zurückgegeben wird.
 
 \subparagraph{Klasse: QueriedTENConverter (Jan Beilfuß)}
 Diese Klasse enthält eine Methode, welche genutzt wird, um die Ergebnisse einer Datenbankabfrage in TEN-Objekte umzuwandeln.
 
 \textit{ createTENFromResult }:\\
-Diese Methode wandelt ein Result, eine CouchbaseLite-Klasse, in ein TEN-Objekt um. Dem Result wird ein Dictionary entnommen und aus diesem der Json-String. Der wird im Anschluss zur Erzeugen des TEN-Objektes verwendet. Wenn dies erfolgreich ist, werden dem TEN-Objekt noch die separat abgelegten Attribute hinzugefügt.
+Diese Methode wandelt ein Result, eine CouchbaseLite-Klasse, in ein TEN-Objekt um. Dem Result wird ein Dictionary entnommen und aus diesem der JSON-String. Der wird im Anschluss zur Erzeugen des TEN-Objektes verwendet. Wenn dies erfolgreich ist, werden dem TEN-Objekt noch die separat abgelegten Attribute hinzugefügt.
 
 \subparagraph{Klasse: SeparateAttributesConverter (Jan Beilfuß)}
-Diese Klasse ist dafür verantwortlich, dass in einem übergebenen TEN-Objekt die nicht im JSON-String enthaltenen Attribute gesetzt werden. Dazu zählt die ID, welche die ID des Dokuments selber ist. Darüber hinaus die Farbe, die Akzentfarbe und das Erzeugungsdatum des TEN-Objektes.
+Diese Klasse ist dafür verantwortlich, dass in einem übergebenen TEN-Objekt die nicht im JSON-String enthaltenen Attribute gesetzt werden. Dazu zählt die ID, welche die ID des Dokuments selber ist, die Hauptfarbe, die Akzentfarbe und das Erzeugungsdatum des TEN-Objektes.
 
 \textit{ addTENPropertiesFromDocument }:\\
 Diese Methode entnimmt die aufgeführten Attribute einem Document, Objekt aus dem Couchbase Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt.
@@ -1739,16 +1736,16 @@ Diese Methode erzeugt aus dem übergebenen JSON-String ein Note-Objekt und gibt 
 \subparagraph{Klasse: FileRepository (Jan Beilfuß)}
 Diese Klasse enthält alle Zugriffe auf das Dateisystem. Sie findet Einsatz in der Verwaltung der Bilder, da diese im Dateisystem abgelegt werden.
 \textit{ saveImagePersistent }:\\
-Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber das Bild im Dateisystem.
+Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber das übergebene Bild im Dateisystem.
 
 \textit{ readImageFromDirectory }:\\
-Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus eine Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
+Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus einem Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
 
 \textit{ deleteImageFromDirectory }:\\
-Die Methode deleteImageFromDirectory überladen. Diese nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässigbaren Bereichs auf die Performance auswirkt.
+Die Methode deleteImageFromDirectory nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässigbaren Bereichs auf die Performance auswirkt.
 
-\textit{ deleteImageFromDirectory }:\\
-Die Methode deleteImageFromDirectory überladen. Diese nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, das es vorkommen kann, dass diese Methode beim schließen der Note-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
+\textit{ deleteImageFromDirectories }:\\
+Die Methode deleteImageFromDirectoriesy nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, da diese Methode beim Schließen der Notiz-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
 
 \subparagraph{Klasse: FileSystemConstants (Jan Beilfuß)}
 Diese Klasse enthält alle Konstanten, welche im Umgang mit dem Filesystem benötigt werden. Dazu zählen Ordernamen, Dateiendungen, aber auch der Kompressionsfaktor für Bilder.
@@ -1759,10 +1756,10 @@ Diese Klasse erzeugt einen asynchronen Task, der die Bilder aus dem Dateisystem 
 Es wird ein asynchroner Task der Klasse DeleteImageTask erzeugt und ausgeführt. Dieser löscht die Bilder zu der im ImageObjekt übergebenen ID. Die dort definierte Methode textit{doInBackground} baut die Dateipfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen, überprüft, ob die Datei existiert und löscht diese, falls sie existiert.
 
 \subparagraph{Klasse: ImageSaver (Jan Beilfuß)}
-Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speichert. Diese Klasse enthält als innere Klasse, die Klasse SaveImageTask, welche von AsyncTask erbt.
+Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speichert. Diese Klasse enthält als innere Klasse die Klasse SaveImageTask, welche von AsyncTask erbt.
 
 \textit{ execute }:\\
-Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode textit{doInBackground} baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
+Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode \textit{doInBackground} baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
 
 \newpage
 \subsection{Dokumentation der Activity-übergreifenden Klassen}
@@ -1820,10 +1817,10 @@ In diesem Paket werden Funktionen gebündelt, die in mehrere Activities implemen
 Diese Klasse bündelt die Methoden, welche im Modul ImageTools enthalten sind und dient bei Aufrufen aus den Activities als Single Point Of Contact.
 
 \textit{ importCompressedImage }:\\
-Dieser Methode wird der Pfad zu einer Bilddatei übergeben. Sie ruft die Methode textit{importCompressedImage} im ImageCompressionModule auf, welche die Bitmap zurückgibt, welche auf dem Pfad liegt.
+Dieser Methode wird der Pfad zu einer Bilddatei übergeben. Sie ruft die Methode \textit{importCompressedImage} im ImageCompressionModule auf, welche die Bitmap zurückgibt, welche auf dem Pfad liegt.
 
 \textit{ correctImageRotation }:\\
-Dieser Methode wird der Pfad zu einer Bilddatei und die dazugehörige Bitmap übergeben. Sie ruft die Methode textit{corretImageRotation} im ImageCompressionModule auf, welche die Bitmap abhängig von dem Bild zu Pfad dreht und zurückgibt.
+Dieser Methode wird der Pfad zu einer Bilddatei und die dazugehörige Bitmap übergeben. Sie ruft die Methode \textit{corretImageRotation} im ImageCompressionModule auf, welche die Bitmap abhängig von dem Bild zu Pfad dreht und zurückgibt.
 
 \subparagraph*{Klasse: ImageCompressionModule (Jan Beilfuß)}
 Diese Klasse bündelt die Methoden, welche benötigt werden, um Bilder komprimiert aus dem Dateisystem zu importieren.
