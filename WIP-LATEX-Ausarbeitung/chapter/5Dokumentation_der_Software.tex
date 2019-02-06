@@ -1573,129 +1573,174 @@ Wenn aus den einzelnen TEN-Activities zurücknavigiert wird, gelangt der Nutzer 
 %%%%%%%%%%%
 %Jan
 %%%%%%%%%%%
+\subsubsection{Persistente Datenhaltung}
+\paragraph{Objekte}
+Im Bereich der persistenten Datenspeicherung gab es die Herausforderung, dass es eine breite Auswahl an Speichermöglichkeiten gibt. Es musste zu Beginn evaluiert werden, welche Technologie für das Projekt am geeignetsten war. Zur Auswahl standen Bundles und Datenbanken, welche sich weiter in SQL-Datenbanken und NoSQL-Datenbanken unterteilen lassen. Darüber hinaus war zu Projektbeginn nicht bekannt, welche Datenbankimplementierungen für den Einsatz auf mobilen Geräten geeignet sind. Nach einiger Recherche wurde die Implementierung im Bundle als zu aufwendig und nicht flexibel genug erachtet. In der Folge wurde sich für den Einsatz einer Datenbank entschieden.
 
-\subsubsection{Objekte}
-Im Bereich der persistenten Datenspeicherung gab es die Herausforderung, dass es eine brei-te Auswahl an Speichermöglichkeiten gibt. Es musste zu Beginn evaluiert werden, welche Technologie für das Projekt am geeignetsten war. Zur Auswahl standen Bundles und Daten-banken, welche sich weiter in SQL-Datenbanken und NoSQL-Datenbanken unterteilen las-sen. Darüber hinaus war zu Projektbeginn nicht bekannt, welche Datenbankimplementierun-gen für den Einsatz auf mobilen Geräten geeignet sind. Nach einiger Recherche wurde die Implementierung im Bundle als zu aufwendig und nicht flexibel genug erachtet. In der Folge wurde sich für den Einsatz einer Datenbank entschieden.
-
-Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanken bekannt. Diese unterscheiden sich von NoSQL-Datenbanken, indem man eine klare Daten-struktur, in der Regel in Tabellenform vorgibt. NoSQL-Datenbanken sind beispielsweise do-kumenten- oder graphenbasiert. Dokumente sind flexibel und diesen können einfache Felder in Form von Key-Value-Paaren hinzugefügt werden. Im mobilen Umfeld hat man häufig Än-derungen am Datenmodell, sodass einem in diesem Bereich eine NoSQL-Datenbank entge-gen kommt. Weiterhin hat man bei SQL-Datenbanken einen Aufwand zur Erzeugung und Definition von Tabellen sowie bei deren Änderung. Und da man aus den Anforderungen an die App ableiten konnte, dass keine komplexen Tabellenrechnungen gefordert waren, wurde sich für eine dokumentenbasierte NoSQL-Datenbank entschieden. 
+Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanken bekannt. Diese unterscheiden sich von NoSQL-Datenbanken, indem man eine klare Datenstruktur, in der Regel in Tabellenform vorgibt. NoSQL-Datenbanken sind beispielsweise dokumenten- oder graphenbasiert. Dokumente sind flexibel und diesen können einfache Felder in Form von Key-Value-Paaren hinzugefügt werden. Im mobilen Umfeld hat man häufig Änderungen am Datenmodell, sodass einem in diesem Bereich eine NoSQL-Datenbank entgegen kommt. Weiterhin hat man bei SQL-Datenbanken einen Aufwand zur Erzeugung und Definition von Tabellen sowie bei deren Änderung. Und da man aus den Anforderungen an die App ableiten konnte, dass keine komplexen Tabellenrechnungen gefordert waren, wurde sich für eine dokumentenbasierte NoSQL-Datenbank entschieden.
 
 Bei der Wahl der spezifischen Datenbanktechnologie entschied man sich am Ende für Couchbase Lite, da diese gut dokumentiert ist, einem eine lokale Datenbank und Tools wie ein Gateway zur Hand gibt, wenn man es langfristig in Erwägung zieht Todos, Events und Notizen über einen Server zu synchronisieren.
 
-Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfachen, wurde das Serialisierungs- und Deserialisierungsframework Jackson verwendet. Dieses wan-delt Java Objekte in JSON-Strings um, welche in jeweils einem Dokument abgelegt wurden. Weiterhin bietet es eine Funktionalität, diese wieder zurückzuwandeln. Einige Attribute, darun-ter die ID des TEN-Objektes, die Hauptfarbe, die Kontrastfarbe und das Erzeugungsdatum wurden hiervon ausgenommen. Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möch-te.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Ob-jekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
+Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfachen, wurde das Serialisierungs- und Deserialisierungsframework Jackson verwendet. Dieses wandelt Java Objekte in JSON-Strings um, welche in jeweils einem Dokument abgelegt wurden. Weiterhin bietet es eine Funktionalität, diese wieder zurückzuwandeln. Einige Attribute, darunter die ID des TEN-Objektes, die Hauptfarbe, die Kontrastfarbe und das Erzeugungsdatum wurden hiervon ausgenommen. Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möchte.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Objekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
 
-\subsubsection{Bilder}
-Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendiger erwie-sen, da diese mehr Speicherplatz und Rechenleistung benötigen.
+\paragraph{Bilder}
+Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendiger erwiesen, da diese mehr Speicherplatz und Rechenleistung benötigen.
 
-Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzule-gen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in hoher Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und ge-ringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
+Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenbank abzulegen. Dies erwies sich als zu imperformant und umständlich, sodass entschieden wurde, die Bilder im Dateisystem des Gerätes zu speichern. Weiterhin wurde zwischen den Bildern in hoher Auflösung und Bildern in Vorschaugröße unterschieden. Die Vorschaubilder werden in der Übersicht und Notiz-Activity eingebunden. Aufgrund der stärkeren Kompression und geringeren Auflösung können diese schneller geladen werden. Darüber hinaus ist es auf dem Zielgerät hardwarebedingt nicht möglich, mehrere Bilder in Originalgröße im Arbeitsspeicher zu halten.
 
 \subsubsection{Repository}
+Das Repository bildet in der Applikationsstruktur die unterste Ebene und ist für das Handling der Datenbank und die Bereitstellung der persistent gespeicherten Daten verantwortlich.
+
 \paragraph{Klassenstruktur}
-\subparagraph{Klasse: DatabaseRepository (Jan Beilfuß)}
+
+\subparagraph{Klasse: DatabaseRepository (Jan Beilfuß}
 Diese Klasse wird aus der Service-Schicht angesprochen. Sie bündelt Methoden, um Daten aus der Datenbank zu lesen oder zu schreiben. Alle Methoden rufen Methoden in den Klassen WriteRepository oder ReadRepository auf.
-getTodoByID
+
+\textit{ getTodoByID}:\\
 Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Todoobjekt zurück. 
-getEventByID
-Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Eventob-jekt zurück. 
-getNoteByID
+
+\textit{ getEventByID }:\\
+Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Eventobjekt zurück. 
+
+\textit{ getNoteByID }:\\
 Diese Methode gibt das zu der ID passende und in der Datenbank abgespeicherte Noteobjekt zurück. 
-insertTEN
+
+\textit{ insertTEN }:\\
 Diese Methode speichert ein neues TEN-Objekt in die Datenbank.
-updateTEN
+
+\textit{ updateTEN }:\\
 Diese Methode aktualisiert ein bereits bestehendes TEN-Objekt.
-getAllTENs
+
+\textit{ getAllTENs }:\\
 Diese Methode gibt eine Liste aller in der Datenbank liegenden TEN-Objekte zurück.
-deleteTEN
+
+\textit{ deleteTEN }:\\
 Diese Methode löscht das in der Datenbank liegende Objekt zu der übergebenen ID.
-getTENColors
-Diese Methode gibt die Haupt- und die Akzentfarbe eines TEN-Objektes zurück.
-Klasse: DataContextManager (Jan Beilfuß)
-initDatabase
+
+\textit{ getTENColors }:\\
+Diese Methode gibt die Haupt- und die Akzentfarbe des zu der übergebenen ID passenden TEN-Objektes zurück.
+
+\subparagraph{ Klasse: DataContextManager (Jan Beilfuß)}
+Diese Klasse managt das Handling des Datenbankenobjektes.
+
+\textit{ initDatabase }:\\
 Diese Methode prüft, ob die Datenbank mit dem übergebenen Datenbanknamen auf dem Gerät liegt. Falls dies der Fall ist wird diese als Datenbankobjekt in die Applikation geladen. Andernfalls wird eine neue erzeugt.
-compactDatabase
-Diese Methode räumt die Datenbank auf. Da gelöschte Dokumente nur mit einem Flag ver-sehen, aber nicht entgültig gelöscht werden, verbrauchen diese weiterhin Speicherplatz.
-getNumberOfDocuments
-Diese Methode gibt die Anzahl der Datensätze zurück. Sie findet bei der Arbeit mit Mockda-ten ihre Anwendung. Dadurch wird verhindert, dass diese mehrfach in die Datenbank ge-schrieben werden.
-getDatabase
+
+\textit{ compactDatabase }:\\
+Diese Methode räumt die Datenbank auf. Da gelöschte Dokumente nur mit einem Flag versehen, aber nicht entgültig gelöscht werden, verbrauchen diese weiterhin Speicherplatz.
+
+\textit{ getNumberOfDocuments }:\\
+Diese Methode gibt die Anzahl der Datensätze zurück. Sie findet bei der Arbeit mit Mockdaten ihre Anwendung. Dadurch wird verhindert, dass diese mehrfach in die Datenbank geschrieben werden.
+\textit{ getDatabase }:\\
 Diese Methode gibt das Datenbankobjekt zurück.
-Klasse: RepositoryConstants (Jan Beilfuß)
+
+\subparagraph{Klasse: RepositoryConstants (Jan Beilfuß)}
 Diese Klasse enthält alle Konstanten, die bei der Arbeit mit der Datenbank benötigt werden. Dazu zählen die in den Dokumenten eingesetzten Schlüssel, aber beispielsweise auch der Name der Datenbank.
 
-Klasse: WriteRepository (Jan Beilfuß)
+\subparagraph{Klasse: WriteRepository (Jan Beilfuß)}
 Diese Klasse beinhaltet alle Funktionen, die einen schreibenden Zugriff auf die Datenbank haben. 
-insertTEN
+
+\textit{ insertTEN }:\\
 Diese Methode erzeugt eine neues veränderbares Dokument und setzt in dem übergebenen TEN-Objekt die ID des Dokumentes. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSaver übergeben.
-updateTEN
-Diese Methode lädt das Dokument aus der Datenbank und entfernt den Schreibschutz von diesem. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSa-ver übergeben.
-deleteTEN
+
+\textit{ updateTEN }:\\
+Diese Methode lädt das Dokument aus der Datenbank und entfernt den Schreibschutz von diesem. Dieses Dokument wird inklusive dem übergebenen TEN-Objekt dem DocumentSaver übergeben.
+
+\textit{ deleteTEN }:\\
 Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank. Weiterhin wird deleteNoteImages aufgerufen. Wenn ein Dokument zu der übergebenen ID existiert, wird dieses gelöscht.
-deleteNoteImages
-Diese Methode entfernt alle mit dem zu löschenden Objekt assoziierten Bilder aus dem per-sistenten Speicher, sofern das zu löschende Objekt ein Note-Objekt ist.
 
-Klasse: DocumentSaver (Jan Beilfuß)
-Diese Klasse enthält alle Methoden, welche benötigt werden, die Attribute eines TEN-Objektes zu übertragen und dieses in der Datenbank zu speichern.
-updateCompleteDocument
+\textit{ deleteNoteImages }:\\
+Diese Methode entfernt alle mit dem zu löschenden Objekt assoziierten Bilder aus dem persistenten Speicher, sofern das zu löschende Objekt ein Note-Objekt ist.
+
+\subparagraph{Klasse: DocumentSaver (Jan Beilfuß)}
+Diese Klasse enthält alle Methoden, welche benötigt werden, um die Attribute eines TEN-Objektes in ein Dokument zu übertragen und dieses in der Datenbank zu speichern.
+
+\textit{ updateCompleteDocument }:\\
 Diese Methode wird aus dem WriteRepository aufgerufen und bildet den ganzen Prozess von der Dokumentenvorbereitung über das Hinzufügen der einzelnen Key-Value-Paare bis hin zum finalen speichern des Dokumentes ab.
-saveSeparateAttributes
-Diese Methode legt alle Attribute, welche in der Deserialisierung durch Jackson nicht beachtet warden, als Key-Value-Paare im Dokument ab. Dazu zählt das Erzeugungsdatum des TEN-Objektes, die Farbe und die Akzentfarbe.
-preparePersistentSaving
-Diese Methode bestimmt abhängig von der Klasse des übergebenen TEN-Objektes, welcher Typ in dem Dokument gespeichert werden muss. Dies ist notwendig, da bei der Deserialisie-rung des Json-Strings, die Zielklasse angegeben werden muss.
-Klasse: ReadRepository (Jan Beilfuß)
-Diese Klasse beinhaltet alle Funktionen, die einen lesenden Zugriff auf die Datenbank haben.
-getTodoByID
-Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Todo-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
-getEventByID
-Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Event-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
-getNoteByID
-Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Notiz-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
-getAllTENs
-Diese Methode ruft die Query getAllTENs auf und gibt dann das Ergebnis dieser, eine Liste aller in der Datenbank gespeicherten TEN-Objekte, zurück.
-getTENColors
-Diese Methode lädt das Dokument zu der übergebenen ID aus der Datenbank und gibt die Haupt- und die Akzentfarbe des erzeugten TEN-Objektes zurück.
-Klasse: GetAllTensQuery (Jan Beilfuß)
-Diese Klasse enhält die Datenbankabfragen, um alle TEN-Objekte aus der Datenbank zu laden.
-getAllTENs
-Diese Methode baut eine Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden. Das Einträge des ResultSets werden dem entsprechenden Converter übergeben, dort umgewandelt und dann einer Liste an TEN-Objekten hinzugefügt, welche am Ende zurück-gegeben wird.
-Klasse: QueriedTENConverter (Jan Beilfuß)
-Diese Klasse enthält eine Methode, welche genutzt wird, um die Ergebnisse einer Datenban-kabfrage in TEN-Objekte umzuwandeln.
-createTENFromResult
-Diese Methode wandelt ein Result, eine CouchbaseLite-Klasse, in ein TEN-Objekt um. Dem Result wird ein Dictionary entnommen und aus diesem der Json-String, aus welchem im An-schluss das TEN-Objekt erzeugt wird. Wenn dies erfolgreich ist, werden dem TEN-Objekt noch die separat abgelegten Attribute hinzugefügt.
-Klasse: SeparateAttributesConverter (Jan Beilfuß)
-Diese Klasse ist dafür verantwortlich, dass in einem übergebenen TEN-Objekt die nicht im JSON-String enthaltenen Attribute gesetzt werden. Dazu zählt die ID, welche die ID des Do-kuments selber ist. Darüber hinaus die Farbe, die Akzentfarbe und das Erzeugungsdatum des TEN-Objektes.
-addTENPropertiesFromDocument
-Diese Methode entnimmt die aufgeführten Attribute einem Document, Objekt aus dem Couchbase Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt.
-addTENPropertiesFromResult
-Diese Methode entnimmt die aufgeführten Attribute einem Result, Objekt aus dem Couch-base Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt..
 
-Klasse: TenJsonParser (Jan Beilfuß)
-Diese Klasse enthält Methoden, die aus einem JSON-String die TEN-Objekte erzeugen. Da-für wird das Framework Jackson eingesetzt.
-stringToTodo
+\textit{ saveSeparateAttributes }:\\
+Diese Methode legt alle Attribute, welche in der Deserialisierung durch Jackson nicht beachtet warden, als Key-Value-Paare im Dokument ab. Dazu zählt das Erzeugungsdatum des TEN-Objektes, die Farbe und die Akzentfarbe.
+
+\textit{ setTypeOfDocument }:\\
+Diese Methode bestimmt abhängig von der Klasse des übergebenen TEN-Objektes, welcher Typ in dem Dokument gespeichert werden muss. Dies ist notwendig, da bei der Deserialisierung des Json-Strings, die Zielklasse angegeben werden muss.
+
+\subparagraph{Klasse: ReadRepository (Jan Beilfuß)}
+Diese Klasse beinhaltet alle Methoden, die einen lesenden Zugriff auf die Datenbank haben.
+
+\textit{ getTodoByID }:\\
+Diese Methode lädt ein einzelnes Dokument aus der Datenbank und wandelt dieses in ein Todo-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+
+\textit{ getEventByID }:\\
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Event-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+
+\textit{ getNoteByID }:\\
+Diese Methode lädt das zu der übergebenen ID passende Dokument aus der Datenbank und wandelt dieses in ein Note-Objekt um. Dazu wird erst aus dem Json-String das Objekt erzeugt und im Anschluss die separat abgelegten Attribute gesetzt.
+
+\textit{ getAllTENs }:\\
+Diese Methode ruft die Query getAllTENs auf und gibt dann das Ergebnis dieser, eine Liste aller in der Datenbank gespeicherten TEN-Objekte, zurück.
+
+\textit{ getTENColors }:\\
+Diese Methode lädt das Dokument zu der übergebenen ID aus der Datenbank und gibt die Haupt- und die Akzentfarbe des erzeugten TEN-Objektes zurück.
+\subparagraph{Klasse: GetAllTensQuery (Jan Beilfuß)}
+Diese Klasse enhält die Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden.
+
+\textit{ getAllTENs }:\\
+Diese Methode baut eine Datenbankabfrage, um alle TEN-Objekte aus der Datenbank zu laden. Das Einträge des ResultSets werden dem entsprechenden Converter übergeben, dort umgewandelt und dann einer Liste aus TEN-Objekten hinzugefügt, welche am Ende zurückgegeben wird.
+
+\subparagraph{Klasse: QueriedTENConverter (Jan Beilfuß)}
+Diese Klasse enthält eine Methode, welche genutzt wird, um die Ergebnisse einer Datenbankabfrage in TEN-Objekte umzuwandeln.
+
+\textit{ createTENFromResult }:\\
+Diese Methode wandelt ein Result, eine CouchbaseLite-Klasse, in ein TEN-Objekt um. Dem Result wird ein Dictionary entnommen und aus diesem der Json-String. Der wird im Anschluss zur Erzeugen des TEN-Objektes verwendet. Wenn dies erfolgreich ist, werden dem TEN-Objekt noch die separat abgelegten Attribute hinzugefügt.
+
+\subparagraph{Klasse: SeparateAttributesConverter (Jan Beilfuß)}
+Diese Klasse ist dafür verantwortlich, dass in einem übergebenen TEN-Objekt die nicht im JSON-String enthaltenen Attribute gesetzt werden. Dazu zählt die ID, welche die ID des Dokuments selber ist. Darüber hinaus die Farbe, die Akzentfarbe und das Erzeugungsdatum des TEN-Objektes.
+
+\textit{ addTENPropertiesFromDocument }:\\
+Diese Methode entnimmt die aufgeführten Attribute einem Document, Objekt aus dem Couchbase Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt.
+
+\textit{ addTENPropertiesFromResult }:\\
+Diese Methode entnimmt die aufgeführten Attribute einem Result, Objekt aus dem Couchbase Lite-Umfeld, und setzt diese im übergebenen TEN-Objekt.
+
+\subparagraph{Klasse: TenJsonParser (Jan Beilfuß)}
+Diese Klasse enthält Methoden, die aus einem JSON-String die TEN-Objekte erzeugen. Dafür wird das Framework Jackson eingesetzt.
+
+\textit{ stringToTodo }:\\
 Diese Methode erzeugt aus dem übergebenen JSON-String ein Todo-Objekt und gibt dieses zurück.
-stringToEvent
+
+\textit{ stringToEvent }:\\
 Diese Methode erzeugt aus dem übergebenen JSON-String ein Event-Objekt und gibt dieses zurück.
-stringToNote
+
+\textit{ stringToNote }:\\
 Diese Methode erzeugt aus dem übergebenen JSON-String ein Note-Objekt und gibt dieses zurück.
 
-Klasse: FileRepository (Jan Beilfuß)
+\subparagraph{Klasse: FileRepository (Jan Beilfuß)}
 Diese Klasse enthält alle Zugriffe auf das Dateisystem. Sie findet Einsatz in der Verwaltung der Bilder, da diese im Dateisystem abgelegt werden.
-saveImagePersistent
-Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber das Bild im Datei System.
-readImageFromDirectory
-Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus eine Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
-deleteImageFromDirectory
-Die Methode deleteImageFromDirectory überladen. Diese nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässig-baren Bereichs auf die Performance auswirkt.
-deleteImageFromDirectory
-Die Methode deleteImageFromDirectory überladen. Diese nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, das es vorkommen kann, dass diese Methode beim schließen der Note-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
-Klasse: FileSystemConstants (Jan Beilfuß)
-Diese Klasse enthält alle Konstanten, welche im Umgang mit dem Filesystem benötigt wer-den. Dazu zählen Ordernamen, Dateiendungen, aber auch der Kompressionsfaktor für Bilder.
-Klasse: ImageDeleter (Jan Beilfuß)
-Diese Klasse erzeugt einen asynchronen Task, der die Bilder aus dem Dateisystem löscht. Diese Klasse enthält als innere Klasse, die Klasse DeleteImageTask, welche von AsyncTask erbt.
-Execute
-Es wird ein asynchroner Task der Klasse DeleteImageTask erzeugt und ausgeführt. Dieser löscht die Bilder zu der im ImageObjekt übergebenen ID. Die dort definierte Methode doIn-Background baut die Dateipfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen, überprüft, ob die Datei existiert und löscht diese, falls sie existiert.
-Klasse: ImageSaver (Jan Beilfuß)
-Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speichert. Diese Klasse enthält als innere Klasse, die Klasse SaveImageTask, welche von AsyncTask erbt.
-Execute
-Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode doInBackground baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
+\textit{ saveImagePersistent }:\\
+Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber das Bild im Dateisystem.
 
+\textit{ readImageFromDirectory }:\\
+Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus eine Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
+
+\textit{ deleteImageFromDirectory }:\\
+Die Methode deleteImageFromDirectory überladen. Diese nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässigbaren Bereichs auf die Performance auswirkt.
+
+\textit{ deleteImageFromDirectory }:\\
+Die Methode deleteImageFromDirectory überladen. Diese nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, das es vorkommen kann, dass diese Methode beim schließen der Note-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
+
+\subparagraph{Klasse: FileSystemConstants (Jan Beilfuß)}
+Diese Klasse enthält alle Konstanten, welche im Umgang mit dem Filesystem benötigt werden. Dazu zählen Ordernamen, Dateiendungen, aber auch der Kompressionsfaktor für Bilder.
+
+\subparagraph{Klasse: ImageDeleter (Jan Beilfuß)}
+Diese Klasse erzeugt einen asynchronen Task, der die Bilder aus dem Dateisystem löscht. Diese Klasse enthält als innere Klasse, die Klasse DeleteImageTask, welche von AsyncTask erbt.
+\textit{ execute }:\\
+Es wird ein asynchroner Task der Klasse DeleteImageTask erzeugt und ausgeführt. Dieser löscht die Bilder zu der im ImageObjekt übergebenen ID. Die dort definierte Methode textit{doInBackground} baut die Dateipfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen, überprüft, ob die Datei existiert und löscht diese, falls sie existiert.
+
+\subparagraph{Klasse: ImageSaver (Jan Beilfuß)}
+Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speichert. Diese Klasse enthält als innere Klasse, die Klasse SaveImageTask, welche von AsyncTask erbt.
+
+\textit{ execute }:\\
+Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode textit{doInBackground} baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
 
 \newpage
 \subsection{Dokumentation der Activity-übergreifenden Klassen (Ruthild Gilles)}
