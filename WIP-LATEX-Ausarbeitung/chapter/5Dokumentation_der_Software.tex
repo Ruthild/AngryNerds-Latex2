@@ -1755,10 +1755,10 @@ Diese Methode erzeugt ein Objekt der Klasse ImageSaver und speichert darüber da
 Diese Methode ist dafür verantwortlich, aus einem Image-Objekt mit leerer Bitmap und dem übergebene Ordnernamen, das entsprechende Bild zu laden. Dafür baut man aus einem Grundpfad, dem übergebenen Ordnernamen und der im Image-Objekt enthaltenen ID den Bildpfad zusammen. Im Anschluss wird die zu dem Pfad gehörende Datei zu einer Bitmap dekodiert, ein neues Image-Objekt inklusive der Bitmap erzeugt und dieses zurückgegeben.
 
 \textit{ deleteImageFromDirectory }:\\
-Die Methode deleteImageFromDirectory überladen. Diese nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässigbaren Bereichs auf die Performance auswirkt.
+Die Methode deleteImageFromDirectory nimmt den absoluten Pfad einer Datei an und löscht diese, falls sie existiert. Diese Methode ist synchron, da sie lediglich für einzelne Dateien beim Kameraimport verwendet wird und sich innerhalb eines vernachlässigbaren Bereichs auf die Performance auswirkt.
 
-\textit{ deleteImageFromDirectory }:\\
-Die Methode deleteImageFromDirectory überladen. Diese nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, da diese Methode beim Schließen der Notiz-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
+\textit{ deleteImageFromDirectories }:\\
+Die Methode deleteImageFromDirectories nimmt ein Image-Objekt an und erzeugt einen ImageDeleter. Diese Klasse erzeugt einen asynchronen Task, um das Bild zu löschen. Hier wird asynchron gearbeitet, da diese Methode beim Schließen der Notiz-Activity aufgerufen wird, um alle zuvor als zu löschend markierten Bilder zu löschen. Da eine flüssige Navigation gewährleistet werden soll, wird hier der UI-Thread verlassen.
 
 \subparagraph{Klasse: FileSystemConstants (Jan Beilfuß)}
 Diese Klasse enthält alle Konstanten, welche im Umgang mit dem Filesystem benötigt werden. Dazu zählen Ordernamen, Dateiendungen, aber auch der Kompressionsfaktor für Bilder.
