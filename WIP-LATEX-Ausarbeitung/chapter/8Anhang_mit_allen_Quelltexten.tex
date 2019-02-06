@@ -4,7 +4,9 @@
 \label{instal}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Titel und Name ändern. Quelltext in die Mitte kopieren.
+%Titel und Name ändern. Pfad ändern (nur Klassenname).
+%\lstinputlisting [caption=Titel (Vorname Nachname)]{code/Klassenname.java}
+%Alternativ in die Mitte den Quellcode kopieren
 \begin{figure}[H]
 \begin{lstlisting}[caption=Titel (Vorname Nachname)]
 
@@ -27,6 +29,23 @@
 			\subparagraph{Logic}
 		\paragraph{Notetags}
 	\subsubsection{Todo}
+
+%?
+\subsection{Overview}
+	\subsubsection{Event Fragment}
+	\subsubsection{Header}
+		\paragraph{Create Fragment}
+		\paragraph{Delete Fragment}
+		\paragraph{Search Fragment}
+	\subsubsection{Image Fragment}
+	\subsubsection{Note Fragment}
+	\subsubsection{Overview Activity}
+		\paragraph{Fragment Manager}
+	\subsubsection{Super Classes}
+	\subsubsection{Todo Fragments}
+%?
+
+
 \subsection{Data}
 	\subsubsection{Models}
 		\paragraph{TENs}	
@@ -1297,16 +1316,10 @@ public class ImageService {
 
 \subsection{Modules}
 	\subsubsection{Image Compression}
+\lstinputlisting [caption=ImageCompressionModule (Jan Beilfuß)]{code/ImageCompressionModule.java}
+\lstinputlisting [caption=ImageRotationCorrectionModule (Jan Beilfuß)]{code/ImageRotationCorrectionModule.java}
+\lstinputlisting [caption=ImageToolsModule (Jan Beilfuß)]{code/ImageToolsModule.java}
 	\subsubsection{Share}
-\subsection{Overview}
-	\subsubsection{Event Fragment}
-	\subsubsection{Header}
-		\paragraph{Create Fragment}
-		\paragraph{Delete Fragment}
-		\paragraph{Search Fragment}
-	\subsubsection{Image Fragment}
-	\subsubsection{Note Fragment}
-	\subsubsection{Overview Activity}
-		\paragraph{Fragment Manager}
-	\subsubsection{Super Classes}
-	\subsubsection{Todo Fragments}
+\lstinputlisting [caption=ShareModule (Jan Beilfuß)]{code/ShareModule.java}
+
+
