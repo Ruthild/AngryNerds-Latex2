@@ -1582,7 +1582,18 @@ Aus dem bisherigen Studienverlauf waren unter den Datenbanken nur SQL-Datenbanke
 
 Bei der Wahl der spezifischen Datenbanktechnologie entschied man sich am Ende für Couchbase Lite, da diese gut dokumentiert ist, einem eine lokale Datenbank und Tools wie ein Gateway zur Hand gibt, wenn man es langfristig in Erwägung zieht Todos, Events und Notizen über einen Server zu synchronisieren.
 
-Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfachen, wurde das Serialisierungs- und Deserialisierungsframework Jackson verwendet. Dieses wandelt Java Objekte in JSON-Strings um, welche in jeweils einem Dokument abgelegt wurden. Weiterhin bietet es eine Funktionalität, diese wieder zurückzuwandeln. Einige Attribute, darunter die ID des TEN-Objektes, die Hauptfarbe, die Kontrastfarbe und das Erzeugungsdatum wurden hiervon ausgenommen. Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möchte.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Objekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
+Um den Aufwand bei der Umwandlung von Java-Objekten zu Dokumenten zu vereinfachen, wurde das Serialisierungs- und Deserialisierungsframework Jackson verwendet. Dieses wandelt Java Objekte in JSON-Strings um, welche in jeweils einem Dokument abgelegt wurden. Weiterhin bietet es eine Funktionalität, diese wieder zurückzuwandeln. Einige Attribute, darunter die ID des TEN-Objektes, die Hauptfarbe, die Kontrastfarbe und das Erzeugungsdatum wurden hiervon ausgenommen.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Dokumentenstruktur} % Überschrift
+\includegraphics[width=10cm]{img/Dokumentenstruktur}\\ % Pfad
+\source{Erstellt von Jan Beilfuß} % Quelle
+\end{minipage}
+\end{figure}
+
+Die ID ist die ID des Dokumentes selber und würde somit doppelt gehalten werden. Die Farben wurden in eigenen Key-Value-Paaren abgelegt, damit man nicht das gesamte TEN-Objekt erzeugen muss, wenn man auf diese zugreifen möchte.Dies fand Einsatz in der Note Activity. Hier war es das Ziel die Performance beim Öffnen zu optimieren. Daher wurden die Farben getrennt von den eigentlichen Notizdaten im Vorraus geladen. Weiterhin wurde im Dokument gespeichert, welche Klasse das zuspeichernde Objekt hat, damit dieses beim Laden vernünftig aus dem JSON-String erzeugt werden kann. Zusätzlich wurden noch die Objektattribute welche bei Datenbankabfragen genutzt wurden, in einem eigenen Key-Value-Pair abgespeichert.
 
 \paragraph{Bilder}
 Das Speichern der Bilder hat sich im Vergleich zu den Java-Objekten als aufwendiger erwiesen, da diese mehr Speicherplatz und Rechenleistung benötigen.
@@ -1592,9 +1603,18 @@ Der erste Lösungsansatz war, die Bilder als Binary Large Objects in der Datenba
 \subsubsection{Repository}
 Das Repository bildet in der Applikationsstruktur die unterste Ebene und ist für das Handling der Datenbank und die Bereitstellung der persistent gespeicherten Daten verantwortlich.
 
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Paketstruktur in der Repository-Schicht} % Überschrift
+\includegraphics[width=1 \textwidth]{img/RepositoryPackages}\\ % Pfad
+\source{Erstellt von Jan Beilfuß} % Quelle
+\end{minipage}
+\end{figure}
+
 \paragraph{Klassenstruktur}
 
-\subparagraph{Klasse: DatabaseRepository (Jan Beilfuß}
+\subparagraph{Klasse: DatabaseRepository (Jan Beilfuß)}
 Diese Klasse wird aus der Service-Schicht angesprochen. Sie bündelt Methoden, um Daten aus der Datenbank zu lesen oder zu schreiben. Alle Methoden rufen Methoden in den Klassen WriteRepository oder ReadRepository auf.
 
 \textit{ getTodoByID}:\\
