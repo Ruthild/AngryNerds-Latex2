@@ -920,7 +920,7 @@ public class FileRepository {
     }
 
     //deletes single file at given path
-    public void deleteImageFromDirectory(String path) {
+    public void deleteImageFromDirectories(String path) {
         File file = new File(path);
         if(file.exists()) file.delete();
     }
@@ -1152,7 +1152,7 @@ public class WriteRepository {
             String json = pDocument.getString(RepositoryConstants.OBJECT_KEY);
             Note note = mTenJsonParser.stringToNote(json);
             for(Image image: note.getPictures()){
-                mFileRepository.deleteImageFromDirectory(image);
+                mFileRepository.deleteImageFromDirectories(image.getId());
             }
         }
     }
@@ -1314,7 +1314,7 @@ public class ImageService {
 
     public static void deleteImage(String path) {
         FileRepository fileRepository = new FileRepository();
-        fileRepository.deleteImageFromDirectory(path);
+        fileRepository.deleteImageFromDirectories(path);
     }
 
     public static File createImageFile(Activity pActivity) throws IOException {
