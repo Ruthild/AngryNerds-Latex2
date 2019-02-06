@@ -1450,6 +1450,7 @@ In dieser Methode wird anhand des übergebenen Requestcodes ermittelt, aus welch
 Hier wird der Intent erstellt, welcher für das Starten der TagActivity genutzt wird. Dem Intent werden die aktuelle Stichwortliste sowie die Farbe und die Akzentfarbe der Notiz mitgegeben. Anschließend wird die TagActivity gestartet.
 
 \subsubsection{NoteTag Activity}
+\fancyhead[L]{NoteTag Activity}
 Aus der Notiz-Ansicht heraus kann man sich zwar die Stichwörter zu der jeweiligen Notiz ansehen, diese können jedoch nicht bearbeitet werden. Für die Bearbeitung der Liste steht eine weitere Activity zur Verfügung, dessen Erstellungsprozess im Folgenden beschrieben werden soll.
 
 \paragraph{Aufgabe und Funktion (Joscha Nassenstein)}
@@ -1764,7 +1765,7 @@ Diese Klasse erzeugt einen asynchronen Task, der die Bilder im Dateisystem speic
 Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. Die dort definierte Methode textit{doInBackground} baut die Zielpfade für die beiden Ordner Originale Bilder und Vorschaubilder zusammen. Im Anschluss wird geprüft, ob das Bild bereits existiert, um diese nicht bei jedem Speichern zu überschreiben. Wenn die übergebene Bitmap nicht Null ist wird diese über ein Objekt der Klasse FileOutputStream dort abgelegt. Für den Ordner der Vorschaubilder wird zuvor ein Vorschaubild erzeugt, und dieses abgespeichert.
 
 \newpage
-\subsection{Dokumentation der Activity-übergreifenden Klassen (Ruthild Gilles)}
+\subsection{Dokumentation der Activity-übergreifenden Klassen}
 %%%%%%%%%%%
 %Ruthild
 %%%%%%%%%%%
@@ -1780,7 +1781,7 @@ Zu den Activity-übergreifenden Klassen gehören abgesehen von den Repository-Kl
 \end{minipage}
 \end{figure}
 
-\subsubsection{Models-Klassen}
+\subsubsection{Models-Klassen (Ruthild Gilles)}
 
 Wie schon während der Planungsphase definiert, gibt es Klassen, in denen die Struktur der einzelnen TEN-Objekte definiert ist. Sowohl die Todo-Klasse als auch die Event- und Note-Klasse erben von der TEN-Klasse. In dieser werden für alle TEN-Objekte Attribute wie der Titel, eine ID, ein Erstellungsdatum und die Farbe deklariert. Die Farbe wird dabei bei Initialisierung eines Objektes zufällig aus einer Liste von Farben ausgewählt. Die Farben wurden anhand eines Material-Designs ausgewählt, damit die graphische Benutzeroberfläche ästhetisch ansprechend ist und sich keine Farben beißen.
 
@@ -1794,7 +1795,7 @@ Ein Note-Objekt enthält, abgesehen von den Attributen aus der TEN-Klasse, zusä
 
 Damit für die Präsentation der Applikation bereits einige Todo-, Event- und Note-Objekte in der Benutzeroberfläche zu sehen sind, gibt es eine weitere Klasse, welche Mockdaten initialisiert. Diese werden auf die Datenbank geschrieben und von dort wie reguläre Daten verwendet.
 
-\subsubsection{Service-Klassen}
+\subsubsection{Service-Klassen (Ruthild Gilles)}
 
 Damit die Activities die Daten der TEN-Objekte auf der dokumentenbasierten Datenbank speichern können, wurden Service Klassen implementiert. Hierzu gehörten hauptsächlich Klassen zum Erzeugen neuer TEN-Objekte (Create), zum Erhalten bereits gespeicherter TEN-Objekte von der Datenbank (Read), zum Speichern veränderter TEN-Objekte (Update) und zum Löschen von TEN-Objekten von der Datenbank (Delete). Diese sogenannte CRUD-Operationen wurden in den entsprechenden Klassen teilweise für alle drei verschiedenen Objekttypen einzeln eingefügt, teilweise aber auch für TEN-Objekte im Allgemeinen. Dank Polymorphie können die jeweils einzelnen Objekttypen ebenfalls an die entsprechenden Methoden übergeben werden.
 
@@ -1809,5 +1810,33 @@ Für das Löschen von TEN-Objekten sind in der Delete-Klasse zwei Methode vorhan
 In den Service Klassen bestehen zusätzlich zwei Klassen für die Verarbeitung von Bildern.
 
 Die Klasse ImageService stellt dabei Funktionen für die Schnittstelle zur Datenbank zur Verfügung, beispielsweise zum Laden oder Löschen eines Bildes. Zusätzlich kann eine temporäre Bilddatei zur Übergabe an den Kamera-Intent erstellt werden, in welcher bei der Aufnahme die Bilddatei gespeichert wird. Die Klasse ImageCorrectionService stellt Funktionen zur Korrektur der Ausrichtung eines Bildes anhand der mitgelieferten Exif-Daten bereit, da auf einigen Geräten die Bilder sonst nicht korrekt dargestellt wurden. Diese Klassen werden zurzeit lediglich von der Note-Activity genutzt.
+
+\subsubsection{Modules-Klassen}
+\paragraph{Paket: modules}
+In diesem Paket werden Funktionen gebündelt, die in mehrere Activities implementiert werden oder das Potenzial dazu haben. 
+\subparagraph{Paket: image}
+
+\subparagraph*{Klasse: ImageToolsModule (Jan Beilfuß)}
+Diese Klasse bündelt die Methoden, welche im Modul ImageTools enthalten sind und dient bei Aufrufen aus den Activities als Single Point Of Contact.
+
+\textit{ importCompressedImage }:\\
+Dieser Methode wird der Pfad zu einer Bilddatei übergeben. Sie ruft die Methode textit{importCompressedImage} im ImageCompressionModule auf, welche die Bitmap zurückgibt, welche auf dem Pfad liegt.
+
+\textit{ correctImageRotation }:\\
+Dieser Methode wird der Pfad zu einer Bilddatei und die dazugehörige Bitmap übergeben. Sie ruft die Methode textit{corretImageRotation} im ImageCompressionModule auf, welche die Bitmap abhängig von dem Bild zu Pfad dreht und zurückgibt.
+
+\subparagraph*{Klasse: ImageCompressionModule (Jan Beilfuß)}
+Diese Klasse bündelt die Methoden, welche benötigt werden, um Bilder komprimiert aus dem Dateisystem zu importieren.
+
+\textit{importCompressedImage}:\\
+In den BitmapFactory.Options kann man einen Wert setzen, sodass beim Dekodieren nur die Informationen zu dem Bild eingelesen werden. Dazu zählt unter anderem auch die Höhe und die Breite. Diese wird dann genutzt, um einen Skalierungsfaktor zu berechnen, um die Größe des Bildes auf den Arbeitsspeicher des Zielgerätes anzupassen. Dieser wird beim Dekodieren der Bilddatei berücksichtigt, sodass ein kleineres Bild mit weniger Speicherverbrauch in den Arbeitsspeicher geladen wird.
+
+\textit{calculateImportSampleSize}:\\
+Diese Methode berechnet den Skalierungsfaktor, welcher benötigt wird, um das Bild von der Originalgröße auf die kleinste Größe oberhalb der Zielgröße zu bekommen. Dabei ist zu beachten, dass der Faktor eine Zweierpotenz ist, da auf diese abgerundet wird. Der Faktor wird schrittweise erhöht. Sobald das Bild kleiner als die Zielgröße ist, wird der Faktor zurückgegeben.
+
+\subparagraph*{Klasse: ShareModule (Fabia Schmid)}
+Das ShareModule bietet jeweils für Todo, Event und Note eine Funktion, welche angesprochen werden kann, um den jeweiligen Inhalt in einer externen App zu teilen. Dafür wird ein Intent erstellt, welcher einen Benutzerdialog startet, in dem ausgewählt werden kann, in welcher Form beziehungsweise in welcher Applikation der Inhalt geteilt werden soll. Innerhalb des Intents werden anschließend die Felder Betreff und Text mit den entsprechenden Daten aus dem momentan geöffneten TEN-Objekt gefüllt. Die Struktur des Textes entspricht dabei der Struktur eines Todos, eines Events oder einer Notiz. Anschließend wird die Activity zum Anzeigen des Dialoges und dem anschließenden Teilen gestartet.
+
+
 
 

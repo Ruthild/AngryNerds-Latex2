@@ -121,7 +121,12 @@ final             % draft beschleunigt die Kompilierung
 
 % Sourcecode-Listings
 \usepackage{listings}
-\lstset{language=Java}
+\lstset{language=Java,
+		float,
+		basicstyle=\\ttfamily,
+		columns=fullflexible,
+		breaklines=true,
+		postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}}
 
 
 % Bestimmte Warnungen unterdrücken
