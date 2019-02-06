@@ -1748,11 +1748,30 @@ Es wird ein asynchroner Task der Klasse SaveImageTask erzeugt und ausgeführt. D
 %Ruthild
 %%%%%%%%%%%
 
-Zu den Activity-übergreifenden Klassen gehören abgesehen von den Query-Klassen für die persistente Datenhaltung auch die Service-Klassen und die Models-Klassen. Die Models-Klassen enthalten die TEN-Klasse und die einzelnen Todo-, Event- und Note-Klassen. Hier sind auch weitere Util-Klassen untergeordnet. In den Service-Klassen sind Methoden enthalten, die die Schnittstelle zwischen Datenbank und Activities darstellen. Im Folgendem wird genauer auf die einzelnen Klassen eingegangen.
+Zu den Activity-übergreifenden Klassen gehören abgesehen von den Repository-Klassen für die persistente Datenhaltung auch die Service-Klassen und die Models-Klassen. Die Models-Klassen enthalten die TEN-Klasse und die einzelnen Todo-, Event- und Note-Klassen. Hier sind auch weitere Util-Klassen untergeordnet. In den Service-Klassen sind Methoden enthalten, die die Schnittstelle zwischen Datenbank und Activities darstellen. Im Folgendem wird genauer auf die einzelnen Klassen eingegangen.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+\caption{Übersicht über Data-Klassen} % Überschrift
+\includegraphics[width=1\textwidth]{img/StrukturDataKlassen}\\ % Pfad
+\source{Erstellt von Ruthild Gilles} % Quelle
+\end{minipage}
+\end{figure}
 
 \subsubsection{Models-Klassen}
 
+Wie schon während der Planungsphase definiert, gibt es Klassen, in denen die Struktur der einzelnen TEN-Objekte definiert ist. Sowohl die Todo-Klasse als auch die Event- und Note-Klasse erben von der TEN-Klasse. In dieser werden für alle TEN-Objekte Attribute wie der Titel, eine ID, ein Erstellungsdatum und die Farbe deklariert. Die Farbe wird dabei bei Initialisierung eines Objektes zufällig aus einer Liste von Farben ausgewählt. Die Farben wurden anhand eines Material-Designs ausgewählt, damit die graphische Benutzeroberfläche ästhetisch ansprechend ist und sich keine Farben beißen.
 
+Die Klassen für die einzelnen Objekt-Typen enthalten weitere Attribute, die notwendig sind, um alle relevanten Informationen darstellen zu können.
+
+In der Klasse Todo werden zusätzlich noch Attribute für den Fortschritt der Erfüllung des Todos, einer Notiz, eines Start- und Enddatums deklariert. Der wichtigste Teil eines Todo-Objektes ist die Liste an Aufgaben, die abgearbeitet werden sollen. Dazu wurde eine weitere Klasse implementiert, welche die Struktur einer einzelnen Aufgabe angibt. Aufgaben bestehen aus einer Beschreibung und einem binären Status. Objekte dieser Klasse können in einem Objekt der Klasse Todo in einer ArrayList gespeichert werden.
+
+Die Klasse Event erweitert das TEN-Objekt noch um ein Datum inklusive Uhrzeit, eine Adresse und ein Wiederholungstyp. Dieser kann folgende Werte annehmen: None, Daily, Weekly, Monthly oder Yearly. Die Werte sind in einem Enum im Ordner Utils definiert. Zusätzlich können einem Event-Objekt mehrere Erinnerungen hinzugefügt werden. Diese werden ähnlich wie die Aufgaben eines Todo-Objektes in einer ArrayList gesammelt.
+
+Ein Note-Objekt enthält, abgesehen von den Attributen aus der TEN-Klasse, zusätzlich eine Beschreibung, mehrere Tags und Bilder, welche in ArrayListen dem Note-Objekt hinzugefügt werden können. Ein Bild ist ein Objekt der Bild-Klasse und enthält die Attribute ID und Bitmap.
+
+Damit für die Präsentation der Applikation bereits einige Todo-, Event- und Note-Objekte in der Benutzeroberfläche zu sehen sind, gibt es eine weitere Klasse, welche Mockdaten initialisiert. Diese werden auf die Datenbank geschrieben und von dort wie reguläre Daten verwendet.
 
 \subsubsection{Service-Klassen}
 
@@ -1770,5 +1789,4 @@ In den Service Klassen bestehen zusätzlich zwei Klassen für die Verarbeitung v
 
 Die Klasse ImageService stellt dabei Funktionen für die Schnittstelle zur Datenbank zur Verfügung, beispielsweise zum Laden oder Löschen eines Bildes. Zusätzlich kann eine temporäre Bilddatei zur Übergabe an den Kamera-Intent erstellt werden, in welcher bei der Aufnahme die Bilddatei gespeichert wird. Die Klasse ImageCorrectionService stellt Funktionen zur Korrektur der Ausrichtung eines Bildes anhand der mitgelieferten Exif-Daten bereit, da auf einigen Geräten die Bilder sonst nicht korrekt dargestellt wurden. Diese Klassen werden zurzeit lediglich von der Note-Activity genutzt.
 
-\subsubsection{Mockdaten}
 
