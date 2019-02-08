@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor4"
+    android:orientation="horizontal"
+    android:layout_alignParentLeft="true"
+    android:id="@+id/edit_todo_mainRelativeLayout">
+
+    <include
+        android:id="@+id/id_todo_toolbar"
+        layout="@layout/toolbar_ten" />
+
+    <RelativeLayout
+        android:id="@+id/edit_todo_leftContainer"
+        android:layout_width="640px"
+        android:layout_height="match_parent"
+        android:layout_above="@id/edit_todo_progressText"
+        android:layout_below="@id/id_todo_toolbar">
+    <EditText
+        android:theme="@style/editTextStyle"
+        android:id="@+id/edit_todo_title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="text"
+        android:hint="@string/sample_activity_todo_title"
+        android:textColorHint="@color/TextWhite"
+        android:textColor="@color/TextWhite"
+        android:lines="1"
+        android:maxLines="1"
+        android:scrollbars="horizontal"
+        android:textSize="16dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="72dp"/>
+    <View
+        android:id="@+id/edit_todo_view_seperate1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/edit_todo_title"
+        android:background="@color/colorPrimaryDark" />
+    <EditText
+        android:theme="@style/editTextStyle"
+        android:id="@+id/edit_todo_text"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/edit_todo_title"
+        android:inputType="text"
+        android:hint="@string/sample_activity_todo_description"
+        android:textColorHint="@color/TextWhite"
+        android:textColor="@color/TextWhite"
+        android:lines="10"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:layout_marginTop="5dp"
+        android:textSize="16dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="72dp"/>
+    <View
+        android:id="@+id/edit_todo_view_seperate2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/edit_todo_text"
+        android:background="@color/colorPrimaryDark" />
+
+    <RelativeLayout
+        android:id="@+id/id_todo_relativeLayout_startDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_todo_text"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:id="@+id/id_todo_imageView_iconStartDate"
+            android:layout_width="@dimen/icon"
+            android:layout_height="@dimen/icon"
+            android:layout_centerVertical="true"
+            android:alpha=".5"
+            android:src="@drawable/ic_access_time_black_24dp" />
+
+        <TextView
+            android:id="@+id/edit_todo_startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/id_todo_imageView_iconStartDate"
+            android:textColorHint="@color/TextWhite"
+            android:textColor="@color/TextWhite"
+            android:textSize="16dp"
+            android:backgroundTint="@color/bgColor4"
+            android:hint="@string/sample_activity_todo_startDate"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/edit_todo_view_seperate3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/id_todo_relativeLayout_startDate"
+        android:background="@color/colorPrimaryDark" />
+
+    <RelativeLayout
+        android:id="@+id/id_todo_relativeLayout_endDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_todo_relativeLayout_startDate"
+        android:layout_margin="16dp">
+        <ImageView
+            android:id="@+id/id_todo_imageView_iconEndDate"
+            android:layout_width="@dimen/icon"
+            android:layout_height="@dimen/icon"
+            android:layout_centerVertical="true"
+            android:alpha="0"
+            android:src="@drawable/ic_access_time_black_24dp" />
+        <TextView
+            android:id="@+id/edit_todo_endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/id_todo_imageView_iconEndDate"
+            android:textColorHint="@color/TextWhite"
+            android:textColor="@color/TextWhite"
+            android:textSize="16dp"
+            android:backgroundTint="@color/bgColor4"
+            android:hint="@string/sample_activity_todo_endDate"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/edit_todo_view_seperate4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/id_todo_relativeLayout_endDate"
+        android:background="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_todo_relativeLayout_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_todo_toolbar"
+        android:layout_above="@+id/edit_todo_progressText"
+        android:layout_toRightOf="@id/edit_todo_leftContainer"
+        android:layout_margin="16dp">
+        <ListView
+            android:id="@+id/edit_todo_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            >
+        </ListView>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/edit_todo_progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/sample_activity_todo_progressText"
+        android:textColor="@color/TextWhite"
+        android:textColorHint="@color/TextWhite"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

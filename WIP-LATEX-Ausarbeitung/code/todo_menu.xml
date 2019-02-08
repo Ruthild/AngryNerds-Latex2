@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.todo.Init">
+
+    <item
+        android:id="@+id/todo_action_share"
+        android:title="@string/sample_todo_menu_toolbarShare">
+    </item>
+
+    <item
+        android:id="@+id/todo_action_delete"
+        android:title="@string/sample_todo_menu_toolbarDelete">
+    </item>
+</menu>

@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">AngryNerds</string>
+    <string name="sample_activity_todo_title">Titel</string>
+    <string name="sample_activity_todo_description">Beschreibung</string>
+    <string name="sample_activity_todo_startDate">Startdatum</string>
+    <string name="sample_activity_todo_endDate">Enddatum</string>
+    <string name="sample_activity_todo_task">Todo hinzufuegen...</string>
+    <string name="sample_activity_todo_progressText">0 / 0</string>
+    <string name="sample_todo_menu_toolbarDelete">Todo loeschen</string>
+    <string name="sample_todo_menu_toolbarShare">Todo teilen</string>
+
+
+    <!-- Event Layout Strings -->
+    <!-- Robin Menzel -->
+    <string name="sample_event_title">Titel eingeben</string>
+    <string name="sample_event_address">Ort hinzufuegen</string>
+    <string name="sample_event_addreminder">Benachrichtigung hinzufuegen</string>
+    <string name="event_reminder1">1 Stunde vorher</string>
+    <string name="event_reminder2">6 Stunden vorher</string>
+    <string name="event_reminder3">1 Tag vorher</string>
+    <string name="event_reminder4">1 Woche vorher</string>
+    <string name="event_menu_share">Event teilen</string>
+    <string name="event_menu_calendar">Event in den Kalender</string>
+    <string name="event_menu_delete">Event loeschen</string>
+    <string name="event_share_text">Event: TITLE \nDATE um TIME Uhr \nAdresse: LOCATION</string>
+    <string name="event_calendar_description">Importiert aus dem AngryNerds TEN-Manager</string>
+    <string name="event_reminder_title">Erinnerung: TITLE</string>
+    <string name="event_reminder_text">am DATE um TIME Uhr.</string>
+    <string name="event_reminder_recurringType_none">Einmalig</string>
+    <string name="event_reminder_recurringType_daily">Taeglich</string>
+    <string name="event_reminder_recurringType_weekly">Woechentlich</string>
+    <string name="event_reminder_recurringType_yearly">Jaehrlich</string>
+
+
+    <!-- Note Layout Strings -->
+    <string name="sample_note_title">Titel eingeben</string>
+    <string name="sample_note_description">Beschreibung eingeben</string>
+    <string name="sample_note_tag">#Stichwort</string>
+    <string name="sample_note_hashtag">#</string>
+    <string name="sample_note_listtag">Stichwort</string>
+    <string name="note_menu_toolbarShare">Notiz teilen</string>
+    <string name="note_menu_toolbarDelete">Notiz loeschen</string>
+    <string name="note_tagOverview_menu_toolbarDelete">Alle Stichworte loeschen</string>
+    <string name="note_tagOverview_addButton">Stichwort hinzufuegen</string>
+
+    <!-- Fragment Example Strings -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sample_overview_event_title">Team Event im Paeffgen</string>
+    <string name="sample_overview_event_time">17:30</string>
+    <string name="sample_overview_event_date">Di, 13. Apr.</string>
+    <string name="sample_overview_event_year">2018</string>
+    <string name="sample_overview_event_location">Friesenplatz, 44, Koeln</string>
+    <string name="sample_overview_note_text">Zwiebeln 1-2\n
+        Knoblauch 1 Zehe\n
+        Gemuese: Moehren, Zucchini, Paprika, und auf was man sonst noch Bock hat. (Broccoli, Bohnen, Blumenkohl, ...)\n
+        Gemuesebruehe (1-2 Teeloeffel Pulver)\n
+        1 Dose Kokosmilch\n
+        Curry 2 Teeloeffel\n
+        Paprika Pulver 1 Teeloeffel\n
+        Chilipulver nach Bedarf\n
+        Pfeffer nach Bedarf\n
+        Dazu einfach Reis. </string>
+    <string name="sample_overview_todo_title">Einkaufsliste</string>
+    <string name="sample_overview_todo_counter">0/12</string>
+    <string name="sample_overview_image_title">Witziger Avatar</string>
+    <string name="sample_overview_todo_text">Was muss ich alles erledigen?</string>
+    <string name="sample_overview_note_title">Curry</string>
+    <string name="default_title">Titel</string>
+    <string name="default_description">Beschreibung</string>
+</resources>

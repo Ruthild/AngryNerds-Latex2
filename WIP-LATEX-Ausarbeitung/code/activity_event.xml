@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Robin Menzel -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_relativeLayout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+
+    <include
+        android:id="@+id/id_event_toolbar"
+        layout="@layout/toolbar_ten" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_event_toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true">
+
+            <EditText
+                android:theme="@style/editTextStyle"
+                android:id="@+id/id_event_editText_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginStart="72dp"
+                android:hint="@string/sample_event_title"
+                android:inputType="text"
+                android:textColor="#FFFF"
+                android:textColorHint="#80FFFFFF"/>
+
+            <View
+                android:id="@+id/id_event_view_seperate1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/id_event_editText_title"
+                android:background="@color/colorPrimaryDark" />
+
+            <RelativeLayout
+                android:id="@+id/id_event_relativeLayout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_event_view_seperate1"
+                android:layout_margin="16dp">
+
+                <ImageView
+                    android:id="@+id/id_event_imageView_iconDate"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:layout_centerVertical="true"
+                    android:alpha=".5"
+                    android:src="@drawable/ic_access_time_black_24dp" />
+
+                <EditText
+                    android:theme="@style/editTextStyle"
+                    android:id="@+id/id_event_editText_date"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/id_event_imageView_iconDate"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:textColor="#FFFF" />
+
+                <EditText
+                    android:theme="@style/editTextStyle"
+                    android:id="@+id/id_event_editText_time"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:textAlignment="center"
+                    android:textColor="#FFFF" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/id_event_view_seperate2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/id_event_relativeLayout_date"
+                android:background="@color/colorPrimaryDark"/>
+
+            <RelativeLayout
+                android:id="@+id/id_event_relativeLayout_recurringType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_event_view_seperate2"
+                android:layout_margin="16dp">
+                <ImageView
+                    android:id="@+id/id_event_imageView_recurringType"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:layout_centerVertical="true"
+                    android:alpha=".5"
+                    android:src="@drawable/ic_refresh_white_24dp" />
+
+                <EditText
+                    android:theme="@style/editTextStyle"
+                    android:id="@+id/id_event_editText_recurringType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/id_event_imageView_recurringType"
+                    android:hint="@string/event_reminder_recurringType_none"
+                    android:text="@string/event_reminder_recurringType_none"
+                    android:textColor="#FFFF"
+                    android:textColorHint="#80FFFFFF"
+                    android:clickable="true"
+                    android:focusable="false"/>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/id_event_view_seperate3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/id_event_relativeLayout_recurringType"
+                android:background="@color/colorPrimaryDark"/>
+
+            <RelativeLayout
+                android:id="@+id/id_event_relativeLayout_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_event_view_seperate3"
+                android:layout_margin="16dp">
+
+                <ImageView
+                    android:id="@+id/id_event_imageView_iconLocation"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:layout_centerVertical="true"
+                    android:alpha=".5"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+
+                <EditText
+                    android:theme="@style/editTextStyle"
+                    android:id="@+id/id_event_editText_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/id_event_imageView_iconLocation"
+                    android:layout_toStartOf="@id/id_event_imageView_gmaps"
+                    android:hint="@string/sample_event_address"
+                    android:text=""
+                    android:textColor="#FFFF"
+                    android:textColorHint="#80FFFFFF" />
+
+                <ImageView
+                    android:id="@+id/id_event_imageView_gmaps"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="12dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_navigation_white_24dp"/>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/id_event_view_seperate4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/id_event_relativeLayout_location"
+                android:background="@color/colorPrimaryDark" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_event_view_seperate4"
+                android:layout_margin="16dp">
+
+                <ImageView
+                    android:id="@+id/id_event_imageView_iconBell"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:layout_marginTop="12dp"
+                    android:alpha=".5"
+                    android:src="@drawable/ic_notifications_black_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/id_event_linearLayout_reminder"
+                    android:layout_width="450dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/id_event_imageView_iconBell"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:theme="@style/editTextStyle"
+                        android:id="@+id/id_event_editText_newReminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.5"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text="@string/sample_event_addreminder"
+                        android:textColor="#FFFF" />
+
+                    <EditText
+                        android:theme="@style/editTextStyle"
+                        android:id="@+id/id_event_editText_reminder1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text=""
+                        android:textColor="#FFFF" />
+
+                    <EditText
+                        android:theme="@style/editTextStyle"
+                        android:id="@+id/id_event_editText_reminder2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text=""
+                        android:textColor="#FFFF" />
+
+                    <EditText
+                        android:theme="@style/editTextStyle"
+                        android:id="@+id/id_event_editText_reminder3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text=""
+                        android:textColor="#FFFF" />
+
+                    <EditText
+                        android:theme="@style/editTextStyle"
+                        android:id="@+id/id_event_editText_reminder4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:text=""
+                        android:textColor="#FFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/id_event_linearLayout_closeReminderIcons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/id_event_imageView_iconCloseReminder"
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:layout_margin="12dp"
+                        android:alpha="0.5" />
+
+                    <ImageView
+                        android:id="@+id/id_event_imageView_iconCloseReminder1"
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:layout_margin="12dp"
+                        android:alpha="0.0"
+                        android:src="@drawable/ic_clear_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/id_event_imageView_iconCloseReminder2"
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:layout_margin="12dp"
+                        android:alpha="0.0"
+                        android:src="@drawable/ic_clear_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/id_event_imageView_iconCloseReminder3"
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:layout_margin="12dp"
+                        android:alpha="0.0"
+                        android:src="@drawable/ic_clear_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/id_event_imageView_iconCloseReminder4"
+                        android:layout_width="@dimen/icon"
+                        android:layout_height="@dimen/icon"
+                        android:layout_margin="12dp"
+                        android:alpha="0.0"
+                        android:src="@drawable/ic_clear_black_24dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
